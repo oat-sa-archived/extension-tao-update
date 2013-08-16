@@ -9,7 +9,7 @@
  * 
  */
 
-class taoUpdate_actions_UpdateController extends tao_actions_CommonModule {
+class taoUpdate24_actions_UpdateController extends tao_actions_CommonModule {
     
     private static $allowedRole = array();
     
