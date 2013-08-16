@@ -35,6 +35,30 @@ class taoUpdate24_actions_UpdateController extends tao_actions_CommonModule {
 	}
 	
 
+	public function availableUpdatesXml(){
+	    $availabeUpdate = $this->notificationService->getAvailableUpdates();
+	    $xml = new DOMDocument("1.0");
+	    $root = $xml->createElement("updates");
+	    $xml->appendChild($root);
+	    foreach ($availabeUpdate as $update){
+	        $upNode = $xml->createElement("update");
+	        
+	        $version = $xml->createElement("version");
+	        $versionText = $xml->createTextNode($update['version']);
+	        $version->appendChild($versionText);
+	        
+	        $file = $xml->createElement("file");
+	        $fileText = $xml->createTextNode($update['file']);
+	        $file->appendChild($fileText);
+	        $upNode->appendChild($version);
+	        $upNode->appendChild($file);
+	        
+	        $root->appendChild($upNode);
+	        
+	    }
+	    $xml->formatOutput = true;
+	    echo $xml->saveXML();
+	}
 	
 	public function index(){
 	   

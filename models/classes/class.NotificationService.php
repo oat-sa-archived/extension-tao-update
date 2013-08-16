@@ -64,6 +64,10 @@ class taoUpdate24_models_classes_NotificationService extends tao_models_classes_
         return $returnValue;
     }
     
+    public function getAvailableUpdates(){
+        
+    }
+    
     
     /**
      * @access public

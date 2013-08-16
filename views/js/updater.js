@@ -8,7 +8,8 @@ function UpdaterClass(tableElementId) {
 UpdaterClass.prototype.init = function() {
 	var self = this;
 	var gridOptions = {
-			datatype : "local",
+			url : root_url + 'UpdateController/availableUpdatesXml',
+			datatype : "xml",
 			colNames : [ __('Version'), __('File')],
 			colModel : [ {
 				name : 'version',

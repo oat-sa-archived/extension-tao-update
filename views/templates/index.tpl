@@ -1,5 +1,35 @@
 <link rel="stylesheet" href="<?=BASE_WWW?>css/settings.css" type="text/css" />
-<script type="text/javascript" src="<?=BASE_WWW?>js/updater.js"></script>
+<script type="text/javascript">
+$(function () {
+    $("#list").jqGrid({
+        url: "http://tao24.localdomain/taoUpdate24/UpdateController/availableUpdatesXml",
+        datatype: "xml",
+        mtype: "GET",
+		colNames : [ __('Version'), __('File')],
+		colModel : [ {
+			name : 'version',
+			index : 'version',
+			width : 75,
+			align : "center",
+			sortable : false
+		}, {
+			name : 'file',
+			index : 'file',
+			width : 450,
+			sortable : false
+		} ], 
+        pager: "#pager",
+        rowNum: 10,
+        rowList: [10, 20, 30],
+        sortname: "invid",
+        sortorder: "desc",
+        viewrecords: true,
+        gridview: true,
+        autoencode: true,
+        caption: "My first grid"
+    }); 
+}); 
+</script>
 
 <div id="compilation-title" class="ui-widget-header ui-corner-top ui-state-default">
 	<?=__("TAO Update")?>
