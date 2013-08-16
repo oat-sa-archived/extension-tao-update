@@ -11,7 +11,7 @@
 
 class taoUpdate_actions_UpdateController extends tao_actions_CommonModule {
     
-    final static $allowedRole = 
+    final static $allowedRole = array();
     
     /**
      * initialize the services
