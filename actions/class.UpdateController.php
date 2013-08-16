@@ -43,8 +43,9 @@ class taoUpdate24_actions_UpdateController extends tao_actions_CommonModule {
 	   $roles = $this->userService->getUserRoles($currentUser);
 	   var_dump(array_key_exists($this->allowedRole, $roles));
 	   
-	   $this->notificationService->getVersions();
-	   
+	   $availabeUpdate = $this->notificationService->getAvailableUpdates();
+	   var_dump($availabeUpdate);
+	   $this->setData('availabeUpdate', $availabeUpdate);
 	   $this->setView('index.tpl');
 	}
 	

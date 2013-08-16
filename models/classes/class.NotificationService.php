@@ -37,8 +37,8 @@ class taoUpdate24_models_classes_NotificationService extends tao_models_classes_
      */
     private $versionDom;
     
-    private $releaseFilePreffix = 'TAO_';
-    private $releaseFileSuffix = '_build.zip';
+    const RELEASE_FILE_PREFIX = 'TAO_';
+    const RELEASE_FILE_SUFFIX = '_build.zip';
     
     /**
      * 
@@ -70,7 +70,7 @@ class taoUpdate24_models_classes_NotificationService extends tao_models_classes_
      * @author "Lionel Lecaque, <lionel@taotesting.com>"
      * @return array
      */
-    public function getAvaillableUpdates(){
+    public function getAvailableUpdates(){
         $returnValue = array();
         $versions = $this->getVersions();
         $currentVersion = $this->getCurrentVersion();
@@ -80,20 +80,21 @@ class taoUpdate24_models_classes_NotificationService extends tao_models_classes_
             $releaseVersion = $this->convertVersionNumber($version['version']);
             if($releaseVersion['major'] > $currentVersion['major']
             || $releaseVersion['minor'] > $currentVersion['minor'] ){
-                $returnValue[$version['version']] = 
-                        $this->releaseFilePreffix . 
-                        $version['version'] . 
-                        $this->releaseFileSuffix;
+                $returnValue[] = array(
+                    'version' =>$version['version']
+                    ,'file' => self::RELEASE_FILE_PREFIX . $version['version'] . self::RELEASE_FILE_SUFFIX
+                        
+                );
                 continue;
             }
             if(isset($version['patchs'])){
                 foreach ($version['patchs'] as $patch){
                     $patchVersion = $this->convertVersionNumber($patch['version']);
                     if($patchVersion['patch'] > $currentVersion['patch']){
-                        $returnValue[$patch['version']] = 
-                                $this->releaseFilePreffix . 
-                                $patch['version'] . 
-                                $this->releaseFileSuffix;
+                        $returnValue[] = array( 
+                            'version' =>$patch['version'] 
+                            ,'file' => self::RELEASE_FILE_PREFIX . $patch['version'] . self::RELEASE_FILE_SUFFIX
+                        );
                     }
                 }
             }

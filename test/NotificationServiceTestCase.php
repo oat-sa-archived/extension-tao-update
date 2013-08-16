@@ -43,7 +43,7 @@ class NotificationServiceTestCase extends UnitTestCase {
     
     public function testMethod(){
        
-       var_dump($this->service->getAvaillableUpdates());
+       var_dump($this->service->getAvailableUpdates());
 
         $this->fail('not imp yet');
     }
