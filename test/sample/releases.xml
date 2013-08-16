@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<releases>
+	<release>
+		<version>2.4</version>
+		<comment>TAO Release 2.4</comment>
+		<patchs>
+
+			<patch>
+				<version>2.4.2</version>
+				<comment>TAO Release 2.4.2</comment>
+			</patch>
+			<patch>
+				<version>2.4.3</version>
+				<comment>TAO Release 2.4.3</comment>
+			</patch>
+			<patch>
+				<version>2.4.5</version>
+				<comment>TAO Release 2.4.5</comment>
+			</patch>
+			<patch>
+				<version>2.4.6</version>
+				<comment>TAO Release 2.4.6</comment>
+			</patch>
+			<patch>
+				<version>2.4.7</version>
+				<comment>TAO Release 2.4.7</comment>
+			</patch>
+						<patch>
+				<version>2.4.8</version>
+				<comment>TAO Release 2.4.8</comment>
+			</patch>
+		</patchs>
+	</release>
+	<release>
+		<version>2.5</version>
+		<comment>TAO Release 2.5</comment>
+	</release>
+</releases>

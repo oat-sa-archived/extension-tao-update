@@ -11,7 +11,9 @@
 
 class taoUpdate24_actions_UpdateController extends tao_actions_CommonModule {
     
-    private static $allowedRole = array();
+    private  $allowedRole ='http://www.tao.lu/Ontologies/TAO.rdf#SysAdminRole';
+    private $userService;
+    private $notificationService;
     
     /**
      * initialize the services
@@ -19,6 +21,8 @@ class taoUpdate24_actions_UpdateController extends tao_actions_CommonModule {
     public function __construct(){
         parent::__construct();
         $this->userService = tao_models_classes_UserService::singleton();
+        $this->notificationService = taoUpdate24_models_classes_NotificationService::singleton();
+        $this->notificationService->setReleaseManifestUrl( BASE_URL . '/test/sample/releases.xml');
     }
 
 	/**
@@ -37,7 +41,10 @@ class taoUpdate24_actions_UpdateController extends tao_actions_CommonModule {
 	   
 	   $currentUser = $this->userService->getCurrentUser(); 
 	   $roles = $this->userService->getUserRoles($currentUser);
-	   var_dump(array_key_exists('http://www.tao.lu/Ontologies/TAO.rdf#SysAdminRole', $roles));
+	   var_dump(array_key_exists($this->allowedRole, $roles));
+	   
+	   $this->notificationService->getVersions();
+	   
 	   $this->setView('index.tpl');
 	}
 	
