@@ -35,29 +35,10 @@ class taoUpdate24_actions_Update extends tao_actions_CommonModule {
 	}
 	
 
-	public function availableUpdatesXml(){
+	public function availableUpdates(){
 	    $availabeUpdate = $this->notificationService->getAvailableUpdates();
-	    $xml = new DOMDocument("1.0");
-	    $root = $xml->createElement("updates");
-	    $xml->appendChild($root);
-	    foreach ($availabeUpdate as $update){
-	        $upNode = $xml->createElement("update");
-	        
-	        $version = $xml->createElement("version");
-	        $versionText = $xml->createTextNode($update['version']);
-	        $version->appendChild($versionText);
-	        
-	        $file = $xml->createElement("file");
-	        $fileText = $xml->createTextNode($update['file']);
-	        $file->appendChild($fileText);
-	        $upNode->appendChild($version);
-	        $upNode->appendChild($file);
-	        
-	        $root->appendChild($upNode);
-	        
-	    }
-	    $xml->formatOutput = true;
-	    echo $xml->saveXML();
+
+	    echo json_encode($availabeUpdate);
 	}
 	
 	public function settings(){
@@ -65,12 +46,13 @@ class taoUpdate24_actions_Update extends tao_actions_CommonModule {
 	   
 	   $currentUser = $this->userService->getCurrentUser(); 
 	   $roles = $this->userService->getUserRoles($currentUser);
-	   var_dump(array_key_exists($this->allowedRole, $roles));
+	   $updatable = array_key_exists($this->allowedRole, $roles);
 	   
 	   $availabeUpdate = $this->notificationService->getAvailableUpdates();
-	   var_dump($availabeUpdate);
+
+	   $this->setData('updatable', $updatable);
 	   $this->setData('availabeUpdate', $availabeUpdate);
-	   $this->setView('index.tpl');
+	   $this->setView('settings_update.tpl');
 	}
 	
 
