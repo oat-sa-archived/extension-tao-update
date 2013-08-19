@@ -3,36 +3,204 @@
 	<release>
 		<version>2.4</version>
 		<comment>TAO Release 2.4</comment>
+		<extensions>
+			<extension>generis</extension>
+			<extension>tao</extension>
+			<extension>filemanager</extension>
+			<extension>taoItems</extension>
+			<extension>wfEngine</extension>
+			<extension>taoSubjects</extension>
+			<extension>wfAuthoring</extension>
+			<extension>taoQTI</extension>
+			<extension>taoTests</extension>
+			<extension>taoDelivery</extension>
+			<extension>taoGroups</extension>
+			<extension>taoResults</extension>
+			<extension>ltiProvider</extension>
+			<extension>taoCoding</extension>
+			<extension>taoCampaign</extension>
+			<extension>ltiDeliveryProvider</extension>
+		</extensions>
 		<patchs>
+			<patch>
+				<version>2.4.1</version>
+				<comment>TAO Release 2.4.1</comment>
+				<extensions>
+					<extension>generis</extension>
+					<extension>tao</extension>
+					<extension>filemanager</extension>
+					<extension>taoItems</extension>
+					<extension>wfEngine</extension>
+					<extension>taoSubjects</extension>
+					<extension>wfAuthoring</extension>
+					<extension>taoQTI</extension>
+					<extension>taoTests</extension>
+					<extension>taoDelivery</extension>
+					<extension>taoGroups</extension>
+					<extension>taoResults</extension>
+					<extension>ltiProvider</extension>
+					<extension>taoCoding</extension>
+					<extension>taoCampaign</extension>
+					<extension>ltiDeliveryProvider</extension>
+				</extensions>
+			</patch>
 
 			<patch>
 				<version>2.4.2</version>
 				<comment>TAO Release 2.4.2</comment>
+				<extensions>
+					<extension>generis</extension>
+					<extension>tao</extension>
+					<extension>filemanager</extension>
+					<extension>taoItems</extension>
+					<extension>wfEngine</extension>
+					<extension>taoSubjects</extension>
+					<extension>wfAuthoring</extension>
+					<extension>taoQTI</extension>
+					<extension>taoTests</extension>
+					<extension>taoDelivery</extension>
+					<extension>taoGroups</extension>
+					<extension>taoResults</extension>
+					<extension>ltiProvider</extension>
+					<extension>taoCoding</extension>
+					<extension>taoCampaign</extension>
+					<extension>ltiDeliveryProvider</extension>
+				</extensions>
 			</patch>
 			<patch>
 				<version>2.4.3</version>
 				<comment>TAO Release 2.4.3</comment>
+				<extensions>
+					<extension>generis</extension>
+					<extension>tao</extension>
+					<extension>filemanager</extension>
+					<extension>taoItems</extension>
+					<extension>wfEngine</extension>
+					<extension>taoSubjects</extension>
+					<extension>wfAuthoring</extension>
+					<extension>taoQTI</extension>
+					<extension>taoTests</extension>
+					<extension>taoDelivery</extension>
+					<extension>taoGroups</extension>
+					<extension>taoResults</extension>
+					<extension>ltiProvider</extension>
+					<extension>taoCoding</extension>
+					<extension>taoCampaign</extension>
+					<extension>ltiDeliveryProvider</extension>
+				</extensions>
 			</patch>
 			<patch>
 				<version>2.4.5</version>
 				<comment>TAO Release 2.4.5</comment>
+				<extensions>
+					<extension>generis</extension>
+					<extension>tao</extension>
+					<extension>filemanager</extension>
+					<extension>taoItems</extension>
+					<extension>wfEngine</extension>
+					<extension>taoSubjects</extension>
+					<extension>wfAuthoring</extension>
+					<extension>taoQTI</extension>
+					<extension>taoTests</extension>
+					<extension>taoDelivery</extension>
+					<extension>taoGroups</extension>
+					<extension>taoResults</extension>
+					<extension>ltiProvider</extension>
+					<extension>taoCoding</extension>
+					<extension>taoCampaign</extension>
+					<extension>ltiDeliveryProvider</extension>
+				</extensions>
 			</patch>
 			<patch>
 				<version>2.4.6</version>
 				<comment>TAO Release 2.4.6</comment>
+				<extensions>
+					<extension>generis</extension>
+					<extension>tao</extension>
+					<extension>filemanager</extension>
+					<extension>taoItems</extension>
+					<extension>wfEngine</extension>
+					<extension>taoSubjects</extension>
+					<extension>wfAuthoring</extension>
+					<extension>taoQTI</extension>
+					<extension>taoTests</extension>
+					<extension>taoDelivery</extension>
+					<extension>taoGroups</extension>
+					<extension>taoResults</extension>
+					<extension>ltiProvider</extension>
+					<extension>taoCoding</extension>
+					<extension>taoCampaign</extension>
+					<extension>ltiDeliveryProvider</extension>
+				</extensions>
 			</patch>
+
 			<patch>
 				<version>2.4.7</version>
 				<comment>TAO Release 2.4.7</comment>
+
+			<extensions>
+				<extension>generis</extension>
+				<extension>tao</extension>
+				<extension>filemanager</extension>
+				<extension>taoItems</extension>
+				<extension>wfEngine</extension>
+				<extension>taoSubjects</extension>
+				<extension>wfAuthoring</extension>
+				<extension>taoQTI</extension>
+				<extension>taoTests</extension>
+				<extension>taoDelivery</extension>
+				<extension>taoGroups</extension>
+				<extension>taoResults</extension>
+				<extension>ltiProvider</extension>
+				<extension>taoCoding</extension>
+				<extension>taoCampaign</extension>
+				<extension>ltiDeliveryProvider</extension>
+			</extensions>
 			</patch>
-						<patch>
-				<version>2.4.8</version>
-				<comment>TAO Release 2.4.8</comment>
+			<patch>
+				<version>2.4.99</version>
+				<comment>TAO Release 2.4.99</comment>
+				<extensions>
+					<extension>generis</extension>
+					<extension>tao</extension>
+					<extension>filemanager</extension>
+					<extension>taoItems</extension>
+					<extension>wfEngine</extension>
+					<extension>taoSubjects</extension>
+					<extension>wfAuthoring</extension>
+					<extension>taoQTI</extension>
+					<extension>taoTests</extension>
+					<extension>taoDelivery</extension>
+					<extension>taoGroups</extension>
+					<extension>taoResults</extension>
+					<extension>ltiProvider</extension>
+					<extension>taoCoding</extension>
+					<extension>taoCampaign</extension>
+					<extension>ltiDeliveryProvider</extension>
+				</extensions>
 			</patch>
 		</patchs>
 	</release>
 	<release>
 		<version>2.5</version>
 		<comment>TAO Release 2.5</comment>
+		<extensions>
+			<extension>generis</extension>
+			<extension>tao</extension>
+			<extension>filemanager</extension>
+			<extension>taoItems</extension>
+			<extension>wfEngine</extension>
+			<extension>taoSubjects</extension>
+			<extension>wfAuthoring</extension>
+			<extension>taoQTI</extension>
+			<extension>taoTests</extension>
+			<extension>taoDelivery</extension>
+			<extension>taoGroups</extension>
+			<extension>taoResults</extension>
+			<extension>ltiProvider</extension>
+			<extension>taoCoding</extension>
+			<extension>taoCampaign</extension>
+			<extension>ltiDeliveryProvider</extension>
+		</extensions>
 	</release>
 </releases>

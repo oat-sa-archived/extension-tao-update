@@ -14,7 +14,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) ${year} (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
+ * Copyright (c) $2013 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  * 
  * @author "Lionel Lecaque, <lionel@taotesting.com>"
  * @license GPLv2
@@ -31,18 +31,15 @@ class taoUpdate24_models_classes_NotificationService extends tao_models_classes_
      */
     private $releaseManifestUrl; 
     
-    /**
-     * 
-     * @var SimpleXMLElement
-     */
-    private $versionDom;
     
     const RELEASE_FILE_PREFIX = 'TAO_';
     const RELEASE_FILE_SUFFIX = '_build.zip';
+    const RELEASE_STATUS_STABLE = 'stable';
+    const RELEASE_STATUS_PATCH = 'patch';
     
     /**
      * 
-     * @access
+     * @access private
      * @author "Lionel Lecaque, <lionel@taotesting.com>"
      * @param SimpleXMLElement $releaseNode
      * @return array
@@ -51,6 +48,7 @@ class taoUpdate24_models_classes_NotificationService extends tao_models_classes_
 
         $versionNode = $releaseNode->xpath('version');
         $commentNode = $releaseNode->xpath('comment');
+        
         $patchs = $releaseNode->xpath('patchs');
         $returnValue = array (
             'version'	=> (string) $versionNode[0]
@@ -58,13 +56,20 @@ class taoUpdate24_models_classes_NotificationService extends tao_models_classes_
         );
         if (!empty($patchs)){
         	foreach ($patchs[0] as $patch){
-	           $returnValue['patchs'][] = $this->getReleaseInfo($patch);
+        	   $patchNode = $patch->xpath('version');
+        	   $patchNodeValue = (string) $patchNode[0];
+	           $returnValue['patchs'][$patchNodeValue] = $this->getReleaseInfo($patch);
         	}
+        }
+        $extensions = $releaseNode->xpath('extensions');
+        if (!empty($extensions)){
+            foreach ($extensions[0] as $extension){
+                $returnValue['extensions'][] = (string) $extension;
+            }
         }
         return $returnValue;
     }
     
-     
     
     /**
      * @access public
@@ -104,12 +109,12 @@ class taoUpdate24_models_classes_NotificationService extends tao_models_classes_
     }
     
     /**
-     * @access public
+     * @access private
      * @author "Lionel Lecaque, <lionel@taotesting.com>"
      * @param string $versionNumber
      * @return array
      */
-    public function convertVersionNumber($versionNumber){
+    private function convertVersionNumber($versionNumber){
         
         $major = substr($versionNumber, 0, strpos($versionNumber, '.'));        
         $tmp = substr($versionNumber, strpos($versionNumber, '.')+1);       
@@ -124,41 +129,62 @@ class taoUpdate24_models_classes_NotificationService extends tao_models_classes_
     }
     
     /**
-     * @access public
+     * @access private
      * @author "Lionel Lecaque, <lionel@taotesting.com>"
      * @return array
      */
-    public function getCurrentVersion(){
+    private function getCurrentVersion(){
         $versionFileContent = @file_get_contents(ROOT_PATH.'version');
         return $this->convertVersionNumber($versionFileContent);        
     }
     
     
     /**
+     * 
      * @access public
      * @author "Lionel Lecaque, <lionel@taotesting.com>"
-     * @return array
+     * @param boolean $detailed
+     * @throws taoUpdate24_models_classes_UpdateException
+     * @return string
      */
-    public function getVersions(){
+    public function getVersions($detailed = false){
         
-        $this->versionDom = @simplexml_load_file($this->getReleaseManifestUrl());
-        if (!$this->versionDom){
-            $message = __("Unable to reach the update server located at ").$releasesManifestUrl;
-            echo $message;
+        $versionDom = @simplexml_load_file($this->getReleaseManifestUrl());
+        if (!$versionDom){
+            $message = __("Unable to reach the update server located at ").$this->getReleaseManifestUrl();
+            throw new taoUpdate24_models_classes_UpdateException($message);
         }
-        $releasesNodes = $this->versionDom->children();
+        $releasesNodes = $versionDom->children();
         foreach ($releasesNodes as $releaseNode){
-            $returnValue[] = $this->getReleaseInfo($releaseNode);
+
+            $version = $this->getReleaseInfo($releaseNode);
+            if ($detailed && isset($version['patchs'])) {
+            	foreach ($version['patchs'] as $patch){
+            	    $returnValue[$patch['version']] = $patch;
+            	    $returnValue[$patch['version']]['status'] = self::RELEASE_STATUS_PATCH;
+            	}
+            	
+            	$returnValue[$version['version']] = array(
+            	    'version'    => $version['version'],
+            	    'comment'    => $version['comment'],
+            	    'extensions' => $version['extensions'],
+            	    'status'       => self::RELEASE_STATUS_STABLE,
+            	);
+            }
+            else {
+                $returnValue[$version['version']] = $version;
+                $returnValue[$version['version']]['status'] = self::RELEASE_STATUS_STABLE;
+            }
         }
         return $returnValue;
     }
 
 	/**
-	 * @access public
+	 * @access private
 	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
 	 * @return string
 	 */
-	public function getReleaseManifestUrl() {
+	private function getReleaseManifestUrl() {
 		return $this->releaseManifestUrl;
 	}
 	
