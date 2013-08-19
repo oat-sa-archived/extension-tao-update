@@ -9,7 +9,7 @@
  * 
  */
 
-class taoUpdate24_actions_UpdateController extends tao_actions_CommonModule {
+class taoUpdate24_actions_Update extends tao_actions_CommonModule {
     
     private  $allowedRole ='http://www.tao.lu/Ontologies/TAO.rdf#SysAdminRole';
     private $userService;
@@ -60,7 +60,7 @@ class taoUpdate24_actions_UpdateController extends tao_actions_CommonModule {
 	    echo $xml->saveXML();
 	}
 	
-	public function index(){
+	public function settings(){
 	   
 	   
 	   $currentUser = $this->userService->getCurrentUser(); 
