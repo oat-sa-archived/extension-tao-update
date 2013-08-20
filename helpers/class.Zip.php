@@ -26,44 +26,42 @@
 class taoUpdate24_helpers_Zip
 {
 
-    public static function compressFolder($src, $dest)
-    {
-        
-        // todo check right
-        $zip = new ZipArchive();
-        
-        if ($zip->open($dest, ZipArchive::CREATE) !== true) {
-            throw new Exception('Unable to create archive at ' . $dest);
-        }
-        $src = str_replace('\\', '/', realpath($src));
-        if (is_dir($src) === true) {
-            
-            $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($src));
-                        
-            foreach ($files as $file) {
-                $file = str_replace('\\', '/', $file);
-                // Ignore "." ".." ".svn" folders
-                if (in_array(substr($file, strrpos($file, '/') + 1), array(
-                    '.',
-                    '..'
-                )) || strrpos($file, '/.svn/')) {
-                    continue;
-                }
 
-                $file = realpath($file);
-                
-                if (is_dir($file) === true) {
-                    $zip->addEmptyDir(str_replace($src . '/', '', $file . '/'));
-                } else 
-                    if (is_file($file) === true) {
-                        $zip->addFromString(str_replace($src . '/', '', $file), file_get_contents($file));
-                    }
-            }
-        } else 
-            if (is_file($src) === true) {
-                $zip->addFromString(basename($src), file_get_contents($src));
-            }
-        
-        return $zip->close();
+    
+    public static function zipDir($sourcePath, $outZipPath,$includeDir = false)
+    {
+        $pathInfo = pathInfo($sourcePath);
+        $parentPath = $pathInfo['dirname'];
+        $dirName = $pathInfo['basename'];
+        $z = new ZipArchive();
+        $z->open($outZipPath, ZipArchive::OVERWRITE);
+        $exclusiveLength = strlen("$sourcePath/") ;
+        if($includeDir){
+            $z->addEmptyDir($dirName);           
+            $exclusiveLength = strlen("$parentPath/");
+        }
+        self::folderToZip($sourcePath, $z, $exclusiveLength);
+        $z->close();
     }
+    
+    private static function folderToZip($folder, &$zipFile, $exclusiveLength) {
+        $handle = opendir($folder);
+        while (false !== $f = readdir($handle)) {
+            if ($f != '.' && $f != '..' && $f != '.svn') {
+                $filePath = "$folder/$f";
+                // Remove prefix from file path before add to zip.
+                $localPath = substr($filePath, $exclusiveLength);
+                if (is_file($filePath)) {
+                    $zipFile->addFile($filePath, $localPath);
+                } elseif (is_dir($filePath)) {
+                    // Add sub-directory.
+                    $zipFile->addEmptyDir($localPath);
+                    self::folderToZip($filePath, $zipFile, $exclusiveLength);
+                }
+            }
+        }
+        closedir($handle);
+    }
+    
+    
 }
