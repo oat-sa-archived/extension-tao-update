@@ -24,15 +24,47 @@
  */
 class taoUpdate_models_classes_BackupService extends tao_models_classes_Service{
 
-    public function createFullBackup(){
+    const BACKUP_DIR = 'backup';
 
-       var_dump(ROOT_PATH);
+    const SRC_BACKUP_FILE_PREFFIX ='TAO_full_backup_';
+    const SRC_BACKUP_FILE_SUFFIX ='-data-src.zip';
+    
+    const DB_BACKUP_FILE_PREFFIX = 'TAO_DB_';
+    const DB_BACKUP_FILE_SUFFIX = '.sql';
+    
+    public function createBackupFolder(){
+        $timestamps = date('Ymd-His', time());
+        $basePath = BASE_DATA . self::BACKUP_DIR . DIRECTORY_SEPARATOR ;
         
-       // return taoUpdate_helpers_Zip::zipDir($sourcePath, $outZipPath),
+        $path = $basePath . $timestamps  ;
         
+        if ( !mkdir($path, 0755, true)) {
+            throw  new taoUpdate_models_classes_UpdateException('fail to createdir folder');
+        }
+        
+        return $path;
         
     }
+
+    public function storeAllFiles($folder)
+    {
+        $filepath = $folder . DIRECTORY_SEPARATOR.self::SRC_BACKUP_FILE_PREFFIX. TAO_VERSION.self::SRC_BACKUP_FILE_SUFFIX;
+        taoUpdate_helpers_Zip::compressFolder(ROOT_PATH, $filepath);
     
+    }
+    
+    public function storeDatabase($folder){
+        $dbBackupHelper = new taoUpdate_helpers_DbBackup();
+        $fileContent = $dbBackupHelper->backup();
+        $filepath = $folder . DIRECTORY_SEPARATOR.self::DB_BACKUP_FILE_PREFFIX. TAO_VERSION.self::DB_BACKUP_FILE_SUFFIX;
+        if(!file_put_contents($filepath, $fileContent)){
+            throw  new taoUpdate_models_classes_UpdateException('fail to create SQL file');
+        }
+        if(is_file($filepath)){
+            taoUpdate_helpers_Zip::compressFile($filepath, $filepath.'.zip');
+        }
+
+    }
     
 
     

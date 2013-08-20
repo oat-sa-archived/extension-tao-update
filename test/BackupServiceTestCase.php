@@ -46,7 +46,9 @@ class BackupServiceTestCase extends UnitTestCase {
     }
     
     public function testCreate() {
-        $this->service->createFullBackup();
+        $folder = $this->service->createBackupFolder();
+        $this->service->storeAllFiles($folder);
+        $this->service->storeDatabase($folder);
     }
     
     

@@ -40,6 +40,16 @@ class ZipTestCase extends UnitTestCase {
 
     }
 
+    public function testCompressFile(){
+        $src = dirname(__FILE__).'/sample/releases.xml';
+        $dest = dirname(__FILE__).'/backup/releases.xml.zip';
+        taoUpdate_helpers_Zip::compressFile($src,$dest);
+        $zip = new ZipArchive();
+        $zip->open($dest);
+        $this->assertTrue($zip->locateName('releases.xml')!= false);
+        helpers_File::remove($dest);
+    }
+    
     public function testCompressFolder() {
         $files = array (
             'releases-noNewPatch.xml',
@@ -51,24 +61,18 @@ class ZipTestCase extends UnitTestCase {
         );
         $dest = dirname(__FILE__).'/backup/test.zip';
         $src = dirname(__FILE__).'/sample';
-        taoUpdate_helpers_Zip::zipDir($src,$dest);
+        taoUpdate_helpers_Zip::compressFolder($src,$dest);
         $this->assertTrue(is_file($dest));
         $zip = new ZipArchive();      
         $zip->open($dest);
-        $foundInZip = array();
-        for( $i = 0; $i < $zip->numFiles; $i++ ){
-            $stat = $zip->statIndex( $i );
-            $foundInZip [] = $stat['name'];
-            //cehck no .svn added in zip
-            $this->assertFalse(strpos($stat['name'], '.svn') > 0);
-
-        }
         foreach ($files as $file){
-            $this->assertTrue(in_array($file, $foundInZip), $file . ' not found');
+            var_dump($zip->locateName($file));
+            $this->assertTrue($zip->locateName($file)!=false);
         }
+        $this->assertFalse($zip->locateName('.svn'));
         helpers_File::remove($dest);
         $dest = dirname(__FILE__).'/backup/test2.zip';
-        taoUpdate_helpers_Zip::zipDir($src,$dest,true);
+        taoUpdate_helpers_Zip::compressFolder($src,$dest,true);
         $files = array (
             'sample/releases-noNewPatch.xml',
             'sample/releases-patchsOnly.xml',

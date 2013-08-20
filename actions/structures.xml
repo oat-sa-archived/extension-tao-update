@@ -4,7 +4,7 @@
 	<structure id='settings' name="Update" url="/taoUpdate/Update/settings" level="11" visible="false">
 		<description>An example extension.</description>
 		<sections>
-			<section id="migration" name="TAO Update" url="/taoUpdate/Update/settings">
+			<section id="update" name="TAO Update" url="/taoUpdate/Update/settings">
 			</section>
 		</sections>
 	</structure>

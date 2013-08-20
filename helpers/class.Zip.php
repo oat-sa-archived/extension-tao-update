@@ -27,20 +27,28 @@ class taoUpdate_helpers_Zip
 {
 
 
+    public static function compressFile($src, $dest){
+        $z = new ZipArchive();
+        $z->open($dest, ZipArchive::OVERWRITE);
+        if (is_file($src)) {
+            $z->addFile($src, $dest);
+        }
+        $z->close();
+    }
     
-    public static function zipDir($sourcePath, $outZipPath,$includeDir = false)
+    public static function compressFolder($src, $dest,$includeDir = false)
     {
-        $pathInfo = pathInfo($sourcePath);
+        $pathInfo = pathInfo($src);
         $parentPath = $pathInfo['dirname'];
         $dirName = $pathInfo['basename'];
         $z = new ZipArchive();
-        $z->open($outZipPath, ZipArchive::OVERWRITE);
-        $exclusiveLength = strlen("$sourcePath/") ;
+        $z->open($dest, ZipArchive::OVERWRITE);
+        $exclusiveLength = strlen("$src/") ;
         if($includeDir){
             $z->addEmptyDir($dirName);           
             $exclusiveLength = strlen("$parentPath/");
         }
-        self::folderToZip($sourcePath, $z, $exclusiveLength);
+        self::folderToZip($src, $z, $exclusiveLength);
         $z->close();
     }
     

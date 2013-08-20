@@ -51,6 +51,8 @@ return array(
 	
 		#BASE PATH: the root path in the file system (usually the document root)
 		'BASE_PATH'				=> $extpath,
+ 	    
+ 	    'BASE_DATA'				=> $extpath.'data'.DIRECTORY_SEPARATOR,
 	
 		#BASE URL (usually the domain root)
 		'BASE_URL'				=> ROOT_URL . '/taoUpdate',
