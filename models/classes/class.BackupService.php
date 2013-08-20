@@ -26,7 +26,7 @@ class taoUpdate24_models_classes_BackupService extends tao_models_classes_Servic
 
     public function createFullBackup(){
 
-        
+       var_dump(ROOT_PATH);
         
        // return taoUpdate24_helpers_Zip::zipDir($sourcePath, $outZipPath),
         
