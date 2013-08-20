@@ -28,10 +28,12 @@ class taoUpdate_helpers_Zip
 
 
     public static function compressFile($src, $dest){
+        $pathInfo = pathInfo($src);
+        $fileName = $pathInfo['basename'];
         $z = new ZipArchive();
         $z->open($dest, ZipArchive::OVERWRITE);
         if (is_file($src)) {
-            $z->addFile($src, $dest);
+            $z->addFile($src,$fileName);
         }
         $z->close();
     }

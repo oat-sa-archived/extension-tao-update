@@ -46,7 +46,7 @@ class ZipTestCase extends UnitTestCase {
         taoUpdate_helpers_Zip::compressFile($src,$dest);
         $zip = new ZipArchive();
         $zip->open($dest);
-        $this->assertTrue($zip->locateName('releases.xml')!= false);
+        $this->assertFalse($zip->locateName('releases.xml') === false);
         helpers_File::remove($dest);
     }
     
@@ -66,8 +66,7 @@ class ZipTestCase extends UnitTestCase {
         $zip = new ZipArchive();      
         $zip->open($dest);
         foreach ($files as $file){
-            var_dump($zip->locateName($file));
-            $this->assertTrue($zip->locateName($file)!=false);
+            $this->assertFalse($zip->locateName($file) ===false,$file . ' not found');
         }
         $this->assertFalse($zip->locateName('.svn'));
         helpers_File::remove($dest);
@@ -84,16 +83,14 @@ class ZipTestCase extends UnitTestCase {
         $this->assertTrue(is_file($dest));
         $zip = new ZipArchive();
         $zip->open($dest);
-        $foundInZip = array();
         for( $i = 0; $i < $zip->numFiles; $i++ ){
             $stat = $zip->statIndex( $i );
-            $foundInZip [] = $stat['name'];
             //cehck no .svn added in zip
             $this->assertFalse(strpos($stat['name'], '.svn') > 0);
         
         }
         foreach ($files as $file){
-            $this->assertTrue(in_array($file, $foundInZip), $file . ' not found');
+            $this->assertFalse($zip->locateName($file) === false);
         }
         helpers_File::remove($dest);
 

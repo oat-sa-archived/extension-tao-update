@@ -62,6 +62,9 @@ class taoUpdate_models_classes_BackupService extends tao_models_classes_Service{
         }
         if(is_file($filepath)){
             taoUpdate_helpers_Zip::compressFile($filepath, $filepath.'.zip');
+            if(is_file($filepath.'.zip')){
+                helpers_File::remove($filepath);
+            }
         }
 
     }
