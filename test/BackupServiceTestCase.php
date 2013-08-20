@@ -46,7 +46,7 @@ class BackupServiceTestCase extends UnitTestCase {
     }
     
     public function testCreate() {
-
+        $this->service->createFullBackup();
     }
     
     
