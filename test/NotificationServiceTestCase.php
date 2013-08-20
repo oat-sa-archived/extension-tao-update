@@ -24,7 +24,7 @@ require_once dirname(__FILE__) . '/../includes/raw_start.php';
 
 /**
  * @license GPLv2
- * @package taoUpdate24
+ * @package taoUpdate
  * @subpackage models_classes
  * @author "Lionel Lecaque, <lionel@taotesting.com>"
  *
@@ -32,7 +32,7 @@ require_once dirname(__FILE__) . '/../includes/raw_start.php';
 class NotificationServiceTestCase extends UnitTestCase {
     /**
      * 
-     * @var taoUpdate24_models_classes_NotificationService
+     * @var taoUpdate_models_classes_NotificationService
      */
     private $service;
 
@@ -41,7 +41,7 @@ class NotificationServiceTestCase extends UnitTestCase {
      */
     public function setUp(){
         TaoTestRunner::initTest();
-        $this->service = taoUpdate24_models_classes_NotificationService::singleton();
+        $this->service = taoUpdate_models_classes_NotificationService::singleton();
         $this->service->setReleaseManifestUrl( BASE_URL . '/test/sample/releases.xml');
     }
     
@@ -52,8 +52,8 @@ class NotificationServiceTestCase extends UnitTestCase {
      */
     public function testGetVersions(){
         $version = $this->service->getVersions();
-        $this->assertEqual($version['2.4']['status'], taoUpdate24_models_classes_NotificationService::RELEASE_STATUS_STABLE);
-        $this->assertEqual($version['2.5']['status'], taoUpdate24_models_classes_NotificationService::RELEASE_STATUS_STABLE);
+        $this->assertEqual($version['2.4']['status'], taoUpdate_models_classes_NotificationService::RELEASE_STATUS_STABLE);
+        $this->assertEqual($version['2.5']['status'], taoUpdate_models_classes_NotificationService::RELEASE_STATUS_STABLE);
         $extensions = array ('generis','tao','filemanager','taoItems','wfEngine','taoSubjects','wfAuthoring','taoQTI','taoTests','taoDelivery','taoGroups','taoResults','ltiProvider','taoCoding','taoCampaign','ltiDeliveryProvider');
         foreach ($version['2.4']['extensions'] as $ext){
             $this->assertTrue(in_array($ext, $extensions), $ext . ' not found');
@@ -72,9 +72,9 @@ class NotificationServiceTestCase extends UnitTestCase {
             $this->assertTrue(isset($ver['version']));
             $this->assertTrue(in_array($ver['version'], $versionDetailsArray), $ver['version'] . ' not found');
         }
-        $this->assertEqual($versionDetailed['2.4']['status'] , taoUpdate24_models_classes_NotificationService::RELEASE_STATUS_STABLE);
-        $this->assertEqual($versionDetailed['2.4.99']['status'] , taoUpdate24_models_classes_NotificationService::RELEASE_STATUS_PATCH);
-        $this->assertEqual($versionDetailed['2.5']['status'] , taoUpdate24_models_classes_NotificationService::RELEASE_STATUS_STABLE);
+        $this->assertEqual($versionDetailed['2.4']['status'] , taoUpdate_models_classes_NotificationService::RELEASE_STATUS_STABLE);
+        $this->assertEqual($versionDetailed['2.4.99']['status'] , taoUpdate_models_classes_NotificationService::RELEASE_STATUS_PATCH);
+        $this->assertEqual($versionDetailed['2.5']['status'] , taoUpdate_models_classes_NotificationService::RELEASE_STATUS_STABLE);
         
          
     }
@@ -106,7 +106,7 @@ class NotificationServiceTestCase extends UnitTestCase {
             $availableUpdates= $this->service->getAvailableUpdates();
         }
         catch (Exception $e){
-            $this->assertIsA($e,'taoUpdate24_models_classes_UpdateException');
+            $this->assertIsA($e,'taoUpdate_models_classes_UpdateException');
         }
         $this->service->setReleaseManifestUrl( BASE_URL . '/test/sample/releases-noNewPatch.xml');
         $availableUpdates= $this->service->getAvailableUpdates();

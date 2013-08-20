@@ -3,13 +3,13 @@
  * Subjects Controller provide actions performed from url resolution
  * 
  * @author Bertrand Chevrier, <taosupport@tudor.lu>
- * @package taoMigration
+ * @package taoUpdate
  * @subpackage actions
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  * 
  */
 
-class taoUpdate24_actions_Update extends tao_actions_CommonModule {
+class taoUpdate_actions_Update extends tao_actions_CommonModule {
     
     private  $allowedRole ='http://www.tao.lu/Ontologies/TAO.rdf#SysAdminRole';
     private $availabeUpdates = null;
@@ -22,7 +22,7 @@ class taoUpdate24_actions_Update extends tao_actions_CommonModule {
     public function __construct(){
         parent::__construct();
         $this->userService = tao_models_classes_UserService::singleton();
-        $this->notificationService = taoUpdate24_models_classes_NotificationService::singleton();
+        $this->notificationService = taoUpdate_models_classes_NotificationService::singleton();
         $this->notificationService->setReleaseManifestUrl( BASE_URL . '/test/sample/releases.xml');
     }
 
@@ -44,7 +44,7 @@ class taoUpdate24_actions_Update extends tao_actions_CommonModule {
 	    try {
     	    echo json_encode($this->getavailabeUpdates());
 	    }
-	    catch (taoUpdate24_models_classes_UpdateException $e){
+	    catch (taoUpdate_models_classes_UpdateException $e){
 	        //could not reach update server
 	        common_Logger::e($e->getMessage());
 	    }
@@ -64,7 +64,7 @@ class taoUpdate24_actions_Update extends tao_actions_CommonModule {
 	        try {
 	           $this->availabeUpdates = $this->notificationService->getAvailableUpdates();
 	        }
-	        catch (taoUpdate24_models_classes_UpdateException $e){
+	        catch (taoUpdate_models_classes_UpdateException $e){
 	            //could not reach update server
 	            common_Logger::e($e->getMessage());
 	        }
@@ -83,7 +83,7 @@ class taoUpdate24_actions_Update extends tao_actions_CommonModule {
         $hasProperRole = array_key_exists($this->allowedRole, $roles);
         $isUpdateAvailable = $this->getAvailabeUpdates() != null ? true : false;
         
-        $isDesignModeEnabled = taoUpdate24_helpers_Optimization::isDesignModeEnabled();
+        $isDesignModeEnabled = taoUpdate_helpers_Optimization::isDesignModeEnabled();
         $this->setData('isDesignModeEnabled', $isDesignModeEnabled);
         $this->setData('isUpdateAvailable', $isUpdateAvailable);
         $this->setData('hasProperRole', $hasProperRole);

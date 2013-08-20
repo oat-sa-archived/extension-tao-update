@@ -18,17 +18,17 @@
  * 
  * @author "Lionel Lecaque, <lionel@taotesting.com>"
  * @license GPLv2
- * @package taoUpdate24
+ * @package taoUpdate
  * @subpackage models_classes
  *
  */
-class taoUpdate24_models_classes_BackupService extends tao_models_classes_Service{
+class taoUpdate_models_classes_BackupService extends tao_models_classes_Service{
 
     public function createFullBackup(){
 
        var_dump(ROOT_PATH);
         
-       // return taoUpdate24_helpers_Zip::zipDir($sourcePath, $outZipPath),
+       // return taoUpdate_helpers_Zip::zipDir($sourcePath, $outZipPath),
         
         
     }

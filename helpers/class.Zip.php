@@ -19,11 +19,11 @@
  *
  * @author "Lionel Lecaque, <lionel@taotesting.com>"
  * @license GPLv2
- * @package taoUpdate24
+ * @package taoUpdate
  * @subpackage helpers
  *
  */
-class taoUpdate24_helpers_Zip
+class taoUpdate_helpers_Zip
 {
 
 

@@ -9,7 +9,7 @@ $extpath = dirname(__FILE__).DIRECTORY_SEPARATOR;
 $taopath = dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'tao'.DIRECTORY_SEPARATOR;
 	
 return array(
-	'name' => 'taoUpdate24',
+	'name' => 'taoUpdate',
 	'description' => 'TAO Update extensions 2.4 => 2.5 http://www.taotesting.com',
 	'version' => '0.8',
 	'author' => 'Open Assessment Technologies',
@@ -44,7 +44,7 @@ return array(
 		"DIR_HELPERS"			=> $extpath."helpers".DIRECTORY_SEPARATOR,
 	
 		# default module name
-		'DEFAULT_MODULE_NAME'	=> 'UpdateController',
+		'DEFAULT_MODULE_NAME'	=> 'Update',
 	
 		#default action name
 		'DEFAULT_ACTION_NAME'	=> 'maintenance',
@@ -53,10 +53,10 @@ return array(
 		'BASE_PATH'				=> $extpath,
 	
 		#BASE URL (usually the domain root)
-		'BASE_URL'				=> ROOT_URL . '/taoUpdate24',
+		'BASE_URL'				=> ROOT_URL . '/taoUpdate',
 	
 		#BASE WWW the web resources path
-		'BASE_WWW'				=> ROOT_URL . '/taoUpdate24/views/',
+		'BASE_WWW'				=> ROOT_URL . '/taoUpdate/views/',
 	 
  
 	 	#TAO extension Paths

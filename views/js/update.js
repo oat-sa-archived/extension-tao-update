@@ -1,7 +1,7 @@
 /**
  * @author lionel
  */
-var url = root_url + 'taoUpdate24/Update/availableUpdates';
+var url = root_url + 'taoUpdate/Update/availableUpdates';
 
 
 

@@ -24,7 +24,7 @@ require_once dirname(__FILE__) . '/../includes/raw_start.php';
 
 /**
  * @license GPLv2
- * @package taoUpdate24
+ * @package taoUpdate
  * @subpackage models_classes
  * @author "Lionel Lecaque, <lionel@taotesting.com>"
  *
@@ -51,7 +51,7 @@ class ZipTestCase extends UnitTestCase {
         );
         $dest = dirname(__FILE__).'/backup/test.zip';
         $src = dirname(__FILE__).'/sample';
-        taoUpdate24_helpers_Zip::zipDir($src,$dest);
+        taoUpdate_helpers_Zip::zipDir($src,$dest);
         $this->assertTrue(is_file($dest));
         $zip = new ZipArchive();      
         $zip->open($dest);
@@ -68,7 +68,7 @@ class ZipTestCase extends UnitTestCase {
         }
         helpers_File::remove($dest);
         $dest = dirname(__FILE__).'/backup/test2.zip';
-        taoUpdate24_helpers_Zip::zipDir($src,$dest,true);
+        taoUpdate_helpers_Zip::zipDir($src,$dest,true);
         $files = array (
             'sample/releases-noNewPatch.xml',
             'sample/releases-patchsOnly.xml',

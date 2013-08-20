@@ -18,12 +18,12 @@
  * 
  * @author "Lionel Lecaque, <lionel@taotesting.com>"
  * @license GPLv2
- * @package taoUpdate24
+ * @package taoUpdate
  * @subpackage models_classes
  *
  */
 
-class taoUpdate24_models_classes_NotificationService extends tao_models_classes_Service{
+class taoUpdate_models_classes_NotificationService extends tao_models_classes_Service{
     
 
     /**
@@ -144,7 +144,7 @@ class taoUpdate24_models_classes_NotificationService extends tao_models_classes_
      * @access public
      * @author "Lionel Lecaque, <lionel@taotesting.com>"
      * @param boolean $detailed
-     * @throws taoUpdate24_models_classes_UpdateException
+     * @throws taoUpdate_models_classes_UpdateException
      * @return string
      */
     public function getVersions($detailed = false){
@@ -152,7 +152,7 @@ class taoUpdate24_models_classes_NotificationService extends tao_models_classes_
         $versionDom = @simplexml_load_file($this->getReleaseManifestUrl());
         if (!$versionDom){
             $message = __("Unable to reach the update server located at ").$this->getReleaseManifestUrl();
-            throw new taoUpdate24_models_classes_UpdateException($message);
+            throw new taoUpdate_models_classes_UpdateException($message);
         }
         $releasesNodes = $versionDom->children();
         foreach ($releasesNodes as $releaseNode){

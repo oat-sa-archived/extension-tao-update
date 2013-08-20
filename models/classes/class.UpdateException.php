@@ -23,6 +23,6 @@
  *
  */
 
-class taoUpdate24_models_classes_UpdateException extends common_Exception{
+class taoUpdate_models_classes_UpdateException extends common_Exception{
     
 }

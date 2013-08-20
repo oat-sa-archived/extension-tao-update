@@ -5,7 +5,7 @@
  */
 require_once dirname(__FILE__). '/../tao/includes/class.Bootstrap.php';
 
-$bootStrap = new BootStrap('taoUpdate24');
+$bootStrap = new BootStrap('taoUpdate');
 $bootStrap->start();
 $bootStrap->dispatch();
 ?>

@@ -24,7 +24,7 @@ require_once dirname(__FILE__) . '/../includes/raw_start.php';
 
 /**
  * @license GPLv2
- * @package taoUpdate24
+ * @package taoUpdate
  * @subpackage models_classes
  * @author "Lionel Lecaque, <lionel@taotesting.com>"
  *
@@ -32,7 +32,7 @@ require_once dirname(__FILE__) . '/../includes/raw_start.php';
 class BackupServiceTestCase extends UnitTestCase {
     /**
      * 
-     * @var taoUpdate24_models_classes_BackupService
+     * @var taoUpdate_models_classes_BackupService
      */
     private $service;
 
@@ -41,7 +41,7 @@ class BackupServiceTestCase extends UnitTestCase {
      */
     public function setUp(){
         TaoTestRunner::initTest();
-        $this->service = taoUpdate24_models_classes_BackupService::singleton();
+        $this->service = taoUpdate_models_classes_BackupService::singleton();
 
     }
     
