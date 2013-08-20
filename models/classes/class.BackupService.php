@@ -25,34 +25,47 @@
 class taoUpdate_models_classes_BackupService extends tao_models_classes_Service{
 
     const BACKUP_DIR = 'backup';
-
     const SRC_BACKUP_FILE_PREFFIX ='TAO_full_backup_';
-    const SRC_BACKUP_FILE_SUFFIX ='-data-src.zip';
-    
+    const SRC_BACKUP_FILE_SUFFIX ='-data-src.zip'; 
     const DB_BACKUP_FILE_PREFFIX = 'TAO_DB_';
     const DB_BACKUP_FILE_SUFFIX = '.sql';
     
+    /**
+     * 
+     * @access
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     * @throws taoUpdate_models_classes_UpdateException
+     * @return string
+     */
     public function createBackupFolder(){
         $timestamps = date('Ymd-His', time());
         $basePath = BASE_DATA . self::BACKUP_DIR . DIRECTORY_SEPARATOR ;
-        
         $path = $basePath . $timestamps  ;
-        
-        if ( !mkdir($path, 0755, true)) {
+        if(!mkdir($path, 0755, true)) {
             throw  new taoUpdate_models_classes_UpdateException('fail to createdir folder');
         }
-        
         return $path;
-        
     }
 
+    /**
+     * 
+     * @access
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     * @param unknown $folder
+     */
     public function storeAllFiles($folder)
     {
         $filepath = $folder . DIRECTORY_SEPARATOR.self::SRC_BACKUP_FILE_PREFFIX. TAO_VERSION.self::SRC_BACKUP_FILE_SUFFIX;
         taoUpdate_helpers_Zip::compressFolder(ROOT_PATH, $filepath);
     
     }
-    
+    /**
+     * 
+     * @access
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     * @param unknown $folder
+     * @throws taoUpdate_models_classes_UpdateException
+     */
     public function storeDatabase($folder){
         $dbBackupHelper = new taoUpdate_helpers_DbBackup();
         $fileContent = $dbBackupHelper->backup();
