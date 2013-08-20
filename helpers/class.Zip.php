@@ -26,7 +26,7 @@
 class taoUpdate24_helpers_Zip
 {
 
-    public static function addFile($src, $dest)
+    public static function compressFolder($src, $dest)
     {
         
         // todo check right
@@ -49,7 +49,7 @@ class taoUpdate24_helpers_Zip
                 )) || strrpos($file, '/.svn/')) {
                     continue;
                 }
-                var_dump($file);
+
                 $file = realpath($file);
                 
                 if (is_dir($file) === true) {

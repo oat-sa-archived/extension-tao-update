@@ -25,9 +25,8 @@
 class taoUpdate24_models_classes_BackupService extends tao_models_classes_Service{
 
     public function createFullBackup($source, $destination){
-        var_dump($source, $destination);
-        
-        return taoUpdate24_helpers_Zip::addFile($source, $destination);
+
+        return taoUpdate24_helpers_Zip::compressFolder($source, $destination);
         
         
     }
