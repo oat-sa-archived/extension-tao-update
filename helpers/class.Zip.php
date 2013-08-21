@@ -26,7 +26,25 @@
 class taoUpdate_helpers_Zip
 {
 
+    /**
+     * @access
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     * @param string $file
+     * @param string $dest
+     */
+    public static function extractFile($file, $dest){
+        $zip = new ZipArchive();
+        $zip->open($file);
+        $zip->extractTo($dest);
+        $zip->close();
+    }
 
+    /**
+     * @access public
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     * @param string $src
+     * @param string $dest
+     */
     public static function compressFile($src, $dest){
         $pathInfo = pathInfo($src);
         $fileName = $pathInfo['basename'];
@@ -38,6 +56,13 @@ class taoUpdate_helpers_Zip
         $z->close();
     }
     
+    /**
+     * @access public
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     * @param string $src
+     * @param string $dest
+     * @param string $includeDir
+     */
     public static function compressFolder($src, $dest,$includeDir = false)
     {
         $pathInfo = pathInfo($src);
@@ -54,6 +79,13 @@ class taoUpdate_helpers_Zip
         $z->close();
     }
     
+    /**
+     * @access private
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     * @param string $folder
+     * @param string $zipFile
+     * @param string $exclusiveLength
+     */
     private static function folderToZip($folder, &$zipFile, $exclusiveLength) {
         $handle = opendir($folder);
         while (false !== $f = readdir($handle)) {

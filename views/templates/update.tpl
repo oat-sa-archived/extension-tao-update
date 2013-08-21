@@ -6,6 +6,7 @@
 
 <div class="main-container">
 	<div id="update-container" class="ui-widget-content ui-corner-bottom">
+	 	<div id="init-update">
 	 	<?if(get_data('isUpdateAvailable')):?>
 		 	<div id="update-info" class="ext-home-container ui-state-highlight">
 	
@@ -29,7 +30,7 @@
 			<?if (get_data('isDesignModeEnabled')):?>
 
 			<div id="update-button-container">
-	        	<input type="button" value="<?=__("Launch update")?>" id="updateButton"/>
+	        	<input type="button" value="<?=__("Launch update")?>" id="updateButton" onclick="initUpdate()" />
 	
 	        </div>
 	        <?else :?>
@@ -40,6 +41,17 @@
 	        	</strong> <?= __("Go to TAO optimizer to switch all classes in Design Mode.");?>
 	        </div>
 	        <?endif;?>
+	        </div>
+	        <div id="update-inProgress">
+	       
+	        
+	        <div id="update-table-step-container">
+	        	
+	        	<div id="update-step" />
+	        	<table id="update-step-grid" />		
+			</div>
+			 <input type="button" value="<?=__("back")?>" id="updateButton" onclick="back()" />	
+	        </div>
 
 	</div>
 	<?else :?>

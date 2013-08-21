@@ -18,12 +18,16 @@
  *
  * @author "Lionel Lecaque, <lionel@taotesting.com>"
  * @license GPLv2
- * @package package_name
- * @subpackage 
+ * @package taoUpdate
+ * @subpackage models_classes
  *
  */
-
-class taoUpdate_models_classes_UpdateException extends common_Exception{
+class taoUpdate_models_classes_Service extends tao_models_classes_Service{
+    
+    
+    
 
     
+
+
 }

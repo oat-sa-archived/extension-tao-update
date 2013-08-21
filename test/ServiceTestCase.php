@@ -16,14 +16,35 @@
  *
  * Copyright (c) 2013 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
- * @author "Lionel Lecaque, <lionel@taotesting.com>"
- * @license GPLv2
- * @package package_name
- * @subpackage 
  *
  */
 
-class taoUpdate_models_classes_UpdateException extends common_Exception{
+require_once dirname(__FILE__) . '/../../tao/test/TaoTestRunner.php';
+require_once dirname(__FILE__) . '/../includes/raw_start.php';
 
+/**
+ * @license GPLv2
+ * @package taoUpdate
+ * @subpackage models_classes
+ * @author "Lionel Lecaque, <lionel@taotesting.com>"
+ *
+ */
+class ServiceTestCase extends UnitTestCase {
+
+
+    /**
+     * tests initialization
+     */
+    public function setUp(){
+        TaoTestRunner::initTest();
+        $this->service = taoUpdate_models_classes_Service::singleton();
+
+    }
+
+    public function test() {
+
+
+    }
+    
     
 }

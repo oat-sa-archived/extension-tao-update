@@ -14,7 +14,7 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
     private  $allowedRole ='http://www.tao.lu/Ontologies/TAO.rdf#SysAdminRole';
     private $availabeUpdates = null;
     private $userService;
-    private $notificationService;
+    private $ReleasesService;
     
     /**
      * initialize the services
@@ -22,8 +22,8 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
     public function __construct(){
         parent::__construct();
         $this->userService = tao_models_classes_UserService::singleton();
-        $this->notificationService = taoUpdate_models_classes_NotificationService::singleton();
-        $this->notificationService->setReleaseManifestUrl( BASE_URL . '/test/sample/releases.xml');
+        $this->ReleasesService = taoUpdate_models_classes_ReleasesService::singleton();
+        $this->ReleasesService->setReleaseManifestUrl( BASE_URL . '/test/sample/releases.xml');
     }
 
 	/**
@@ -52,7 +52,16 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
 
 	}
 	
-	
+	public function progress(){
+        $test = array( 
+            "step 1" => __("lock the platform"),
+            "step 2" =>  __("create backups"),
+            "Step 3" => __("download last version if possible") ,
+            "Step 4" => __("deploy last version") 
+        );
+	    echo json_encode($test);
+	    
+	}
 	
 	/**
 	 * 
@@ -62,7 +71,7 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
 	private function getAvailabeUpdates(){
 	    if($this->availabeUpdates == null){
 	        try {
-	           $this->availabeUpdates = $this->notificationService->getAvailableUpdates();
+	           $this->availabeUpdates = $this->ReleasesService->getAvailableUpdates();
 	        }
 	        catch (taoUpdate_models_classes_UpdateException $e){
 	            //could not reach update server

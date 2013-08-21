@@ -23,7 +23,7 @@
  *
  */
 
-class taoUpdate_models_classes_NotificationService extends tao_models_classes_Service{
+class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Service{
     
 
     /**
@@ -31,7 +31,13 @@ class taoUpdate_models_classes_NotificationService extends tao_models_classes_Se
      */
     private $releaseManifestUrl; 
     
+    /**
+     * @var SimpleXMLElement
+     */
+    private $dom = null;
     
+    
+    const RELEASES_LOCAL_FOLDER = 'download';   
     const RELEASE_FILE_PREFIX = 'TAO_';
     const RELEASE_FILE_SUFFIX = '_build.zip';
     const RELEASE_STATUS_STABLE = 'stable';
@@ -50,6 +56,7 @@ class taoUpdate_models_classes_NotificationService extends tao_models_classes_Se
         $commentNode = $releaseNode->xpath('comment');
         
         $patchs = $releaseNode->xpath('patchs');
+
         $returnValue = array (
             'version'	=> (string) $versionNode[0]
             , 'comment'	=> (string) trim($commentNode[0])
@@ -70,6 +77,50 @@ class taoUpdate_models_classes_NotificationService extends tao_models_classes_Se
         return $returnValue;
     }
     
+
+    /**
+     *
+     * @access
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     * @param string $file
+     */
+    public function extractRelease($file){
+        $sourceFolder = BASE_DATA . self::RELEASES_LOCAL_FOLDER . DIRECTORY_SEPARATOR ;
+        return taoUpdate_helpers_Zip::extractFile($file,$sourceFolder);
+    
+    }
+    
+    /**
+     * 
+     * @access public
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     * @param string $releaseName
+     * @param string $updateSite
+     * @param string $localFolder
+     * @throws taoUpdate_models_classes_UpdateException
+     * @return string
+     */
+    public function downloadRelease($releaseName,$updateSite, $localFolder){
+        $curl = curl_init();
+        $distantRelease = $updateSite . $releaseName;
+        if(!$fp = @fopen($localFolder.$releaseName, 'w')){
+            throw new taoUpdate_models_classes_UpdateException('Fail to open stream check permission on ' . $localFolder.$releaseName);
+        }    
+        curl_setopt ($curl, CURLOPT_URL, $distantRelease);
+        curl_setopt($curl, CURLOPT_FILE, $fp);
+        curl_setopt($curl,  CURLOPT_RETURNTRANSFER, TRUE);
+        curl_exec ($curl);
+        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        if ( $httpCode == 200 ) {
+            $contents = curl_exec($curl);
+            fwrite($fp, $contents);
+            
+        } else {
+            throw new taoUpdate_models_classes_ReleaseDownloadException($httpCode, $releaseName, $updateSite);      
+        }
+        return $localFolder.$releaseName;
+       
+    }
     
     /**
      * @access public
@@ -86,18 +137,19 @@ class taoUpdate_models_classes_NotificationService extends tao_models_classes_Se
             $releaseVersion = $this->convertVersionNumber($version['version']);
             if($releaseVersion['major'] > $currentVersion['major']
             || $releaseVersion['minor'] > $currentVersion['minor'] ){
-                $returnValue[] = array(
+                $returnValue[$version['version']] = array(
                     'version' =>$version['version']
                     ,'file' => self::RELEASE_FILE_PREFIX . $version['version'] . self::RELEASE_FILE_SUFFIX
                         
                 );
                 continue;
             }
+            //handle patchs
             if(isset($version['patchs'])){
                 foreach ($version['patchs'] as $patch){
                     $patchVersion = $this->convertVersionNumber($patch['version']);
                     if($patchVersion['patch'] > $currentVersion['patch']){
-                        $returnValue[] = array( 
+                        $returnValue[$patch['version'] ] = array( 
                             'version' =>$patch['version'] 
                             ,'file' => self::RELEASE_FILE_PREFIX . $patch['version'] . self::RELEASE_FILE_SUFFIX
                         );
@@ -139,6 +191,25 @@ class taoUpdate_models_classes_NotificationService extends tao_models_classes_Se
     }
     
     
+    
+    
+    /**
+     * @access private
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     * @throws taoUpdate_models_classes_UpdateException
+     * @return SimpleXMLElement
+     */
+    private function getDom(){
+        if ($this->dom == null) {
+            $this->dom = @simplexml_load_file($this->getReleaseManifestUrl());
+            if (!$this->dom){
+                $message = __("Unable to reach the update server located at ").$this->getReleaseManifestUrl();
+                throw new taoUpdate_models_classes_UpdateException($message);
+            }
+        }
+        return $this->dom;
+    }
+    
     /**
      * 
      * @access public
@@ -148,15 +219,9 @@ class taoUpdate_models_classes_NotificationService extends tao_models_classes_Se
      * @return string
      */
     public function getVersions($detailed = false){
-        
-        $versionDom = @simplexml_load_file($this->getReleaseManifestUrl());
-        if (!$versionDom){
-            $message = __("Unable to reach the update server located at ").$this->getReleaseManifestUrl();
-            throw new taoUpdate_models_classes_UpdateException($message);
-        }
-        $releasesNodes = $versionDom->children();
-        foreach ($releasesNodes as $releaseNode){
 
+        $releasesNodes = $this->getDom()->xpath('releases');
+        foreach ($releasesNodes[0] as $releaseNode){            
             $version = $this->getReleaseInfo($releaseNode);
             if ($detailed && isset($version['patchs'])) {
             	foreach ($version['patchs'] as $patch){
@@ -179,6 +244,47 @@ class taoUpdate_models_classes_NotificationService extends tao_models_classes_Se
         return $returnValue;
     }
 
+    
+    /**
+     * @access
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     * @param string $id
+     * @param string $url
+     * @param string $key
+     * @return boolean
+     */
+    private function validateUpdateSite($id,$url,$key){
+        //dummy check need to be improved
+        if (md5($id.$url )== $key) {
+        	return true;
+        }
+        common_Logger::i('Fail to validate server with id ' . $id );
+        return false;
+    }
+    
+    /**
+     * @access
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     * @return array 
+     */
+    public function getUpdateSites(){
+        $returnValue = array();
+        $updateSitesNodes = $this->getDom()->xpath('updateSites');
+        foreach ($updateSitesNodes[0] as $updateSiteNode){
+            $idNode = $updateSiteNode->xpath('id');
+            $urlNode = $updateSiteNode->xpath('url');
+            $keyNode = $updateSiteNode->xpath('key');
+            $id = (string) $idNode[0];
+            $url = (string) $urlNode[0];
+            $key = (string)$keyNode[0];
+            if($this->validateUpdateSite($id,$url,$key)){
+                $returnValue [$id] = $url;
+            }     
+        }
+
+        return $returnValue;
+    }
+    
 	/**
 	 * @access private
 	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
@@ -194,6 +300,8 @@ class taoUpdate_models_classes_NotificationService extends tao_models_classes_Se
 	 * @param string $releaseManifestUrl
 	 */
 	public function setReleaseManifestUrl($releaseManifestUrl) {
+	    //reset dom
+	    $this->dom = null;
 		return $this->releaseManifestUrl = $releaseManifestUrl;
 	}
 	

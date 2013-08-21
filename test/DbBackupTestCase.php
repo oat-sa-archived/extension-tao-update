@@ -42,7 +42,6 @@ class DbBackupTestCase extends UnitTestCase {
 
     public function test() {
         $dbBackupHelper = new taoUpdate_helpers_DbBackup();
-        var_dump($dbBackupHelper->backup());
 
     }
     
