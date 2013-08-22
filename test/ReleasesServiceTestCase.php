@@ -58,7 +58,7 @@ class ReleasesServiceTestCase extends UnitTestCase {
         foreach ($version['2.4']['extensions'] as $ext){
             $this->assertTrue(in_array($ext, $extensions), $ext . ' not found');
         }
-        $patchs24Array = array('2.4.1','2.4.2','2.4.3','2.4.5','2.4.6','2.4.7','2.4.88','2.4.99');
+        $patchs24Array = array('2.4.1','2.4.2','2.4.3','2.4.5','2.4.6','2.4.7','2.4.77','2.4.88','2.4.99');
         $patchs24 = $version['2.4']['patchs'];
         foreach (array_keys($patchs24) as $patch){
             $this->assertTrue(in_array($patch, $patchs24Array), $patch . ' not found');
@@ -67,7 +67,7 @@ class ReleasesServiceTestCase extends UnitTestCase {
         }
 
         $versionDetailed = $this->service->getVersions(true);
-        $versionDetailsArray= array('2.4','2.4.1','2.4.2','2.4.3','2.4.5','2.4.6','2.4.7','2.4.88','2.4.99','2.5');
+        $versionDetailsArray= array('2.4','2.4.1','2.4.2','2.4.3','2.4.5','2.4.6','2.4.7','2.4.77','2.4.88','2.4.99','2.5');
         foreach ($versionDetailed as $ver){
             $this->assertTrue(isset($ver['version']));
             $this->assertTrue(in_array($ver['version'], $versionDetailsArray), $ver['version'] . ' not found');

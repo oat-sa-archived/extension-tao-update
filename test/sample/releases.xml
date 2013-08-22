@@ -171,6 +171,28 @@
 					</extensions>
 				</patch>
 				<patch>
+					<version>2.4.77</version>
+					<comment>TAO Release 2.4.77</comment>
+					<extensions>
+						<extension>generis</extension>
+						<extension>tao</extension>
+						<extension>filemanager</extension>
+						<extension>taoItems</extension>
+						<extension>wfEngine</extension>
+						<extension>taoSubjects</extension>
+						<extension>wfAuthoring</extension>
+						<extension>taoQTI</extension>
+						<extension>taoTests</extension>
+						<extension>taoDelivery</extension>
+						<extension>taoGroups</extension>
+						<extension>taoResults</extension>
+						<extension>ltiProvider</extension>
+						<extension>taoCoding</extension>
+						<extension>taoCampaign</extension>
+						<extension>ltiDeliveryProvider</extension>
+					</extensions>
+				</patch>
+				<patch>
 					<version>2.4.88</version>
 					<comment>TAO Release 2.4.88</comment>
 					<extensions>

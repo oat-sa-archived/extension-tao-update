@@ -1,4 +1,4 @@
-
+<script type="text/javascript" src="<?=BASE_WWW?>js/updateProgress.js"></script>
 <script type="text/javascript" src="<?=BASE_WWW?>js/update.js"></script>
 <div id="compilation-title" class="ui-widget-header ui-corner-top ui-state-default">
 	<?=__("TAO Update")?>
@@ -47,7 +47,6 @@
 	        
 	        <div id="update-table-step-container">
 	        	
-	        	<div id="update-step" />
 	        	<table id="update-step-grid" />		
 			</div>
 			 <input type="button" value="<?=__("back")?>" id="updateButton" onclick="back()" />	

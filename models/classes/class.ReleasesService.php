@@ -36,8 +36,8 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
      */
     private $dom = null;
     
-    
-    const RELEASES_LOCAL_FOLDER = 'download';   
+   
+
     const RELEASE_FILE_PREFIX = 'TAO_';
     const RELEASE_FILE_SUFFIX = '_build.zip';
     const RELEASE_STATUS_STABLE = 'stable';
@@ -84,9 +84,8 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
      * @author "Lionel Lecaque, <lionel@taotesting.com>"
      * @param string $file
      */
-    public function extractRelease($file){
-        $sourceFolder = BASE_DATA . self::RELEASES_LOCAL_FOLDER . DIRECTORY_SEPARATOR ;
-        return taoUpdate_helpers_Zip::extractFile($file,$sourceFolder);
+    public function extractRelease($file,$dest){
+        return taoUpdate_helpers_Zip::extractFile($file,$dest);
     
     }
     
@@ -278,7 +277,14 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
             $url = (string) $urlNode[0];
             $key = (string)$keyNode[0];
             if($this->validateUpdateSite($id,$url,$key)){
-                $returnValue [$id] = $url;
+                if(UPDATE_SITE_IS_LOCAL){
+                    common_Logger::d('replace url with a local one for update site');
+                    $url = str_replace('$BASE_URL', BASE_URL, $url);
+                    $returnValue [$id] = $url;
+                }
+                else {
+                    $returnValue [$id] = $url;
+                }
             }     
         }
 
