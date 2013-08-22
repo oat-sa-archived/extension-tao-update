@@ -14,7 +14,6 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
     private  $allowedRole ='http://www.tao.lu/Ontologies/TAO.rdf#SysAdminRole';
     private $availabeUpdates = null;
     private $userService;
-    private $ReleasesService;
     
     /**
      * initialize the services
@@ -22,8 +21,9 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
     public function __construct(){
         parent::__construct();
         $this->userService = tao_models_classes_UserService::singleton();
-        $this->ReleasesService = taoUpdate_models_classes_ReleasesService::singleton();
-        $this->ReleasesService->setReleaseManifestUrl( BASE_URL . '/test/sample/releases.xml');
+        $this->service = taoUpdate_models_classes_Service::singleton();
+
+   
     }
 
 	/**
@@ -52,14 +52,57 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
 
 	}
 	
-	public function progress(){
-        $test = array( 
-            "step 1" => __("lock the platform"),
-            "step 2" =>  __("create backups"),
-            "Step 3" => __("download last version if possible") ,
-            "Step 4" => __("deploy last version") 
+	public function downloadRelease($releaseNumber){
+	    sleep(5);
+	    return json_encode(
+	        array(
+    	        'success' => 1,
+    			'failed' => array()
+		    )
+	    );
+	}
+	
+	public function extractRelease($releaseNumber){
+	    sleep(10);
+	    return json_encode(
+	        array(
+	            'success' => 1,
+	            'failed' => array()
+	        )
+	    );
+	}
+	
+	public function backup(){
+	    sleep(2);
+	    return json_encode(
+	        array(
+	            'success' => 1,
+	            'failed' => array()
+	        )
+	    );
+	}
+	
+	public function getUpdateSteps(){
+        $program = array( 
+            array( 
+                'action' => 'downloadRelease',
+                'name' => __('Download new TAO version'),
+                'status' => __('stand by')
+            ),
+            array(
+                'action' => 'extractRelease',
+                'name' => __('Extract new TAO version'),
+                'status' =>  __('stand by'),
+            ),
+            array(
+                'action' => 'backup',
+                'name' => __('Create Backup'),
+                'status' => __('stand by'),
+            ),
+
+
         );
-	    echo json_encode($test);
+	    echo json_encode($program);
 	    
 	}
 	
@@ -71,7 +114,7 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
 	private function getAvailabeUpdates(){
 	    if($this->availabeUpdates == null){
 	        try {
-	           $this->availabeUpdates = $this->ReleasesService->getAvailableUpdates();
+	           $this->availabeUpdates = $this->service->getAvailableUpdates();
 	        }
 	        catch (taoUpdate_models_classes_UpdateException $e){
 	            //could not reach update server
