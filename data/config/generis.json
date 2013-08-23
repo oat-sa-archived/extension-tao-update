@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<update>
-<keep>common/conf/db.conf.php</keep>
-<keep>common/conf/generis.conf.php</keep>
-<keep>common/conf/log.conf.php</keep>
-</update>

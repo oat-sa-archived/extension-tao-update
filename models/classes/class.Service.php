@@ -29,6 +29,10 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
     
     const DEPLOY_FOLDER = 'deployNewTAO/';
     const FILE_KEY = 'admin.key';
+    const RELEASE_FOLDER = 'release/';
+    const RELEASE_MANIFEST = 'releaseManifest.json';
+    
+    const UPDATOR_SRC =   'plugins/updater/';
     
     private $key = null;
     
@@ -98,16 +102,54 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	   return $this->releasesService->getAvailableUpdates();
 	}
 	
+	public function buildReleaseManifest($release,$deployFolder){
+	    $releaseManifest = json_encode($this->releasesService->getReleaseManifest($release));
+	    file_put_contents($deployFolder . self::RELEASE_MANIFEST, $releaseManifest);;
+	}
+	
+	public function getUpdaterConstant(){
+	    $json = file_get_contents(BASE_PATH . self::UPDATOR_SRC . 'config.json');
+	    return  json_decode($json,true);
+	}
+	
+	public function deployUpdater($folder){
+	    helpers_File::copy(BASE_PATH . self::UPDATOR_SRC, $folder, true);
+	}
+	
+	/**
+	 * 
+	 * @access public
+	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
+	 * @param string $release
+	 * @throws taoUpdate_models_classes_UpdateException
+	 */
+	public function deploy($release){
+	    $releaseFileName = $this->releasesService->getReleaseFileName($release);
+	    $downloadFile = BASE_DATA . self::RELEASES_DOWNLOAD_FOLDER . $releaseFileName;
+	    if(is_file($downloadFile)){
+	        $updaterConstants = $this->getUpdaterConstant();
+	        $updaterDataFolder = $updaterConstants['constants']['dataFolder'];
+	        $deployFolder = $this->createDeployFolder();
+	        $this->deployUpdater($deployFolder);
+	        $this->buildReleaseManifest($release,$deployFolder . $updaterDataFolder);
+	        return $this->releasesService->extractRelease($downloadFile, $deployFolder . $updaterDataFolder . self::RELEASE_FOLDER);
+	    }
+	    else {
+	        throw new taoUpdate_models_classes_UpdateException('Fail to extract Release, file missing ' . $downloadFile);
+	    }
+	}
+	
     /**
      * 
-     * @access
+     * @access public
      * @author "Lionel Lecaque, <lionel@taotesting.com>"
-     * @param unknown $fileName
+     * @param string $release
      * @throws taoUpdate_models_classes_UpdateException
      * @return string
      */
-	public function downloadRelease($fileName){
+	public function downloadRelease($release){
 	    
+	    $fileName = $this->releasesService->getReleaseFileName($release);
 
 	    $updateSites = $this->releasesService->getUpdateSites();
 	    

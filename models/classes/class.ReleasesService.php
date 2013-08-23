@@ -80,7 +80,7 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
 
     /**
      *
-     * @access
+     * @access public
      * @author "Lionel Lecaque, <lionel@taotesting.com>"
      * @param string $file
      */
@@ -94,15 +94,26 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
      * @access public
      * @author "Lionel Lecaque, <lionel@taotesting.com>"
      * @param string $releaseName
+     * @return string
+     */
+    public function getReleaseFileName($releaseName){
+        return self::RELEASE_FILE_PREFIX . $releaseName . self::RELEASE_FILE_SUFFIX;
+    }
+    
+    /**
+     * 
+     * @access public
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     * @param string $releaseName
      * @param string $updateSite
      * @param string $localFolder
      * @throws taoUpdate_models_classes_UpdateException
      * @return string
      */
-    public function downloadRelease($releaseName,$updateSite, $localFolder){
+    public function downloadRelease($releaseFileName,$updateSite, $localFolder){
         $curl = curl_init();
-        $distantRelease = $updateSite . $releaseName;
-        if(!$fp = @fopen($localFolder.$releaseName, 'w')){
+        $distantRelease = $updateSite . $releaseFileName;
+        if(!$fp = @fopen($localFolder.$releaseFileName, 'w')){
             throw new taoUpdate_models_classes_UpdateException('Fail to open stream check permission on ' . $localFolder.$releaseName);
         }    
         curl_setopt ($curl, CURLOPT_URL, $distantRelease);
@@ -115,9 +126,9 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
             fwrite($fp, $contents);
             
         } else {
-            throw new taoUpdate_models_classes_ReleaseDownloadException($httpCode, $releaseName, $updateSite);      
+            throw new taoUpdate_models_classes_ReleaseDownloadException($httpCode, $releaseFileName, $updateSite);      
         }
-        return $localFolder.$releaseName;
+        return $localFolder.$releaseFileName;
        
     }
     
@@ -138,7 +149,7 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
             || $releaseVersion['minor'] > $currentVersion['minor'] ){
                 $returnValue[$version['version']] = array(
                     'version' =>$version['version']
-                    ,'file' => self::RELEASE_FILE_PREFIX . $version['version'] . self::RELEASE_FILE_SUFFIX
+                    ,'file' => $this->getReleaseFileName($version['version'])
                         
                 );
                 continue;
@@ -150,7 +161,7 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
                     if($patchVersion['patch'] > $currentVersion['patch']){
                         $returnValue[$patch['version'] ] = array( 
                             'version' =>$patch['version'] 
-                            ,'file' => self::RELEASE_FILE_PREFIX . $patch['version'] . self::RELEASE_FILE_SUFFIX
+                            ,'file' => $this->getReleaseFileName($patch['version'])
                         );
                     }
                 }
@@ -207,6 +218,12 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
             }
         }
         return $this->dom;
+    }
+ 
+
+    public function getReleaseManifest($release){
+        $versions = $this->getVersions(true);
+        return $versions[$release];
     }
     
     /**

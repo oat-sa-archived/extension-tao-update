@@ -68,22 +68,24 @@ class ServiceTestCase extends UnitTestCase {
      * @author "Lionel Lecaque, <lionel@taotesting.com>"
      */
     public function testDownloadRelease(){
+        $release = '2.4.88';       
         $releaseFile = 'TAO_2.4.88_build.zip';
-        $path = $this->service->downloadRelease($releaseFile);
+        $path = $this->service->downloadRelease($release);
         $this->assertEqual($path, BASE_DATA . taoUpdate_models_classes_Service::RELEASES_DOWNLOAD_FOLDER.$releaseFile);
         $this->assertTrue(is_file($path));
         helpers_File::remove($path);
         
+        $release = '2.4.77';
         $releaseFile = 'TAO_2.4.77_build.zip';
-        $path = $this->service->downloadRelease($releaseFile);
+        $path = $this->service->downloadRelease($release);
         $this->assertEqual($path, BASE_DATA . taoUpdate_models_classes_Service::RELEASES_DOWNLOAD_FOLDER.$releaseFile);
         $this->assertTrue(is_file($path));
         
         helpers_File::remove($path);
         
-        $releaseFile = 'TAO_2.4.66_build.zip';
+        $release = '2.4.77';
         try {
-            $path = $this->service->downloadRelease($releaseFile);
+            $path = $this->service->downloadRelease($release);
         }
         catch (Exception $e){
             $this->assertIsA($e, 'taoUpdate_models_classes_UpdateException');
@@ -93,4 +95,17 @@ class ServiceTestCase extends UnitTestCase {
         
     }
     
+    public function test(){
+        $data = array('constants' => array('data' => 'data', 'test' => 'test'));
+        var_dump(json_encode($data));
+    }
+    
+    
+    public function testDelployRelease(){
+        $release = '2.4.88';
+        $path = $this->service->downloadRelease($release);
+        $result = $this->service->deploy($release);
+        $this->assertTrue(is_dir($result .'TAO_2.4.88_build'));
+        helpers_File::remove($path);
+    }
 }

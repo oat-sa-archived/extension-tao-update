@@ -37,6 +37,7 @@ class taoUpdate_helpers_Zip
         $zip->open($file);
         $zip->extractTo($dest);
         $zip->close();
+        return $dest;
     }
 
     /**

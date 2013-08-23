@@ -1,0 +1,45 @@
+/**  
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; under version 2
+ * of the License (non-upgradable).
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * 
+ * Copyright (c) 2013 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
+ */
+@CHARSET "UTF-8";
+
+#main{	
+	background-position: 575px 30px;
+	min-height: 250px;
+	background-image: url(../img/maintenance.png);
+}
+#content{
+	width: 450px;
+	margin-bottom: 50px;
+}
+#footer{
+
+	position : relative; 
+	top: 100px;
+	bottom: 2px;
+	text-align: center;
+	font-size: xx-small;
+	font-style: italic;
+	top:50px;
+	
+	
+}
+
+
+#warning_msg{
+	margin-top: 80px;
+}
