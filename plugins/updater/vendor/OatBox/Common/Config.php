@@ -18,22 +18,39 @@
  *
  * @author "Lionel Lecaque, <lionel@taotesting.com>"
  * @license GPLv2
- * @package package_name
- * @subpackage 
+ * @package OatBox
+ * @subpackage Common
  *
  */
-require_once 'boot/bootstrap.php';
-/*
-var_dump(dirname(__FILE__). '/admin.key');
-    
-if(is_file(dirname(__FILE__). '/admin.key')){
-    $key = file_get_contents(dirname(__FILE__). '/admin.key');
-}
 
-if(!isset($_GET['K']) || $_GET['k'] !=$key){
-    include_once 'tpl/maintenance.tpl';
-}
-else{
+namespace OatBox\Common;
+
+class Config {
+    
+    const CONSTANTS = 'constants';
+    
+    private $config = array();
+    
+    public function __construct($file){
+        if (is_file($file)) {
+            $fileContent = file_get_contents($file);
+            $this->config = json_decode($fileContent,true);
+        }
+        
+    }    
+    public function loadConstants($array){
+        foreach ($array as $k =>$v){
+            if (!defined($k) && isset($k)) {
+            	define($k, $v);
+            }
+        }
+    }
+    
+    public function get($configType){
+        if(isset($this->config[$configType])){
+            return $this->config[$configType];
+        }
+    }
+    
     
 }
-*/

@@ -22,18 +22,37 @@
  * @subpackage 
  *
  */
-require_once 'boot/bootstrap.php';
-/*
-var_dump(dirname(__FILE__). '/admin.key');
-    
-if(is_file(dirname(__FILE__). '/admin.key')){
-    $key = file_get_contents(dirname(__FILE__). '/admin.key');
-}
 
-if(!isset($_GET['K']) || $_GET['k'] !=$key){
-    include_once 'tpl/maintenance.tpl';
-}
-else{
-    
-}
-*/
+error_reporting(E_ALL);
+
+
+$vendor_dir = dirname(__FILE__) . '/../vendor';
+
+require_once 'SplClassLoader.php';
+
+
+$classLoader = new SplClassLoader('OatBox', $vendor_dir );
+$classLoader->register();
+
+define('ROOT_PATH', dirname(__FILE__) . '/../');
+
+OatBox\Common\Log\Dispatcher::singleton()->init(array(
+	array(
+		'class'			=> 'SingleFileAppender',
+		'threshold'		=> \OatBox\Common\Logger::TRACE_LEVEL,
+		'file'			=>  ROOT_PATH.'log/update.log',
+)));
+
+
+OatBox\Common\Logger::d('test');
+
+$config = new OatBox\Common\Config(dirname(__FILE__).'/config.json');
+$constants = $config->get($config::CONSTANTS);
+$config->loadConstants($constants);
+
+
+$request = new OatBox\Controller\Request();
+$controller = new OatBox\Controller\Controller($request);
+$controller->loadModule();
+
+

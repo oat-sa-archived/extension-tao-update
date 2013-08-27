@@ -22,18 +22,13 @@
  * @subpackage 
  *
  */
-require_once 'boot/bootstrap.php';
-/*
-var_dump(dirname(__FILE__). '/admin.key');
-    
-if(is_file(dirname(__FILE__). '/admin.key')){
-    $key = file_get_contents(dirname(__FILE__). '/admin.key');
-}
+namespace app\actions;
 
-if(!isset($_GET['K']) || $_GET['k'] !=$key){
-    include_once 'tpl/maintenance.tpl';
+class Test extends \OatBox\Controller\Module {
+    public function toto() {
+        $this->setData('i',$this->getRequestParameter('i'));
+         $this->setData('o', $this->getRequestParameter('o'));
+        $this->setView('maintenance.tpl');
+        
+    }
 }
-else{
-    
-}
-*/

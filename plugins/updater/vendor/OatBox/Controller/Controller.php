@@ -22,18 +22,42 @@
  * @subpackage 
  *
  */
-require_once 'boot/bootstrap.php';
-/*
-var_dump(dirname(__FILE__). '/admin.key');
-    
-if(is_file(dirname(__FILE__). '/admin.key')){
-    $key = file_get_contents(dirname(__FILE__). '/admin.key');
-}
 
-if(!isset($_GET['K']) || $_GET['k'] !=$key){
-    include_once 'tpl/maintenance.tpl';
-}
-else{
+namespace OatBox\Controller;
+
+class Controller {
+    /**
+     *
+     */
+    protected $request;
     
+    
+    /**
+     * Constructor
+     * @param	Request		$request
+     */
+    function __construct( Request $request ) {
+        $this->request	= $request;
+    }
+    
+    /**
+     * 
+     * @access
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     */
+    function loadModule() {
+
+        //with or without extiontion ActionEnforcer or ExtensionActionEnforcer;
+        $enforcer = new ActionEnforcer(Context::getInstance());
+        try
+        {
+            $enforcer->execute();
+        }
+        catch (InterruptedActionException $iE)
+        {
+            // Nothing to do here.
+        }
+    
+    }
+   
 }
-*/
