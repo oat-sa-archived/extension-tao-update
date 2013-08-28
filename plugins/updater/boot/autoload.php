@@ -1,11 +1,4 @@
 <?php
-use OatBox\Common\Log\Dispatcher;
-use OatBox\Common\Config;
-use OatBox\Controller\Request;
-use OatBox\Controller\Controller;
-use OatBox\Controller\FlowController;
-use OatBox\Common\Uri;
-use OatBox\Controller\ActionEnforcingException;
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,35 +23,13 @@ use OatBox\Controller\ActionEnforcingException;
  *
  */
 
-error_reporting(E_ALL);
+$vendor_dir = dirname(__FILE__) . '/../vendor';
 
-require_once 'autoload.php';
-
-
-
-define('ROOT_PATH', dirname(__FILE__) . '/../');
-
-Dispatcher::singleton()->init(array(
-	array(
-		'class'			=> 'SingleFileAppender',
-		'threshold'		=> \OatBox\Common\Logger::TRACE_LEVEL,
-		'file'			=>  ROOT_PATH.'log/update.log',
-)));
+require_once 'SplClassLoader.php';
 
 
+$boxClassLoader = new SplClassLoader('OatBox', $vendor_dir );
+$boxClassLoader->register();
 
-$config = new Config(dirname(__FILE__).'/config.json');
-$constants = $config->get($config::CONSTANTS);
-$config->loadConstants($constants);
-
-
-$request = new Request();
-$controller = new Controller($request);
-try {
-    $controller->loadModule();
-}
-catch (ActionEnforcingException $e){
-    $flowController = new FlowController();
-    $flowController->redirect(Uri::url('error404','error404'));
-}
-
+$appClassLoader = new SplClassLoader('app', '.' );
+$appClassLoader->register();

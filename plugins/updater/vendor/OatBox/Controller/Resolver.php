@@ -111,7 +111,7 @@ class Resolver {
 			\OatBox\Common\Logger::w('Multiple leading slashes in request URI: '.$request);
 			$request = '/'.ltrim($request, '/');
 		}
-		$rootUrlPath	= str_replace('/index.php','',$pRequest->getRequestIndex());
+		$rootUrlPath	= $pRequest->getRootSubPath();
 		$absPath		= parse_url($request, PHP_URL_PATH);
 		if (substr($absPath, 0, strlen($rootUrlPath)) != $rootUrlPath ) {
 			throw new ResolverException('Request Uri '.$request.' outside of TAO path '.ROOT_URL);

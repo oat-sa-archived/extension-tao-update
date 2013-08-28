@@ -109,7 +109,7 @@ class ActionEnforcer
 
     		// Action method is invoked, passing request parameters as
     		// method parameters.
-    		Common\Logger::d('Invoking '.get_class($moduleInstance).'::'.$action, ARRAY('GENERIS', 'CLEARRFW'));
+    		Common\Logger::t('Invoking '.get_class($moduleInstance).'::'.$action, ARRAY('GENERIS', 'CLEARRFW'));
     		call_user_func_array(array($moduleInstance, $action), $tabParam);
     		
     		// Render the view if selected.
@@ -118,6 +118,7 @@ class ActionEnforcer
     		{
     			$renderer =  $moduleInstance->getRenderer();
     			$renderer->setTemplateDir(DIR_APP. DIR_VIEWS);
+    			$renderer->setAssetsUrl(ROOT_URL . DIR_ASSETS);
     			echo $renderer->render();
     		}
     	} 

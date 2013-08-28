@@ -24,11 +24,9 @@
  */
 namespace app\actions;
 
-class Test extends \OatBox\Controller\Module {
-    public function toto() {
-        $this->setData('i',$this->getRequestParameter('i'));
-         $this->setData('o', $this->getRequestParameter('o'));
-        $this->setView('maintenance.tpl');
-        
+use OatBox\Controller\Module;
+class Error extends Module {
+    public function error404(){
+        $this->setView('error/404.tpl');
     }
 }

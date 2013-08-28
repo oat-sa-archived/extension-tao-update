@@ -1,0 +1,43 @@
+
+#main{
+	background-color: white;
+	width: 800px;
+	padding: 40px;
+	background-repeat: no-repeat;
+	margin: 100px auto;
+	background-image: url(../img/maintenance.png);
+	background-position: right;
+}
+body{
+	background-color: #eee;
+	font-family: Verdana, Arial, sans-serif;
+	color: #3A3A3A;
+}
+h1{
+	text-align: center;
+	font-size: 22px;
+	margin-bottom: 35px;
+}
+#content{
+	width: 800px;
+	min-height: 250px;
+	margin-bottom: 50px;
+	font-size: small;
+	
+}
+#error{
+	color: red;
+	
+}
+#debug{
+	color: blue;
+	
+}
+#trace{
+	color: grey;
+	
+}
+#info{
+	color: green;
+	
+}

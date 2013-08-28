@@ -1,1 +1,1 @@
-{"constants":{"dataFolder":"data\/","DIR_ACTIONS":"actions\/","DIR_VIEWS":"views/","DIR_APP":"app\/"}}
+{"constants":{"ROOT_URL":"http://tao24.localdomain/taoUpdate/plugins/updater/","OLD_ROOT_PATH":"/home/lionel/work/php/tao24/","DIR_DATA":"data\/","DIR_ACTIONS":"actions\/","DIR_VIEWS":"views/","DIR_APP":"app\/","DIR_ASSETS":"assets/"}}

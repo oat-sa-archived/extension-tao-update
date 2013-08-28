@@ -30,6 +30,8 @@ class View
 {
 	
     private $templateDir;
+    
+    private $assetsUrl = null;
 	
 	/**
 	 * @var string base directory containing the views themes
@@ -119,7 +121,6 @@ class View
 		
         extract($this->variables);
         RenderContext::pushContext($this->variables);
-        var_dump($this->variables);
         ob_start();
         if ($this->templateDir == null){
             include $this->template;
@@ -139,15 +140,34 @@ class View
         
 		return $returnValue;
     }
+    
 
+    public function assets($asset){
+        if ($this->assetsUrl == null) {
+            Common\Logger::w("View's assets not properly configured, check config variable ASSETS_DIR");
+        	return $asset;
+        }
+        return $this->assetsUrl.$asset;
+    }
+    
     public function getData($key){
-        RenderContext::getCurrentContext()->getCurrentContext($key);
+        return RenderContext::getCurrentContext()->getData($key);
+    }
+    
+    public function hasData($key){
+        return RenderContext::getCurrentContext()->hasData($key);
     }
     
 	public function setTemplateDir($templateDir) {
 		$this->templateDir = $templateDir;
 		return $this;
 	}
+
+	public function setAssetsUrl($assetsUrl) {
+		$this->assetsUrl = $assetsUrl;
+		return $this;
+	}
+	
 	
 }
 ?>

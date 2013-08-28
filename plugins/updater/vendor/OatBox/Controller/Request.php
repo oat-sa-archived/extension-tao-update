@@ -198,6 +198,18 @@ class Request {
     }
     
     /**
+     * 
+     * @access
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     * @return mixed
+     */
+    public function getRootSubPath(){
+        return str_replace('/index.php','',$this->getRequestIndex());
+    }
+    
+   
+    
+    /**
      * @access
      * @author "Lionel Lecaque, <lionel@taotesting.com>"
      * @return unknown
