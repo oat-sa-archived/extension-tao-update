@@ -50,15 +50,16 @@ class Main extends \OatBox\Controller\Module {
            //echo 'Start Upgrading TAO';
            
            $parameters = array();
-           //$options = array(0 => 'Script OldVersionRemover');
-           $options = array(0 => 'Script Test');
-           
-           //new OldVersionArchiver(array('parameters' => $parameters),array('argv' =>$options ));
+
+           $options = array(
+               'argv' => array(0 => 'Script OldVersionRemover'),  
+               'output_mode' => 'log_only'
+           );
+           new OldVersionArchiver(array('parameters' => $parameters),$options );
            
            $this->setData('ROOT_URL',ROOT_URL);
            $this->setView('logViewer.tpl');
-           new Test(array('parameters' => array()),array('argv' => $options, 'output_mode' => 'log_only'));
-
+          
         }
        
         

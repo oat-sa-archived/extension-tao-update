@@ -28,6 +28,7 @@ namespace app\scripts;
 use OatBox\Common\ScriptRunner;
 use app\models\UpdateService;
 use OatBox\Common\Helpers\File;
+use OatBox\Common\Logger;
 
 class OldVersionArchiver extends ScriptRunner {
     
@@ -35,22 +36,22 @@ class OldVersionArchiver extends ScriptRunner {
 
 	protected function preRun() {
 
-	    /*
+	    
 	    $service = UpdateService::getInstance();
 	    $extManifests = $service->getUpdateManifests();
-	    $this->out('Checking Right on old before archiving' );
+	    Logger::t('Checking Right on old before archiving' );
 	    foreach ($extManifests as $ext =>$update){
 	        if(!is_writable(OLD_ROOT_PATH . $ext)){
 	            self::err('Extensions ' . $ext . ' do not exist or folder is not writable check priviledge',true  );
 	        }
 	        $this->out(  $ext . ' OK' );
 	    }
-	    $this->out('Checking Right on old installation destination '  );
+	    Logger::t('Checking Right on old installation destination '  );
 	    if(!is_writable(ROOT_PATH.DIR_DATA .'old/')){
 	        self::err('Folder ' .ROOT_PATH. DIR_DATA .'old/' . ' do not exist or folder is not writable check priviledge',true  );
 	    }
-	    $this->out('OK' );
-	    */
+	    Logger::t('Precheck OK' );
+	    
 	}
 
     
@@ -60,11 +61,11 @@ class OldVersionArchiver extends ScriptRunner {
         
         
         foreach ($extManifests as $ext =>$update){
-            
-            //File::move(OLD_ROOT_PATH . $ext, DIR_DATA .'old');
+            Logger::t('Moving Old'. $ext . ' from ' .OLD_ROOT_PATH . ' to ' . ROOT_PATH.DIR_DATA.'old/'.$ext);
+            //File::move(OLD_ROOT_PATH . $ext, DIR_DATA .'old'.$ext);
             
         }
-        $this->out('Moving Old Filemanger from ' .OLD_ROOT_PATH . ' to ' . ROOT_PATH.DIR_DATA.'old/');
+        //$this->out('Moving Old Filemanger from ' .OLD_ROOT_PATH . ' to ' . ROOT_PATH.DIR_DATA.'old/');
         //File::move(OLD_ROOT_PATH . 'filemanager' , ROOT_PATH.DIR_DATA .'old/' . 'filemanager');
       
 

@@ -42,6 +42,7 @@ abstract class ScriptRunner
     // --- ATTRIBUTES ---
     
     private $isCli;
+    private $logOny;
 
     /**
      * Short description of attribute parameters
@@ -82,7 +83,9 @@ abstract class ScriptRunner
 			$this->argv = $options['argv'];
 			$this->isCli = false;
 		}
-    	
+		if(isset($options['output_mode'])  && $options['output_mode'] == 'log_only'){
+		    $this->logOny = true;
+		}
     	self::out("* Running {$this->argv[0]}" , $options);
     	
     	$this->inputFormat = $inputFormat;
@@ -409,7 +412,7 @@ abstract class ScriptRunner
     {
         // section 127-0-1-1--39e3a8dd:12e33ba6c22:-8000:0000000000002D56 begin
         $returnValue =  $this->isCli ? $this->renderCliOutput($message,$options) : $this->renderHtmlOutput($message,$options);
-        if (isset($options['output_mode'])  && $options['output_mode'] == 'log_only'){
+        if ($this->logOny){
             
         }
         else{
