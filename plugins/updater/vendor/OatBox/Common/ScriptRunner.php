@@ -43,7 +43,6 @@ abstract class ScriptRunner
     
     private $isCli;
 
-    protected $newLine;
     /**
      * Short description of attribute parameters
      *
@@ -77,18 +76,14 @@ abstract class ScriptRunner
     	
     	if(PHP_SAPI == 'cli' && !isset($options['argv'])){
 			$this->argv = $_SERVER['argv'];
-			$colorsOptions = array('color' => 'white');
-			$this->newLine ="\n";
 			$this->isCli = true;
 		}
 		else{
 			$this->argv = $options['argv'];
-			$colorsOptions = array('color' => 'white');
-			$this->newLine ='<br/>';
 			$this->isCli = false;
 		}
     	
-    	self::out("* Running {$this->argv[0]}" , $colorsOptions);
+    	self::out("* Running {$this->argv[0]}" , $options);
     	
     	$this->inputFormat = $inputFormat;
 
@@ -115,7 +110,7 @@ abstract class ScriptRunner
     	
     	$this->postRun();
     	
-    	self::out('Execution of Script ' . $this->argv[0] . ' completed');
+    	self::out('Execution of Script ' . $this->argv[0] . ' completed' , $options);
     	
         // section 127-0-1-1--39e3a8dd:12e33ba6c22:-8000:0000000000002D4B end
     }
@@ -369,7 +364,7 @@ abstract class ScriptRunner
         $returnValue .= $message;
          
         if(!isset($options['inline'])){
-            $returnValue .= $this->newLine;
+            $returnValue .= "\n";
         }
         
         if($colorized){
@@ -393,7 +388,7 @@ abstract class ScriptRunner
         $returnValue .= $message;
         
         if(!isset($options['inline'])){
-            $returnValue .= $this->newLine;
+            $returnValue .= "<br/>";
         }
         
         if($colorized){
@@ -414,7 +409,12 @@ abstract class ScriptRunner
     {
         // section 127-0-1-1--39e3a8dd:12e33ba6c22:-8000:0000000000002D56 begin
         $returnValue =  $this->isCli ? $this->renderCliOutput($message,$options) : $this->renderHtmlOutput($message,$options);
-        echo $returnValue ;
+        if (isset($options['output_mode'])  && $options['output_mode'] == 'log_only'){
+            
+        }
+        else{
+            echo $returnValue ;
+        }
         Logger::i($message, array('SCRIPTS_RUNNER'));
         // section 127-0-1-1--39e3a8dd:12e33ba6c22:-8000:0000000000002D56 end
     }

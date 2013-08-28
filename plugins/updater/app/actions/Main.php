@@ -28,6 +28,7 @@ use app\models\UpdateService;
 use app\scripts\OldVersionRemover;
 use OatBox\Common\Uri;
 use app\scripts\OldVersionArchiver;
+use app\scripts\Test;
 
 class Main extends \OatBox\Controller\Module {
     
@@ -49,23 +50,20 @@ class Main extends \OatBox\Controller\Module {
            //echo 'Start Upgrading TAO';
            
            $parameters = array();
-           //$options = array(0 => 'Sript OldVersionRemover');
+           //$options = array(0 => 'Script OldVersionRemover');
+           $options = array(0 => 'Script Test');
            
            //new OldVersionArchiver(array('parameters' => $parameters),array('argv' =>$options ));
+           
            $this->setData('ROOT_URL',ROOT_URL);
            $this->setView('logViewer.tpl');
+           new Test(array('parameters' => array()),array('argv' => $options, 'output_mode' => 'log_only'));
 
         }
        
         
     }
     
-    public function log(){
-        $this->setData('ROOT_URL',ROOT_URL);
-        $this->setView('logViewer.tpl');
-        
-
-    }
     
     public function maintenance() {
         $this->setView('maintenance.tpl');;
