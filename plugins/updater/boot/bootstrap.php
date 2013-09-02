@@ -60,6 +60,6 @@ try {
 }
 catch (ActionEnforcingException $e){
     $flowController = new FlowController();
-    $flowController->redirect(Uri::url('error404','error404'));
+    $flowController->redirect(ROOT_URL . Uri::url('error404','Error'));
 }
 
