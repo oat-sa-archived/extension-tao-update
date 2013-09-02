@@ -41,6 +41,7 @@ define('ROOT_PATH', dirname(__FILE__) . '/../');
 Dispatcher::singleton()->init(array(
 	array(
 		'class'			=> 'SingleFileAppender',
+		'format'        => '[%s] %m',
 		'threshold'		=> \OatBox\Common\Logger::TRACE_LEVEL,
 		'file'			=>  ROOT_PATH.'log/update.log',
 )));

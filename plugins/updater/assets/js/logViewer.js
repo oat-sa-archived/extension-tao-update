@@ -48,9 +48,8 @@ logViewerClass.prototype.addDiv= function(line,logLevel){
 	
 	if(line.indexOf(upLogLevel) > 0){
 		// remove FILE and LINE
-		var shortLine = line.substr(0,line.lastIndexOf(' '));
-		shortLine = shortLine.substr(0,shortLine.lastIndexOf(' '));
-		var formated =  '<div id="' + logLevel + '">' + shortLine + '</div>';
+	
+		var formated =  '<div id="' + logLevel + '">' + line + '</div>';
 		 return formated;
 	}
 	else {

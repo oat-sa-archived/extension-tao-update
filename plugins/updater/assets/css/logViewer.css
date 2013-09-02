@@ -25,6 +25,9 @@ h1{
 	font-size: small;
 	
 }
+#log{
+	width: 600px;
+}
 #error{
 	color: red;
 	

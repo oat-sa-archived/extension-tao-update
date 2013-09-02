@@ -1,5 +1,4 @@
 <?php
-use app\scripts\OldVersionRemover;
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,5 +22,21 @@ use app\scripts\OldVersionRemover;
  * @subpackage 
  *
  */
-require_once 'boot/bootstrap.php';
 
+namespace app\scripts;
+
+use OatBox\Common\ScriptRunner;
+use OatBox\Common\Logger;
+
+class Test extends ScriptRunner {
+    
+    public function run(){
+        Logger::d('test Debug with TAG',array('[TAG]'));
+        Logger::e('test error');
+        Logger::t('test trace');
+        Logger::i('test info');
+
+
+    }
+    
+}

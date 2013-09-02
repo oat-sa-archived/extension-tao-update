@@ -42,13 +42,13 @@ class OldVersionArchiver extends ScriptRunner {
 	    Logger::t('Checking Right on old before archiving' );
 	    foreach ($extManifests as $ext =>$update){
 	        if(!is_writable(OLD_ROOT_PATH . $ext)){
-	            self::err('Extensions ' . $ext . ' do not exist or folder is not writable check priviledge',true  );
+	            $this->err('Extensions ' . $ext . ' do not exist or folder is not writable check priviledge',true  );
 	        }
 	        $this->out(  $ext . ' OK' );
 	    }
 	    Logger::t('Checking Right on old installation destination '  );
 	    if(!is_writable(ROOT_PATH.DIR_DATA .'old/')){
-	        self::err('Folder ' .ROOT_PATH. DIR_DATA .'old/' . ' do not exist or folder is not writable check priviledge',true  );
+	        $this->err('Folder ' .ROOT_PATH. DIR_DATA .'old/' . ' do not exist or folder is not writable check priviledge' ,true );
 	    }
 	    Logger::t('Precheck OK' );
 	    
@@ -61,12 +61,22 @@ class OldVersionArchiver extends ScriptRunner {
         
         
         foreach ($extManifests as $ext =>$update){
-            Logger::t('Moving Old'. $ext . ' from ' .OLD_ROOT_PATH . ' to ' . ROOT_PATH.DIR_DATA.'old/'.$ext);
-            //File::move(OLD_ROOT_PATH . $ext, DIR_DATA .'old'.$ext);
+            Logger::t('Moving Folder '. $ext );
+            File::move(OLD_ROOT_PATH . $ext, DIR_DATA .'old/'.$ext);
             
         }
-        //$this->out('Moving Old Filemanger from ' .OLD_ROOT_PATH . ' to ' . ROOT_PATH.DIR_DATA.'old/');
-        //File::move(OLD_ROOT_PATH . 'filemanager' , ROOT_PATH.DIR_DATA .'old/' . 'filemanager');
+        $rootFiles = array('.htaccess.bak','index.php','favicon.ico','fdl-1.3.txt','gpl-2.0.txt','license','version','readme.txt');
+        foreach ($rootFiles as $file){
+            
+            if(is_file(OLD_ROOT_PATH . $file)){
+                Logger::t('Moving File '. $file );
+                File::move(OLD_ROOT_PATH . $file, DIR_DATA .'old/'.$file);
+            }
+            else{
+                Logger::w('File not found : '. $file );
+            }
+        }
+
       
 
     }

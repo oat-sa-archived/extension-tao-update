@@ -437,7 +437,12 @@ abstract class ScriptRunner
         echo $this->out($message, array('color' => 'light_red'));
         
         if($stopExec == true){
-        	exit(1);	//exit the program with an error
+            if($this->isCli){
+        	   exit(1);	//exit the program with an error
+            }
+            else {
+                throw new Exception($message);
+            }
         }
         
         // section 127-0-1-1--39e3a8dd:12e33ba6c22:-8000:0000000000002D5B end

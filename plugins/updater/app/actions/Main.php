@@ -29,6 +29,7 @@ use app\scripts\OldVersionRemover;
 use OatBox\Common\Uri;
 use app\scripts\OldVersionArchiver;
 use app\scripts\Test;
+use OatBox\Common\Logger;
 
 class Main extends \OatBox\Controller\Module {
     
@@ -55,8 +56,12 @@ class Main extends \OatBox\Controller\Module {
                'argv' => array(0 => 'Script OldVersionRemover'),  
                'output_mode' => 'log_only'
            );
+           try {
            new OldVersionArchiver(array('parameters' => $parameters),$options );
-           
+           }
+           catch(\Exception $e){
+               Logger::e('Error occurs during update ' . $e->getMessage());
+           }
            $this->setData('ROOT_URL',ROOT_URL);
            $this->setView('logViewer.tpl');
           
