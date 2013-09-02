@@ -62,7 +62,7 @@ class OldVersionArchiver extends ScriptRunner {
         
         foreach ($extManifests as $ext =>$update){
             Logger::t('Moving Folder '. $ext );
-            File::move(OLD_ROOT_PATH . $ext, DIR_DATA .'old/'.$ext);
+            File::move(OLD_ROOT_PATH . $ext, DIR_DATA .'old/'.$ext,false);
             
         }
         $rootFiles = array('.htaccess.bak','index.php','favicon.ico','fdl-1.3.txt','gpl-2.0.txt','license','version','readme.txt');
@@ -70,7 +70,7 @@ class OldVersionArchiver extends ScriptRunner {
             
             if(is_file(OLD_ROOT_PATH . $file)){
                 Logger::t('Moving File '. $file );
-                File::move(OLD_ROOT_PATH . $file, DIR_DATA .'old/'.$file);
+                File::move(OLD_ROOT_PATH . $file, DIR_DATA .'old/'.$file,false);
             }
             else{
                 Logger::w('File not found : '. $file );

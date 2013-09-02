@@ -24,6 +24,7 @@
 namespace OatBox\Common\Helpers;
 
 use OatBox\Common\Exception;
+use OatBox\Common\Logger;
 
 class File
 {
@@ -77,10 +78,10 @@ class File
      * @param string destination A path to the destination file.
      * @return boolean Returns true if the file was successfully moved, false otherwise.
      */
-    public static function move($source, $destination)
+    public static function move($source, $destination,$ignoreSystemFiles = true)
     {
         $returnValue = (bool) false;
-        
+       
         if (is_dir($source)) {
             if (! file_exists($destination)) {
                 mkdir($destination, 0777, true);
@@ -93,7 +94,7 @@ class File
                             $error = true;
                         }
                     } else {
-                        if (! self::copy($source . '/' . $file, $destination . '/' . $file, true)) {
+                        if (! self::copy($source . '/' . $file, $destination . '/' . $file, true,$ignoreSystemFiles)) {
                             $error = true;
                         }
                     }
@@ -107,7 +108,7 @@ class File
             if (file_exists($source) && file_exists($destination)) {
                 $returnValue = rename($source, $destination);
             } else {
-                if (self::copy($source, $destination, true)) {
+                if (self::copy($source, $destination, true,$ignoreSystemFiles)) {
                     $returnValue = self::remove($source);
                 }
             }
