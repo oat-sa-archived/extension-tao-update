@@ -40,8 +40,24 @@ class Main extends \OatBox\Controller\Module {
         $this->service = UpdateService::getInstance();
     }
     
-
     public function test(){
+        $parameters = array();
+    
+        $options = array(
+            'argv' => array(0 => 'Script test'),
+            'output_mode' => 'log_only'
+        );
+        try {
+            new Test(array('parameters' => $parameters),$options );
+        }
+        catch(\Exception $e){
+            Logger::e('Error occurs during update ' . $e->getMessage());
+        }
+        $this->setData('ROOT_URL',ROOT_URL);
+        $this->setView('logViewer.tpl');
+    }
+
+    public function restore(){
         $parameters = array();
         
         $options = array(

@@ -96,6 +96,58 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 		return $this->key;
 	}
 	
+	
+	public function unShieldExtensions(){
+	    $extmanger = common_ext_ExtensionsManager::singleton();
+	    $extlists = $extmanger->getInstalledExtensions();
+	    $returnvalue = true;
+	    foreach (array_keys($extlists) as $ext){
+	        $returnvalue &= $this->unShield($ext);
+	    }
+	    return $returnvalue ;
+	}
+	
+	
+	public function shieldExtensions(){
+	    $extmanger = common_ext_ExtensionsManager::singleton();
+        $extlists = $extmanger->getInstalledExtensions();
+        $returnvalue = true;
+        foreach (array_keys($extlists) as $ext){
+            $returnvalue &= $this->shield($ext);
+        }
+        return $returnvalue;
+	}
+	
+	public function shield($ext){
+        $extFolder = ROOT_PATH . DIRECTORY_SEPARATOR . $ext;
+
+        helpers_File::copy($extFolder . '/.htaccess', $extFolder . '/htaccess.bak',true,false);
+        if(is_file($extFolder . '/htaccess.bak')){
+            file_put_contents($extFolder . '/.htaccess', "Options +FollowSymLinks\n"
+														   . "<IfModule mod_rewrite.c>\n"
+														   . "RewriteEngine On\n"
+														   . "RewriteCond %{REQUEST_URI} !/" .self::DEPLOY_FOLDER ." [NC]\n"
+														   . "RewriteRule ^.*$ " . ROOT_URL .self::DEPLOY_FOLDER . " [L]\n"
+														   . "</IfModule>");
+            return true;
+        }
+        else {
+            return false;
+        }
+	}
+	
+	public function unShield($ext){
+	    $extFolder = ROOT_PATH . DIRECTORY_SEPARATOR . $ext;
+	    
+	    if(unlink(ROOT_PATH.'/filemanager/.htaccess')){
+	        return helpers_File::copy(ROOT_PATH.'/filemanager/htaccess.bak', ROOT_PATH.'/filemanager/.htaccess',true,false);	         
+	    }
+	    else {
+	        common_Logger::e('Fail to remove htaccess in ' . $ext . ' . You may copy by hand file htaccess.bak');
+	        return false;
+	    }
+	}
+	
     /**
      * 
      * @access

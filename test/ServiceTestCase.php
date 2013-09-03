@@ -95,11 +95,6 @@ class ServiceTestCase extends UnitTestCase {
         
     }
     
-    public function test(){
-        $data = array('constants' => array('data' => 'data', 'test' => 'test'));
-        var_dump(json_encode($data));
-    }
-    
     
     public function testDelployRelease(){
         $release = '2.4.88';
@@ -108,4 +103,22 @@ class ServiceTestCase extends UnitTestCase {
         $this->assertTrue(is_dir($result .'TAO_2.4.88_build'));
         helpers_File::remove($path);
     }
+    
+    public function testShield(){
+        $this->assertTrue(is_file(ROOT_PATH.'/filemanager/.htaccess'));
+        $this->assertTrue($this->service->shield('filemanager'));
+        $this->assertTrue(is_file(ROOT_PATH.'/filemanager/htaccess.bak'));
+        
+        $this->assertTrue($this->service->unShield('filemanager'));
+        $this->assertTrue(is_file(ROOT_PATH.'/filemanager/.htaccess'));
+        
+        
+    }
+
+    public function testShieldExtensions(){
+
+        //$this->service->shieldExtensions());
+        $this->assertTrue($this->service->unShieldExtensions());
+    }
+    
 }
