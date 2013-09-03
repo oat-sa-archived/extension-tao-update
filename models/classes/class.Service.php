@@ -125,7 +125,7 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	}
 	
 	public function deployUpdater($folder){
-	    helpers_File::copy(BASE_PATH . self::UPDATOR_SRC, $folder, true);
+	    helpers_File::copy(BASE_PATH . self::UPDATOR_SRC, $folder, true,false);
 	}
 	
 	/**
