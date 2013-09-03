@@ -39,6 +39,23 @@ class Main extends \OatBox\Controller\Module {
     public function __construct(){
         $this->service = UpdateService::getInstance();
     }
+
+    public function deploy(){
+        $parameters = array();
+    
+        $options = array(
+            'argv' => array(0 => 'Script NewVersionDeployer'),
+            'output_mode' => 'log_only'
+        );
+        try {
+            new NewVersionDeployer(array('parameters' => $parameters),$options );
+        }
+        catch(\Exception $e){
+            Logger::e('Error occurs during update ' . $e->getMessage());
+        }
+        $this->setData('ROOT_URL',ROOT_URL);
+        $this->setView('logViewer.tpl');
+    }
     
     public function test(){
         $parameters = array();
