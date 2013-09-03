@@ -90,7 +90,7 @@ class File
             foreach (scandir($source) as $file) {
                 if ($file != '.' && $file != '..') {
                     if (is_dir($source . '/' . $file)) {
-                        if (! self::move($source . '/' . $file, $destination . '/' . $file, true)) {
+                        if (! self::move($source . '/' . $file, $destination . '/' . $file, $ignoreSystemFiles)) {
                             $error = true;
                         }
                     } else {
