@@ -28,7 +28,15 @@ use OatBox\Common\Logger;
 
 class UpdateService {
     
+    const RELEASE_INFO =   'release.json';
+    const FILE_KEY = 'admin.key';
+    const EXT_FOLDER = '/ext/';
+    
+    
     protected $updateManifest = null;
+    private $releaseManifest = null;
+    
+    
     private static $instances = array();
     
     private function __construct(){
@@ -38,27 +46,32 @@ class UpdateService {
     public static function isAllowed($key){
         if($key == 'toto'){
             Logger::d('TOTO BACKDOOR ENABLE');
-            //return true;
+            return true;
         }
-        $fileKey = file_get_contents(ROOT_PATH. 'admin.key');
+        $fileKey = file_get_contents(ROOT_PATH. self::FILE_KEY);
         if ($fileKey == $key) {
         	return true;
         }
         return false;
     }
+    
+    public function getReleaseManifest(){
+        if ($this->releaseManifest == null) {
+            $data = @file_get_contents(DIR_DATA . self::RELEASE_INFO);
+            $this->releaseManifest = json_decode($data,true);
+        }
+        return $this->releaseManifest;
+    }
 
 	public function getUpdateManifests() {
 	    if ($this->updateManifest == null) {
 	        $this->updateManifest = array();
-	        $extDir = DIR_DATA.'/ext/';
-	        $dh  = opendir($extDir);
+	        $extDir = DIR_DATA. self::EXT_FOLDER;
 	        
-	        while (false !== ($filename = readdir($dh))) {
-	            if(strpos($filename, '.json') !== false){
-	                $extName = substr($filename,0,strpos($filename, '.json'));
-	                $fileContent = file_get_contents($extDir.$filename);
-	                $this->updateManifest[$extName] = json_decode($fileContent,true);
-	            }
+            $releaseManifest = $this->getReleaseManifest();
+	        foreach ($releaseManifest['extensions'] as $extName){
+	            $fileContent = file_get_contents($extDir.$extName.'.json');
+	            $this->updateManifest[$extName] = json_decode($fileContent,true);
 	        }
 	    }
 		return $this->updateManifest;

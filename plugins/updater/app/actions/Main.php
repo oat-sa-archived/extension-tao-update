@@ -30,12 +30,33 @@ use OatBox\Common\Uri;
 use app\scripts\OldVersionArchiver;
 use app\scripts\Test;
 use OatBox\Common\Logger;
+use app\scripts\OldVersionRestorer;
 
 class Main extends \OatBox\Controller\Module {
     
     private $service;
     
+    public function __construct(){
+        $this->service = UpdateService::getInstance();
+    }
+    
 
+    public function test(){
+        $parameters = array();
+        
+        $options = array(
+            'argv' => array(0 => 'Script OldVersionRestorer'),
+            'output_mode' => 'log_only'
+        );
+        try {
+            new OldVersionRestorer(array('parameters' => $parameters),$options );
+        }
+        catch(\Exception $e){
+            Logger::e('Error occurs during update ' . $e->getMessage());
+        }
+        $this->setData('ROOT_URL',ROOT_URL);
+        $this->setView('logViewer.tpl');
+    }
     
     public function index() {
         
@@ -43,11 +64,12 @@ class Main extends \OatBox\Controller\Module {
             $this->redirect(Uri::url('maintenance'));
         }
         $key = $this->getRequestParameter('key');
-        if(UpdateService::isAllowed($key)){
+        if(!UpdateService::isAllowed($key)){
             $this->redirect(Uri::url('maintenance'));
         }
         else{
 
+            
            //echo 'Start Upgrading TAO';
            
            $parameters = array();

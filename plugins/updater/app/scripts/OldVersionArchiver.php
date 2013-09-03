@@ -38,19 +38,20 @@ class OldVersionArchiver extends ScriptRunner {
 
 	    
 	    $service = UpdateService::getInstance();
+	    $releaseManifest = $service->getReleaseManifest();
+	    $oldRootPath = $releaseManifest['old_root_path'];
 	    $extManifests = $service->getUpdateManifests();
 	    Logger::t('Checking Right on old before archiving' );
 	    foreach ($extManifests as $ext =>$update){
-	        if(!is_writable(OLD_ROOT_PATH . $ext)){
+	        if(!is_writable($oldRootPath. $ext)){
 	            $this->err('Extensions ' . $ext . ' do not exist or folder is not writable check priviledge',true  );
 	        }
-	        $this->out(  $ext . ' OK' );
 	    }
 	    Logger::t('Checking Right on old installation destination '  );
 	    if(!is_writable(ROOT_PATH.DIR_DATA .'old/')){
 	        $this->err('Folder ' .ROOT_PATH. DIR_DATA .'old/' . ' do not exist or folder is not writable check priviledge' ,true );
 	    }
-	    Logger::t('Precheck OK' );
+
 	    
 	}
 
@@ -58,19 +59,20 @@ class OldVersionArchiver extends ScriptRunner {
     public function run(){
          $service = UpdateService::getInstance();
         $extManifests = $service->getUpdateManifests();
-        
+        $releaseManifest = $service->getReleaseManifest();
+        $oldRootPath = $releaseManifest['old_root_path'];
         
         foreach ($extManifests as $ext =>$update){
             Logger::t('Moving Folder '. $ext );
-            File::move(OLD_ROOT_PATH . $ext, DIR_DATA .'old/'.$ext,false);
+            File::move( $oldRootPath. $ext, DIR_DATA .'old/'.$ext,false);
             
         }
         $rootFiles = array('.htaccess.bak','index.php','favicon.ico','fdl-1.3.txt','gpl-2.0.txt','license','version','readme.txt');
         foreach ($rootFiles as $file){
             
-            if(is_file(OLD_ROOT_PATH . $file)){
+            if(is_file($oldRootPath . $file)){
                 Logger::t('Moving File '. $file );
-                File::move(OLD_ROOT_PATH . $file, DIR_DATA .'old/'.$file,false);
+                File::move($oldRootPath. $file, DIR_DATA .'old/'.$file,false);
             }
             else{
                 Logger::w('File not found : '. $file );
