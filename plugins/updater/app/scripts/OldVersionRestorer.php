@@ -32,13 +32,21 @@ use OatBox\Common\Logger;
 
 class OldVersionRestorer extends ScriptRunner {
     
+    
+    private function getOldRootPath(){
+        $service = UpdateService::getInstance();
+        $releaseManifest = $service->getReleaseManifest();
+        return $releaseManifest['old_root_path'];
+    }
+    
     protected function preRun() {
-        
+        if(!is_writable($this->getOldRootPath())){
+            $this->err('Could not restore former version, folder not writable, you may do it by hand',true);
+        }
     }
     public function run(){
-        $releaseManifest = $service->getReleaseManifest();
-        $oldRootPath = $releaseManifest['old_root_path'];
-        File::move(DATA_DIR . 'old/', $oldRootPath);
-
+        $this->out('Move File back');
+        File::move(DIR_DATA . 'old/', $this->getOldRootPath());
+        mkdir(DIR_DATA . 'old/');
     }
 }
