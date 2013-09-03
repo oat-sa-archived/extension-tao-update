@@ -30,9 +30,12 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
     const DEPLOY_FOLDER = 'deployNewTAO/';
     const FILE_KEY = 'admin.key';
     const RELEASE_FOLDER = 'release/';
-    const RELEASE_MANIFEST = 'releaseManifest.json';
+    const RELEASE_INFO =   'release.json';
     
+    const UPDATOR_CONFIG = 'boot/config.json';  
     const UPDATOR_SRC =   'plugins/updater/';
+    
+   
     
     private $key = null;
     
@@ -103,12 +106,21 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	}
 	
 	public function buildReleaseManifest($release,$deployFolder){
-	    $releaseManifest = json_encode($this->releasesService->getReleaseManifest($release));
-	    file_put_contents($deployFolder . self::RELEASE_MANIFEST, $releaseManifest);;
+	    $releaseFileName = $this->releasesService->getReleaseFileName($release);
+	    $data = $this->releasesService->getReleaseManifest($release);
+	    $data['old_root_path'] = ROOT_PATH;
+	    $data['release_path'] =  self::RELEASE_FOLDER . $releaseFileName;
+	    $releaseManifest = json_encode($data);
+	    file_put_contents($deployFolder . self::RELEASE_INFO, $releaseManifest);;
+	}
+	
+	public function setUpdaterConstant($array){
+	    $data = json_encode($array);
+	    file_put_contents(BASE_PATH . self::UPDATOR_SRC . self::UPDATOR_CONFIG, $data);
 	}
 	
 	public function getUpdaterConstant(){
-	    $json = file_get_contents(BASE_PATH . self::UPDATOR_SRC . 'config.json');
+	    $json = file_get_contents(BASE_PATH . self::UPDATOR_SRC .  self::UPDATOR_CONFIG);
 	    return  json_decode($json,true);
 	}
 	
@@ -127,8 +139,13 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	    $releaseFileName = $this->releasesService->getReleaseFileName($release);
 	    $downloadFile = BASE_DATA . self::RELEASES_DOWNLOAD_FOLDER . $releaseFileName;
 	    if(is_file($downloadFile)){
-	        $updaterConstants = $this->getUpdaterConstant();
-	        $updaterDataFolder = $updaterConstants['constants']['dataFolder'];
+	        $updaterConstants = $this->getUpdaterConstant();	        
+	        $updaterDataFolder = $updaterConstants['constants']['DIR_DATA'];
+	        
+	        //update constants in adapter from local installation
+	        $updaterConstants['constants']['ROOT_URL'] = ROOT_URL . self::DEPLOY_FOLDER;
+	        $this->setUpdaterConstant($updaterConstants);
+	        
 	        $deployFolder = $this->createDeployFolder();
 	        $this->deployUpdater($deployFolder);
 	        $this->buildReleaseManifest($release,$deployFolder . $updaterDataFolder);
