@@ -25,12 +25,11 @@
 namespace app\actions;
 
 use app\models\UpdateService;
-use app\scripts\OldVersionRemover;
 use OatBox\Common\Uri;
-use app\scripts\OldVersionArchiver;
 use app\scripts\Test;
 use OatBox\Common\Logger;
 use app\scripts\OldVersionRestorer;
+use app\scripts\NewVersionDeployer;
 
 class Main extends \OatBox\Controller\Module {
     
