@@ -27,7 +27,7 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
     const RELEASES_LOCAL_FOLDER = 'local/';
     const RELEASES_DOWNLOAD_FOLDER = 'download/';
     
-    const DEPLOY_FOLDER = 'deployNewTAO/';
+    const DEPLOY_FOLDER = 'deployNewTao/';
     const FILE_KEY = 'admin.key';
     const RELEASE_FOLDER = 'release/';
     const RELEASE_INFO =   'release.json';
@@ -139,8 +139,8 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	public function unShield($ext){
 	    $extFolder = ROOT_PATH . DIRECTORY_SEPARATOR . $ext;
 	    
-	    if(unlink(ROOT_PATH.'/filemanager/.htaccess')){
-	        return helpers_File::copy(ROOT_PATH.'/filemanager/htaccess.bak', ROOT_PATH.'/filemanager/.htaccess',true,false);	         
+	    if(unlink($extFolder.'/.htaccess')){
+	        return helpers_File::copy($extFolder.'/htaccess.bak', $extFolder.'/.htaccess',true,false);	         
 	    }
 	    else {
 	        common_Logger::e('Fail to remove htaccess in ' . $ext . ' . You may copy by hand file htaccess.bak');
