@@ -26,6 +26,7 @@ namespace app\models;
 
 use OatBox\Common\Logger;
 
+
 class UpdateService {
     
     const RELEASE_INFO =   'release.json';
@@ -69,8 +70,11 @@ class UpdateService {
 	        $extDir = DIR_DATA. self::EXT_FOLDER;
 	        
             $releaseManifest = $this->getReleaseManifest();
-	        foreach ($releaseManifest['extensions'] as $extName){
-	            $fileContent = file_get_contents($extDir.$extName.'.json');
+	        foreach ($releaseManifest['old_extensions'] as $extName){
+	            if (is_file($extDir.$extName.'.json')) {
+	            	throw new UpdateException('Release manifest not found');
+	            }
+	            $fileContent = @file_get_contents($extDir.$extName.'.json');
 	            $this->updateManifest[$extName] = json_decode($fileContent,true);
 	        }
 	    }

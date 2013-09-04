@@ -27,18 +27,42 @@ use OatBox\Common\Helpers\File;
 use OatBox\Common\Logger;
 
 class NewVersionDeployer extends ScriptRunner {
+    
+    private $releasePath = null;
+    private $destination = null;
 
 
+    private function getDestination(){
+        if($this->destination == null){
+            $service = UpdateService::getInstance();
+            $releaseManifest = $service->getReleaseManifest();
+            $this->destination = $releaseManifest['old_root_path'];
+        }
+        return $this->destination;
+    }
+    
+    private function getReleasePath(){
+        if($this->releasePath == null){
+            $service = UpdateService::getInstance();
+            $releaseManifest = $service->getReleaseManifest();
+            $this->releasePath = DIR_DATA . $releaseManifest['release_path'];
+        }
+        return $this->destination;
+    }
 
     protected function preRun() {
-        
+        if(!is_writable($this->getDestination())){
+            $this->err($this->getDestination() . ' is not writable, check permission');
+        }
     }
     
     public function run(){
-        $service = UpdateService::getInstance();
-        $releaseManifest = $service->getReleaseManifest();
-        Logger::t('Deploy release from ' . $releaseManifest['release_path'] . ' to ' . $releaseManifest['old_root_path']);
-        File::copy($releaseManifest['release_path'],  $releaseManifest['old_root_path'],true,false);
+        $releasePath = $this->getReleasePath();
+        $destination = $this->getDestination();
+
+        Logger::t('Deploy release from ' . $releasePath . ' to ' . $destination);
+        
+        File::copy($releasePath, $destination ,true,false);
         
     }
 
