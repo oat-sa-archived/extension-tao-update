@@ -96,6 +96,22 @@ class ServiceTestCase extends UnitTestCase {
     }
     
     
+    public function testBuildReleaseManifest(){
+        $release = '2.4.88';       
+        $folder = __DIR__ . '/tmp/';
+        $result = $this->service->buildReleaseManifest($release,$folder);
+        $this->assertTrue(is_file($folder . 'release.json'),'File tmp/release.json do not exist');
+        $content = file_get_contents($folder . 'release.json');
+        $releaseInfo = json_decode($content,true);
+        $this->assertEqual($releaseInfo['version'], $release);
+        $this->assertEqual(count($releaseInfo['extensions']),16);
+        $this->assertEqual(count($releaseInfo['old_extensions']),17);
+        $this->assertEqual($releaseInfo['old_root_path'],ROOT_PATH);
+        helpers_File::remove($folder . 'release.json');
+        $this->assertFalse(is_file($folder . 'release.json'));
+    }
+    
+   /* 
     public function testDelployRelease(){
         $release = '2.4.88';
         $path = $this->service->downloadRelease($release);
@@ -117,8 +133,8 @@ class ServiceTestCase extends UnitTestCase {
 
     public function testShieldExtensions(){
 
-        //$this->service->shieldExtensions());
+        //$this->assertTrue($this->service->shieldExtensions());
         $this->assertTrue($this->service->unShieldExtensions());
     }
-    
+    */
 }
