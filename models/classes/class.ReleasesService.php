@@ -39,7 +39,8 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
    
 
     const RELEASE_FILE_PREFIX = 'TAO_';
-    const RELEASE_FILE_SUFFIX = '_build.zip';
+    const RELEASE_FILE_SUFFIX = '_build';
+    const RELEASE_FILE_EXT = '.zip';
     const RELEASE_STATUS_STABLE = 'stable';
     const RELEASE_STATUS_PATCH = 'patch';
     
@@ -96,8 +97,19 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
      * @param string $releaseName
      * @return string
      */
-    public function getReleaseFileName($releaseName){
+    public function getReleaseFolder($releaseName){
         return self::RELEASE_FILE_PREFIX . $releaseName . self::RELEASE_FILE_SUFFIX;
+    }
+    
+    /**
+     * 
+     * @access public
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     * @param string $releaseName
+     * @return string
+     */
+    public function getReleaseFileName($releaseName){
+        return $this->getReleaseFolder($releaseName). self::RELEASE_FILE_EXT;
     }
     
     /**
