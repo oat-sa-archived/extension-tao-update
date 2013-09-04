@@ -1,7 +1,7 @@
 
 
 function logViewerClass(){
-	this.url = root_url + '/log/update.log';
+	this.url = root_url + 'log/update.log';
 }
 
 logViewerClass.prototype.init= function(){
