@@ -39,36 +39,79 @@ class Main extends \OatBox\Controller\Module {
         $this->service = UpdateService::getInstance();
     }
 
-    public function deploy(){
-        $parameters = array();
-    
-        $options = array(
-            'argv' => array(0 => 'Script NewVersionDeployer'),
-            'output_mode' => 'log_only'
-        );
-        try {
-            new NewVersionDeployer(array('parameters' => $parameters),$options );
+    public function scriptRunner($script){
+
+        if($script != null){
+
+            $parameters = array();
+            
+            $options = array(
+                'argv' => array(0 => 'Script ' . $script ),
+                'output_mode' => 'log_only'
+            );
+            try {
+                $scriptName = 'app\scripts\\'. $script;
+                new $scriptName(array('parameters' => $parameters),$options );
+                $error = false;
+            }
+            catch(\Exception $e){
+                
+                Logger::e('Error occurs during update ' . $e->getMessage());
+                echo json_encode(
+                    array(
+                        'success' => 0,
+                        'failed' => array($e->getMessage())
+                    )
+                    );
+            }
+            
+            echo json_encode(
+                array(
+                    'success' => 1,
+                    'failed' => array()
+                )
+            );
         }
-        catch(\Exception $e){
-            Logger::e('Error occurs during update ' . $e->getMessage());
+        else{
+            echo json_encode(
+                array(
+                    'success' => 0,
+                    'failed' => array('not scriptname provided')
+                )
+            );
         }
-        $this->setData('ROOT_URL',ROOT_URL);
-        $this->setView('logViewer.tpl');
+
+
     }
     
-    public function test(){
-        $parameters = array();
-    
-        $options = array(
-            'argv' => array(0 => 'Script test'),
-            'output_mode' => 'log_only'
+    public function provideSteps(){
+        $program = array(
+            array(
+                'action' => 'Test',
+                'name' => 'Test',
+                
+            ),
+            array(
+                'action' => 'Test2',
+                'name' => 'Test 2',
+                
+            ),
+            array(
+                'action' => 'Test3',
+                'name' => 'Test 3',
+            
+            ),
+
+        
+        
+        
         );
-        try {
-            new Test(array('parameters' => $parameters),$options );
-        }
-        catch(\Exception $e){
-            Logger::e('Error occurs during update ' . $e->getMessage());
-        }
+        echo json_encode($program);
+    }
+
+    
+    public function test(){
+
         $this->setData('ROOT_URL',ROOT_URL);
         $this->setView('logViewer.tpl');
     }
@@ -111,7 +154,7 @@ class Main extends \OatBox\Controller\Module {
                'output_mode' => 'log_only'
            );
            try {
-           new OldVersionArchiver(array('parameters' => $parameters),$options );
+           //new OldVersionArchiver(array('parameters' => $parameters),$options );
            }
            catch(\Exception $e){
                Logger::e('Error occurs during update ' . $e->getMessage());
