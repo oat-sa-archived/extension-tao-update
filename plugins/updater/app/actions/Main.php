@@ -97,7 +97,7 @@ class Main extends \OatBox\Controller\Module {
                 
             ),
             array(
-                'action' => 'Test3',
+                'action' => 'Test4',
                 'name' => 'Test 3',
             
             ),
