@@ -58,7 +58,7 @@ class UpdateService {
     
     public function getReleaseManifest(){
         if ($this->releaseManifest == null) {
-            $data = @file_get_contents(DIR_DATA . self::RELEASE_INFO);
+            $data = file_get_contents(DIR_DATA . self::RELEASE_INFO);
             $this->releaseManifest = json_decode($data,true);
         }
         return $this->releaseManifest;

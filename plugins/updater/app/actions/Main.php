@@ -40,7 +40,8 @@ class Main extends \OatBox\Controller\Module {
     }
 
     public function scriptRunner($script){
-
+        $error = false;
+        $errorStack = array();
         if($script != null){
 
             $parameters = array();
@@ -57,20 +58,26 @@ class Main extends \OatBox\Controller\Module {
             catch(\Exception $e){
                 
                 Logger::e('Error occurs during update ' . $e->getMessage());
+                $error = true;
+                $errorStack[] = 'Error in script ' . $script . ' ' . $e->getMessage();
+            }
+            if($error){
                 echo json_encode(
                     array(
                         'success' => 0,
-                        'failed' => array($e->getMessage())
+                        'failed' => $errorStack
                     )
-                    );
+                );
             }
-            
-            echo json_encode(
-                array(
-                    'success' => 1,
-                    'failed' => array()
-                )
-            );
+            else{
+                echo json_encode(
+                    array(
+                        'success' => 1,
+                        'failed' => array()
+                    )
+                );
+            }
+
         }
         else{
             echo json_encode(
@@ -97,11 +104,20 @@ class Main extends \OatBox\Controller\Module {
                 
             ),
             array(
-                'action' => 'Test4',
+                'action' => 'Test3',
                 'name' => 'Test 3',
             
             ),
-
+//             array(
+//                 'action' => 'Test4',
+//                 'name' => 'Test 4',
+            
+//             ),
+//             array(
+//                 'action' => 'Test5',
+//                 'name' => 'Test 5',
+            
+//             ),
         
         
         

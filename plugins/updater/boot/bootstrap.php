@@ -1,11 +1,5 @@
 <?php
-use OatBox\Common\Log\Dispatcher;
-use OatBox\Common\Config;
-use OatBox\Controller\Request;
-use OatBox\Controller\Controller;
-use OatBox\Controller\FlowController;
-use OatBox\Common\Uri;
-use OatBox\Controller\ActionEnforcingException;
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,6 +28,8 @@ error_reporting(E_ALL);
 
 require_once 'autoload.php';
 
+use OatBox\Common\Log\Dispatcher;
+use OatBox\Common\Config;
 
 
 define('ROOT_PATH', dirname(__FILE__) . '/../');
@@ -53,13 +49,5 @@ $constants = $config->get($config::CONSTANTS);
 $config->loadConstants($constants);
 
 
-$request = new Request();
-$controller = new Controller($request);
-try {
-    $controller->loadModule();
-}
-catch (ActionEnforcingException $e){
-    $flowController = new FlowController();
-    $flowController->redirect(ROOT_URL . Uri::url('error404','Error'));
-}
+
 

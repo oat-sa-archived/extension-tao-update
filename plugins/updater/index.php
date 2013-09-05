@@ -1,5 +1,5 @@
 <?php
-use app\scripts\OldVersionRemover;
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,3 +25,18 @@ use app\scripts\OldVersionRemover;
  */
 require_once 'boot/bootstrap.php';
 
+use OatBox\Controller\Request;
+use OatBox\Controller\Controller;
+use OatBox\Controller\FlowController;
+use OatBox\Common\Uri;
+use OatBox\Controller\ActionEnforcingException;
+
+$request = new Request();
+$controller = new Controller($request);
+try {
+    $controller->loadModule();
+}
+catch (ActionEnforcingException $e){
+    $flowController = new FlowController();
+    $flowController->redirect(ROOT_URL . Uri::url('error404','Error'));
+}

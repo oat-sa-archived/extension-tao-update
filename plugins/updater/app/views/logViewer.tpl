@@ -4,7 +4,7 @@
 	<link rel="stylesheet" type="text/css" href="<?= $this->assets('css/logViewer.css');?>" />
 	<script type="text/javascript" src="<?= $this->assets('js/jquery-1.8.0.min.js'); ?>"></script>
 	<script type="text/javascript" src="<?= $this->assets('js/logViewer.js'); ?>"></script>
-	<script type="text/javascript" src="<?= $this->assets('js/updateProgress.js'); ?>"></script>
+	<script type="text/javascript" src="<?= $this->assets('js/scriptsRunner.js'); ?>"></script>
 <head>
 <title>Update in Progress</title>
 
@@ -14,23 +14,24 @@
 <body>
 	
 	<div id="main">
-	<h1>TAO Update Wizard</h1>
-	<div id="error"></div>
+		<h1>TAO Update Wizard</h1>
+		<h2>Update in Progress</h2>
 		<div id="task">
-		<h2>Update Steps</h2>
+		<h3>Steps</h3>
 		
 				<ul id="step"></ul>
 		</div>
-
-	
-	
-	
-
+					
 		<div id="content">
-			
-			<h2>Update in Progress</h2>
-			<div id="log">
-			
+			<div id="updateMsg"></div>
+
+			<div id="logContainer">
+			<br/>
+			<h3>Log</h3>
+			<input type="button" value="Show" id="showLog" onclick="showLog()" />	
+			<input type="button" value="Hide" id="hideLog" onclick="hideLog()" />	
+			<br/>
+			<div id="log" />
 			</div>
 			<script type="text/javascript">
 				var root_url = "<?= $this->getData('ROOT_URL') ;?>";
@@ -38,9 +39,18 @@
 				
 				var logViewer = new logViewerClass();
 				logViewer.init();
+				$('#log').hide();
+				
+				var scriptRunner = new scriptsRunnerClass();
+				scriptRunner.init();
+				
+				function showLog(){
+					$('#log').show();
+				}
 
-				var step = new updateProgessClass();
-				step.init();
+				function hideLog(){
+					$('#log').hide();
+				}	
 				
 			</script>
 		</div>
