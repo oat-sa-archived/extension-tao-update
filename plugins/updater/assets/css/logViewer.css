@@ -2,12 +2,15 @@
 #main{
 	background-color: white;
 	width: 800px;
-	margin: 40px;
-	margin-left: 100px;
+	min-height: 600px;
+	margin-left: auto;
+  	margin-right: auto;
+	margin-top: 20px;
 	padding: 20px;
 	background-image: url(../img/tao_logo.png);
 	background-position : top left;
 	background-repeat: no-repeat;
+
 
 }
 body{
@@ -16,14 +19,28 @@ body{
 	color: #3A3A3A;
 
 }
+#content{
+	float: right;
+	width: 600px;
+	min-height: 250px;
+	max-height:600px;
+	margin-top: 50px;
+	font-size: small;
+	background-color: #eee;
+	padding: 5px 10px;
+	overflow:scroll;
+	
+}
 #task{
-
+	float: left;
 	background: none repeat scroll 0 0 #eee;
 	position: relative;
-    height: 332px;
-    margin-left: 10px;
-    margin-top: 60px;
-
+	min-height: 250px;
+    max-height:600px;
+	margin-top: 50px;
+	margin-left: auto;
+  	margin-right: auto;
+	padding: 5px 10px;
     width: 150px;
 }
 .currentStep {
@@ -46,17 +63,7 @@ h1{
 
 
 }
-#content{
-	
-	width: 600px;
-	min-height: 250px;
-    margin-left: 10px;
-    margin-top: 60px;
-	font-size: small;
-	background-color: #eee;
-	padding: 0 10px;
-	
-}
+
 #log{
 width: 580px;
 
