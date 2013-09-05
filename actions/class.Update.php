@@ -64,7 +64,7 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
 	
 	public function extractRelease($releaseNumber){
 	    sleep(10);
-	    return json_encode(
+	    echo json_encode(
 	        array(
 	            'success' => 1,
 	            'failed' => array()
@@ -74,7 +74,7 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
 	
 	public function backup(){
 	    sleep(2);
-	    return json_encode(
+	    echo json_encode(
 	        array(
 	            'success' => 1,
 	            'failed' => array()
