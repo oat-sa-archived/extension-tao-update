@@ -27,43 +27,20 @@ use OatBox\Common\Helpers\File;
 use OatBox\Common\Logger;
 
 class NewVersionDeployer extends ScriptRunner {
-    
-    private $releasePath = null;
-    private $destination = null;
 
-
-    private function getDestination(){
-        if($this->destination == null){
-            $service = UpdateService::getInstance();
-            $releaseManifest = $service->getReleaseManifest();
-            $this->destination = $releaseManifest['old_root_path'];
-        }
-        return $this->destination;
-    }
-    
-    private function getReleasePath(){
-        if($this->releasePath == null){
-            $service = UpdateService::getInstance();
-            $releaseManifest = $service->getReleaseManifest();
-            $this->releasePath = DIR_DATA . $releaseManifest['release_path'];
-        }
-        return $this->destination;
-    }
 
     protected function preRun() {
-        if(!is_writable($this->getDestination())){
-            $this->err($this->getDestination() . ' is not writable, check permission');
+        $service = UpdateService::getInstance();
+        $check = $service->checkDeploymentFolder();
+        
+        if(!$check){
+            $this->err('Could not deploy release, check permission');
         }
     }
     
     public function run(){
-        $releasePath = $this->getReleasePath();
-        $destination = $this->getDestination();
-
-        Logger::t('Deploy release from ' . $releasePath . ' to ' . $destination);
-        
-        File::copy($releasePath, $destination ,true,false);
-        
+        $service = UpdateService::getInstance();
+        $service->deployNewRelease();
     }
 
 }

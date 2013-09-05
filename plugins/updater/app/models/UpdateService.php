@@ -25,13 +25,16 @@
 namespace app\models;
 
 use OatBox\Common\Logger;
+use OatBox\Common\Helpers\File;
 
 
 class UpdateService {
     
     const RELEASE_INFO =   'release.json';
+    const UPDATE_INFO =   'update.json';
     const FILE_KEY = 'admin.key';
-    const EXT_FOLDER = '/ext/';
+    const EXT_FOLDER = 'ext/';
+    const UPDATE_EXT = 'taoUpdate';
     
     
     protected $updateManifest = null;
@@ -70,9 +73,9 @@ class UpdateService {
 	        $extDir = DIR_DATA. self::EXT_FOLDER;
 	        
             $releaseManifest = $this->getReleaseManifest();
-	        foreach ($releaseManifest['old_extensions'] as $extName){
-	            if (is_file($extDir.$extName.'.json')) {
-	            	throw new UpdateException('Release manifest not found');
+	        foreach ($releaseManifest['extensions'] as $extName){
+	            if (!is_file($extDir.$extName.'.json')) {
+	            	throw new UpdateException('Release manifest not found ' . $extDir.$extName.'.json');
 	            }
 	            $fileContent = @file_get_contents($extDir.$extName.'.json');
 	            $this->updateManifest[$extName] = json_decode($fileContent,true);
@@ -91,8 +94,113 @@ class UpdateService {
 	    $returnValue = self::$instances[$serviceName];
 	    return $returnValue;
 	}
+	
+	
+	public function checkDeploymentFolder(){
+	    $releaseManifest = $this->getReleaseManifest();
+	    return is_writable($releaseManifest['old_root_path']);
+	}
+	
+	public function deployNewRelease(){
+        $releaseManifest = $this->getReleaseManifest();
+        $destination = $releaseManifest['old_root_path'];
+        $releasePath =  DIR_DATA . $releaseManifest['release_path'];
+	    
+	    Logger::t('Deploy release from ' . $releasePath . ' to ' . $destination);
+	    File::copy($releasePath, $destination ,true,false);
+	    
+	    //restore data of old extensions
+        $this->restoreOldData();
+	    
+        //shield all ext
+        foreach ($releaseManifest['extensions'] as $ext){
+            $this->shield($ext);
+        }
+        
+        //unshield taoUpdate
+        //$this->unShield(self::UPDATE_EXT);
+	}
+	
+	private function restoreOldData(){
+	    
+	    $updateManifest = $this->getUpdateManifests();
+	    
+	    foreach ($updateManifest as $ext => $manifest){
+	        if(isset($manifest['update']) && !empty($manifest['update'])){
+	            foreach ($manifest['update'] as $k => $v){
+	                if($k =='keep'){
+	                    $this->restoreData($ext, $v);
+	                }
+	            }
+	    
+	        }
+	    }
+	}
+	
+	
+	private function restoreData($ext, $data){
+	    if(is_array($data)){
+	        foreach ($data as $d){
+	            $this->restoreData($ext,$d);
+	        }
+	    }
+
+	    else{
+    	    $releaseManifest = $this->getReleaseManifest();
+    	    $srcPath = DIR_DATA . 'old/';
+    	    $src = $srcPath. $ext . DIRECTORY_SEPARATOR . $data;
+    	    $dest = $releaseManifest['old_root_path'] . $ext . DIRECTORY_SEPARATOR . $data;
+    	    Logger::t('Copy ' . $src . ' to ' . $dest);
+    	    File::copy($src, $dest,true,false);
+	    }
+	}
+	
+	public function shield($ext){
+	    $releaseManifest = $this->getReleaseManifest();
+	    $extFolder = $releaseManifest['old_root_path'] . DIRECTORY_SEPARATOR . $ext;
+	
+	    File::copy($extFolder . '/.htaccess', $extFolder . '/htaccess.bak',true,false);
+	    if(is_file($extFolder . '/htaccess.bak')){
+	        file_put_contents($extFolder . '/.htaccess', "Options +FollowSymLinks\n"
+	            . "<IfModule mod_rewrite.c>\n"
+	                . "RewriteEngine On\n"
+	                    . "RewriteCond %{REQUEST_URI} !/" .self::UPDATE_EXT ." [NC]\n"
+	                        . "RewriteRule ^.*$ /" . self::UPDATE_EXT . "/data/migrate [R]\n"
+	                            . "</IfModule>");
+	                            return true;
+	    }
+	    else {
+	        return false;
+	    }
+	}
+	
+	public function unShield($ext){
+	    $releaseManifest = $this->getReleaseManifest();
+	    $extFolder = $releaseManifest['old_root_path'] . DIRECTORY_SEPARATOR . $ext;
+	     
+	    if(unlink($extFolder.'/.htaccess')){
+	        return File::copy($extFolder.'/htaccess.bak', $extFolder.'/.htaccess',true,false);
+	    }
+	    else {
+	        Logger::e('Fail to remove htaccess in ' . $ext . ' . You may copy by hand file htaccess.bak');
+	        return false;
+	    }
+	}
+	
+	
+	public function finishFileUpdate(){
+	    
+	}
     
-    
+	public function test(){
+	    $releaseManifest = $this->getReleaseManifest();
+	    var_dump($releaseManifest);
+	}
+	
+	
+	public function getUpdateScripts(){
+	    return @file_get_contents(DIR_DATA . self::UPDATE_INFO);
+	}
     
     
 }
