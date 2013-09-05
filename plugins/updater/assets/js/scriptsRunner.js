@@ -1,12 +1,14 @@
 
 
-function scriptsRunnerClass(){
+function scriptsRunnerClass(successMsg,successLink){
 	this.$step = $('#step');
-	console.log(root_url);
+	console.log(successMsg);
 	this.availableStepsUrl = root_url + 'Main/provideSteps';
 	this.$updateMsg = $('#updateMsg');
 	this.availableSteps = [];
 	this.stepIndex = 0;
+	this.$successMsg = successMsg;
+	this.$successLink = successLink;
 }
 
 scriptsRunnerClass.prototype.init = function(){
@@ -36,7 +38,11 @@ scriptsRunnerClass.prototype.updateProgress = function() {
 	}else{
 		this.$updateMsg.show();
 		$('<h3>Success</h3>').addClass('sucessMsg').appendTo(this.$updateMsg);
-		$('<p>You will be redirect to next phase</p>').addClass('sucessMsg').appendTo(this.$updateMsg);
+		var result = this.$successMsg.replace('<a>','<a href="' + this.$successLink + '">');
+		$('<p>' + result +'</p>').addClass('sucessMsg').appendTo(this.$updateMsg);
+		console.log(result);
+		
+		
 		$('<br/>').appendTo(this.$updateMsg);
 	}
 }
@@ -53,7 +59,7 @@ scriptsRunnerClass.prototype.run = function(step){
 	$.getJSON(url, function(data) {
 		
 		actionStatusTag.html( '<li id="update-step-action-' + action + '">'+ name+ '<img src="'+img_url+'tick.png"/><li>');
-		console.log(data);
+		
 		if(data.success == 1){
 			self.updateProgress();
 		}

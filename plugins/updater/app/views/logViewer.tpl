@@ -28,28 +28,34 @@
 			<div id="logContainer">
 			<br/>
 			<h3>Log</h3>
-			<input type="button" value="Show" id="showLog" onclick="showLog()" />	
-			<input type="button" value="Hide" id="hideLog" onclick="hideLog()" />	
+			<input type="button" value="Show Log" id="showLog" onclick="showLog()" />	
+			<input type="button" value="Hide Log" id="hideLog" onclick="hideLog()" />	
 			<br/>
 			<div id="log" />
 			</div>
 			<script type="text/javascript">
 				var root_url = "<?= $this->getData('ROOT_URL') ;?>";
+				var successMsg = "<?= $this->getData('successMsg') ;?>";
+				var successLink = "<?= $this->getData('successLink') ;?>";
 				var img_url = "<?= $this->assets('img/') ;?>";
 				
 				var logViewer = new logViewerClass();
 				logViewer.init();
-				$('#log').hide();
+				hideLog();
 				
-				var scriptRunner = new scriptsRunnerClass();
+				var scriptRunner = new scriptsRunnerClass(successMsg,successLink);
 				scriptRunner.init();
 				
 				function showLog(){
 					$('#log').show();
+					$('#showLog').hide();
+					$('#hideLog').show();
 				}
 
 				function hideLog(){
 					$('#log').hide();
+					$('#hideLog').hide();
+					$('#showLog').show();
 				}	
 				
 			</script>

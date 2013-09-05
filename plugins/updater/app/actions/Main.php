@@ -34,9 +34,11 @@ use app\scripts\NewVersionDeployer;
 class Main extends \OatBox\Controller\Module {
     
     private $service;
+    private $releaseManifest;
     
     public function __construct(){
         $this->service = UpdateService::getInstance();
+        $this->releaseManifest = $this->service->getReleaseManifest();
     }
 
     public function scriptRunner($script){
@@ -127,27 +129,21 @@ class Main extends \OatBox\Controller\Module {
 
     
     public function test(){
-
-        $this->setData('ROOT_URL',ROOT_URL);
-        $this->setView('logViewer.tpl');
-    }
-
-    public function restore(){
-        $parameters = array();
         
-        $options = array(
-            'argv' => array(0 => 'Script OldVersionRestorer'),
-            'output_mode' => 'log_only'
-        );
-        try {
-            new OldVersionRestorer(array('parameters' => $parameters),$options );
+        if($this->releaseManifest['status'] == 'patch'){
+            $successMsg = 'Patch have been deployed, update completed, you will be <a>redirect to TAO HOME</a>';
+            $successLink = ROOT_URL.'..';
         }
-        catch(\Exception $e){
-            Logger::e('Error occurs during update ' . $e->getMessage());
+        else {
+            $successMsg = 'First step of your update is achieved, you will be <a>redirect to the TAO Data Migration page</a>';
+            $successLink = ROOT_URL.'../taoUpdate/data/migrate';
         }
+        $this->setData('successLink', $successLink);
+        $this->setData('successMsg', $successMsg);
         $this->setData('ROOT_URL',ROOT_URL);
         $this->setView('logViewer.tpl');
     }
+
     
     public function index() {
         
