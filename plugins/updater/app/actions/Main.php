@@ -93,38 +93,12 @@ class Main extends \OatBox\Controller\Module {
 
     }
     
+    public function serviceTest(){
+        $this->service->test();
+    }
+    
     public function provideSteps(){
-        $program = array(
-            array(
-                'action' => 'Test',
-                'name' => 'Test',
-                
-            ),
-            array(
-                'action' => 'Test2',
-                'name' => 'Test 2',
-                
-            ),
-            array(
-                'action' => 'Test3',
-                'name' => 'Test 3',
-            
-            ),
-//             array(
-//                 'action' => 'Test4',
-//                 'name' => 'Test 4',
-            
-//             ),
-//             array(
-//                 'action' => 'Test5',
-//                 'name' => 'Test 5',
-            
-//             ),
-        
-        
-        
-        );
-        echo json_encode($program);
+        echo $this->service->getUpdateScripts();
     }
 
     
