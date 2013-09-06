@@ -111,7 +111,7 @@ class ServiceTestCase extends UnitTestCase {
         $this->assertFalse(is_file($folder . 'release.json'));
     }
     
-   /* 
+    
     public function testDelployRelease(){
         $release = '2.4.88';
         $path = $this->service->downloadRelease($release);
@@ -136,5 +136,5 @@ class ServiceTestCase extends UnitTestCase {
         //$this->assertTrue($this->service->shieldExtensions());
         $this->assertTrue($this->service->unShieldExtensions());
     }
-    */
+    
 }

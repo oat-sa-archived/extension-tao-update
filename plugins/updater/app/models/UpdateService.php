@@ -31,10 +31,11 @@ use OatBox\Common\Helpers\File;
 class UpdateService {
     
     const RELEASE_INFO =   'release.json';
-    const UPDATE_INFO =   'update.json';
+    const UPDATE_STEP =   'updateStep.json';
     const FILE_KEY = 'admin.key';
     const EXT_FOLDER = 'ext/';
-    const UPDATE_EXT = 'taoUpdate';
+    const DEPLOY_FOLDER = 'deployNewTao/';
+    const UPDATE_EXT = 'taoUpdate/';
     
     
     protected $updateManifest = null;
@@ -119,6 +120,9 @@ class UpdateService {
         
         //unshield taoUpdate
         //$this->unShield(self::UPDATE_EXT);
+        
+        //move token
+        File::move(ROOT_PATH. self::FILE_KEY, $destination. self::UPDATE_EXT.'data/');
 	}
 	
 	private function restoreOldData(){
@@ -164,8 +168,9 @@ class UpdateService {
 	        file_put_contents($extFolder . '/.htaccess', "Options +FollowSymLinks\n"
 	            . "<IfModule mod_rewrite.c>\n"
 	                . "RewriteEngine On\n"
-	                    . "RewriteCond %{REQUEST_URI} !/" .self::UPDATE_EXT ." [NC]\n"
-	                        . "RewriteRule ^.*$ /" . self::UPDATE_EXT . "/data/migrate [R]\n"
+                    . "RewriteCond %{REQUEST_URI} !/" .self::DEPLOY_FOLDER ." [NC]\n"
+					. "RewriteRule ^.*$ " . ROOT_URL .self::DEPLOY_FOLDER . " [L]\n"
+														  
 	                            . "</IfModule>");
 	                            return true;
 	    }
@@ -192,14 +197,10 @@ class UpdateService {
 	    
 	}
     
-	public function test(){
-	    $releaseManifest = $this->getReleaseManifest();
-	    var_dump($releaseManifest);
-	}
 	
 	
 	public function getUpdateScripts(){
-	    return @file_get_contents(DIR_DATA . self::UPDATE_INFO);
+	    return @file_get_contents(DIR_DATA . self::UPDATE_STEP);
 	}
     
     
