@@ -24,6 +24,8 @@ class taoUpdate_actions_Data extends tao_actions_CommonModule {
     
     protected function _isAllowed()
     {
+        $session = new taoUpdate_models_classes_Session();
+        common_session_SessionManager::startSession($session);
         return true;
     }
     
