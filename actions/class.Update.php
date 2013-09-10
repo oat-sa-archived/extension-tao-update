@@ -14,6 +14,7 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
     private  $allowedRole ='http://www.tao.lu/Ontologies/TAO.rdf#SysAdminRole';
     private $availabeUpdates = null;
     private $userService;
+    protected  $service;
     
     /**
      * initialize the services
@@ -52,34 +53,49 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
 
 	}
 	
-	public function downloadRelease($releaseNumber){
-	    sleep(5);
-	    return json_encode(
-	        array(
-    	        'success' => 1,
-    			'failed' => array()
-		    )
-	    );
-	}
+
 	
-	public function extractRelease($releaseNumber){
-	    sleep(10);
-	    echo json_encode(
-	        array(
-	            'success' => 1,
-	            'failed' => array()
-	        )
-	    );
-	}
-	
-	public function backup(){
-	    sleep(2);
-	    echo json_encode(
-	        array(
-	            'success' => 1,
-	            'failed' => array()
-	        )
-	    );
+	/**
+	 * 
+	 * @access
+	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
+	 * @param unknown $action
+	 * @param unknown $versionName
+	 */
+	public function run($action,$versionName){
+	    $error = false;
+	    $failed = array();
+	    
+	    if($versionName == null || $action == null){
+	        $error = true;
+	        $failed[] = 'No version selected';
+	    }
+	    else {
+	        try {    	  
+    	       $this->service->$action($versionName);
+    	    }
+    	    catch (taoUpdate_models_classes_UpdateException $e){
+    	        $error = true;
+    	        $failed[] = $e->getMessage();
+    	    }
+	    }
+	    
+	    if(!$error){
+	        echo json_encode(
+	            array(
+	                'success' => 1,
+	                'failed' => array()
+	            )
+	        );
+	    }
+	    else {
+	        echo json_encode(
+	            array(
+	                'success' => 0,
+	                'failed' => $failed
+	            )
+	        );
+	    }
 	}
 	
 	public function getUpdateSteps(){
@@ -90,7 +106,7 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
                 'status' => __('stand by')
             ),
             array(
-                'action' => 'extractRelease',
+                'action' => 'deploy',
                 'name' => __('Extract new TAO version'),
                 'status' =>  __('stand by'),
             ),

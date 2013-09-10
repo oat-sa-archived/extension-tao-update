@@ -52,13 +52,17 @@ class taoUpdate_actions_Data extends tao_actions_CommonModule {
                 'output_mode' => 'log_only'
             );
             try {
-                $scriptName = 'taoUpdate_scripts_update_'. $script;
+                $scriptName =  $script;
+                if(!class_exists($scriptName)){
+                    throw new taoUpdate_models_classes_UpdateException('Could not find scriptName class ' . $script);
+                }
                 new $scriptName(array('parameters' => $parameters),$options );
+                  
                 $error = false;
             }
-            catch(\Exception $e){
+            catch(Exception $e){
     
-                Logger::e('Error occurs during update ' . $e->getMessage());
+                common_Logger::e('Error occurs during update ' . $e->getMessage());
                 $error = true;
                 $errorStack[] = 'Error in script ' . $script . ' ' . $e->getMessage();
             }
