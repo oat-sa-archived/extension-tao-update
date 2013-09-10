@@ -156,7 +156,7 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
         $returnValue = array();
         $versions = $this->getVersions();
         $currentVersion = $this->getCurrentVersion();
-        var_dump($currentVersion);
+
         foreach ($versions as $version){
         
             $releaseVersion = $this->convertVersionNumber($version['version']);
