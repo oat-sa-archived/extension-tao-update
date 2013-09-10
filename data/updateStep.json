@@ -1,1 +1,1 @@
-[{"action":"Test","name":"test1","extension":"taoUpdate"},{"action":"Test2","name":"test3","extension":"taoUpdate"}]
+[{"action":"taoUpdate_scripts_update_Test","name":"test"},{"action":"taoUpdate_scripts_update_Test2","name":"Test2"},{"action":"taoUpdate_scripts_update_RemoveTaoUpdate","name":"uninstall Tao Update"}]
