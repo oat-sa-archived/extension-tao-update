@@ -20,19 +20,23 @@
 
 			</div>
 			<br/>
-			<span><?=__('Select the update you want to install')?></span>
-			<br/>
-			<div id="update-table-container">
-				<table id="update-grid" />
-			</div>
+
 
 			<br/>
 			<?if (get_data('isDesignModeEnabled')):?>
+			
+			<div id="update-table-step-container">
 
-			<div id="update-button-container">
-	        	<input type="button" value="<?=__("Launch update")?>" id="updateButton" onclick="initUpdate()" />
-	
-	        </div>
+	        	<table id="update-step-grid" />		
+			</div>
+			<br/>
+			<div id="update-table-container">
+			<?=__('Select the update you want to install')?>
+			<br/>
+
+				<table id="update-grid" />
+			</div>
+
 	        <?else :?>
 	        <div id="update-error">
 	        	<img src="<?= ROOT_URL ?>tao/views/img/warning.png"
@@ -42,15 +46,16 @@
 	        </div>
 	        <?endif;?>
 	        </div>
-	        <div id="update-inProgress">
+	        <br/>
 	       
 	        
-	        <div id="update-table-step-container">
-	        	
-	        	<table id="update-step-grid" />		
-			</div>
-			 <input type="button" value="<?=__("back")?>" id="updateButton" onclick="back()" />	
+
+			
+			<div id="update-button-container">
+	        	<input type="button" value="<?=__("Launch update")?>" id="updateButton" onclick="initUpdate()" />
+	
 	        </div>
+
 
 	</div>
 	<?else :?>
