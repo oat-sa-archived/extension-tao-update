@@ -15,7 +15,7 @@
 	<releases>
 			<release>
 			<version>10.10.77</version>
-			<comment>TAO Release 10.10.88</comment>
+			<comment>TAO Release 10.10.77</comment>
 			<extensions>
 				<extension>generis</extension>
 				<extension>tao</extension>
