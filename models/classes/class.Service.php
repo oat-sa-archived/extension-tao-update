@@ -37,10 +37,10 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
     
    
     
-    private $key = null;
+    private $key;
     
     private $releasesService;
-
+    private $backupService;
 
 
 
@@ -48,7 +48,7 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	protected function __construct() {
 	    $this->releasesService = taoUpdate_models_classes_ReleasesService::singleton();
 	    $this->releasesService->setReleaseManifestUrl(RELEASES_MANIFEST);
-
+	    $this->backupService = taoUpdate_models_classes_BackupService::singleton();
 	}
 
     
@@ -69,7 +69,7 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
      * @return string
      */
     public function createDeployFolder(){
-        if($this->key == null){
+        if($this->getKey() == null){
             throw  new taoUpdate_models_classes_UpdateException('key is missing, should have been generated before' );
         }
         $path = ROOT_PATH . self::DEPLOY_FOLDER;
@@ -96,7 +96,12 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 		return $this->key;
 	}
 	
-	
+	/**
+	 * 
+	 * @access
+	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
+	 * @return boolean
+	 */
 	public function unShieldExtensions(){
 	    $extmanger = common_ext_ExtensionsManager::singleton();
 	    $extlists = $extmanger->getInstalledExtensions();
@@ -107,7 +112,12 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	    return $returnvalue ;
 	}
 	
-	
+	/**
+	 * 
+	 * @access
+	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
+	 * @return boolean
+	 */
 	public function shieldExtensions(){
 	    $extmanger = common_ext_ExtensionsManager::singleton();
         $extlists = $extmanger->getInstalledExtensions();
@@ -118,6 +128,13 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
         return $returnvalue;
 	}
 	
+	/**
+	 * 
+	 * @access
+	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
+	 * @param unknown $ext
+	 * @return boolean
+	 */
 	public function shield($ext){
         $extFolder = ROOT_PATH . DIRECTORY_SEPARATOR . $ext;
 
@@ -136,6 +153,13 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
         }
 	}
 	
+	/**
+	 * 
+	 * @access
+	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
+	 * @param unknown $ext
+	 * @return boolean
+	 */
 	public function unShield($ext){
 	    $extFolder = ROOT_PATH . DIRECTORY_SEPARATOR . $ext;
 	    
@@ -157,6 +181,13 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	   return $this->releasesService->getAvailableUpdates();
 	}
 	
+	/**
+	 * 
+	 * @access
+	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
+	 * @param unknown $release
+	 * @param unknown $deployFolder
+	 */
 	public function buildReleaseManifest($release,$deployFolder){
 	    
 	    $data = $this->releasesService->getReleaseManifest($release);
@@ -177,16 +208,34 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	    file_put_contents($deployFolder . self::RELEASE_INFO, $releaseManifest);;
 	}
 	
+	/**
+	 * 
+	 * @access
+	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
+	 * @param unknown $array
+	 */
 	public function setUpdaterConstant($array){
 	    $data = json_encode($array);
 	    file_put_contents(BASE_PATH . self::UPDATOR_SRC . self::UPDATOR_CONFIG, $data);
 	}
 	
+	/**
+	 * 
+	 * @access
+	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
+	 * @return mixed
+	 */
 	public function getUpdaterConstant(){
 	    $json = file_get_contents(BASE_PATH . self::UPDATOR_SRC .  self::UPDATOR_CONFIG);
 	    return  json_decode($json,true);
 	}
 	
+	/**
+	 * 
+	 * @access
+	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
+	 * @param unknown $folder
+	 */
 	public function deployUpdater($folder){
 	    helpers_File::copy(BASE_PATH . self::UPDATOR_SRC, $folder, true,false);
 	}
@@ -199,6 +248,7 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	 * @throws taoUpdate_models_classes_UpdateException
 	 */
 	public function deploy($release){
+	    $this->generateKey();
 	    $releaseFileName = $this->releasesService->getReleaseFileName($release);
 	    $downloadFile = BASE_DATA . self::RELEASES_DOWNLOAD_FOLDER . $releaseFileName;
 	    if(is_file($downloadFile)){
@@ -217,6 +267,18 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	    else {
 	        throw new taoUpdate_models_classes_UpdateException('Fail to extract Release, file missing ' . $downloadFile);
 	    }
+	}
+	
+	/**
+	 * 
+	 * @access
+	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
+	 */
+	public function backup(){
+	   
+	    $folder = $this->backupService->createBackupFolder();
+	    $this->backupService->storeAllFiles($folder);
+	    $this->backupService->storeDatabase($folder);
 	}
 	
     /**

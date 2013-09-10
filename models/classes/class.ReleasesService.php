@@ -138,6 +138,9 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
             fwrite($fp, $contents);
             
         } else {
+            if(is_file($localFolder.$releaseFileName)){
+                helpers_File::remove($localFolder.$releaseFileName);
+            }
             throw new taoUpdate_models_classes_ReleaseDownloadException($httpCode, $releaseFileName, $updateSite);      
         }
         return $localFolder.$releaseFileName;
@@ -153,12 +156,13 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
         $returnValue = array();
         $versions = $this->getVersions();
         $currentVersion = $this->getCurrentVersion();
-         
+        var_dump($currentVersion);
         foreach ($versions as $version){
         
             $releaseVersion = $this->convertVersionNumber($version['version']);
             if($releaseVersion['major'] > $currentVersion['major']
-            || $releaseVersion['minor'] > $currentVersion['minor'] ){
+            || ($releaseVersion['minor'] > $currentVersion['minor'] 
+                && $releaseVersion['major'] == $currentVersion['major'])){
                 $returnValue[$version['version']] = array(
                     'version' =>$version['version']
                     ,'file' => $this->getReleaseFileName($version['version'])
@@ -170,7 +174,9 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
             if(isset($version['patchs'])){
                 foreach ($version['patchs'] as $patch){
                     $patchVersion = $this->convertVersionNumber($patch['version']);
-                    if($patchVersion['patch'] > $currentVersion['patch']){
+                    if($patchVersion['patch'] > $currentVersion['patch'] && 
+                    $releaseVersion['major'] == $currentVersion['major'] &&
+                    $releaseVersion['minor'] == $currentVersion['minor']){
                         $returnValue[$patch['version'] ] = array( 
                             'version' =>$patch['version'] 
                             ,'file' => $this->getReleaseFileName($patch['version'])
@@ -193,6 +199,8 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
         $major = substr($versionNumber, 0, strpos($versionNumber, '.'));        
         $tmp = substr($versionNumber, strpos($versionNumber, '.')+1);       
         $minor =  strpos($tmp, '.') ? substr($tmp, 0, strpos($tmp, '.')) : $tmp;
+        $minor = str_replace('-alpha', '', $minor);
+        $minor = str_replace('-beta', '', $minor);
         $patch = strpos($tmp, '.') ? substr($tmp, strpos($tmp, '.')+1) : '0';
         return array(
             'full' => $versionNumber
