@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest>
+	<updateSites>
+		<updateSite>
+			<id>default</id>
+			<url>$BASE_URL/test/sample/updateSite/</url>
+			<key>788e4f6f4cd0e15aa1179c6700a6e93a</key>
+		</updateSite>
+		<updateSite>
+			<id>alternate</id>
+			<url>$BASE_URL/test/sample/updateSite/</url>
+			<key>1a9eeb86631e347cb5b2481a365065df</key>
+		</updateSite>
+	</updateSites>
+	<releases>
+			<release>
+			<version>10.10.77</version>
+			<comment>TAO Release 10.10.88</comment>
+			<extensions>
+				<extension>generis</extension>
+				<extension>tao</extension>
+				<extension>taoItems</extension>
+			</extensions>
+
+		</release>
+		<release>
+			<version>10.10.88</version>
+			<comment>TAO Release 10.10.88</comment>
+			<extensions>
+				<extension>generis</extension>
+				<extension>tao</extension>
+				<extension>taoItems</extension>
+			</extensions>
+
+		</release>
+		<release>
+			<version>10.10.99</version>
+			<comment>TAO Release 10.10.99</comment>
+			<extensions>
+				<extension>generis</extension>
+				<extension>tao</extension>
+				<extension>taoItems</extension>
+			</extensions>
+
+		</release>
+	</releases>
+</manifest>

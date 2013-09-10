@@ -42,7 +42,7 @@ class ReleasesServiceTestCase extends UnitTestCase {
     public function setUp(){
         TaoTestRunner::initTest();
         $this->service = taoUpdate_models_classes_ReleasesService::singleton();
-        $this->service->setReleaseManifestUrl( BASE_URL . '/test/sample/releases.xml');
+        $this->service->setReleaseManifestUrl( BASE_URL . '/test/sample/releases24.xml');
     }
     
     /**
@@ -87,6 +87,7 @@ class ReleasesServiceTestCase extends UnitTestCase {
      */
     public function testDownloadRelease(){
         
+        $this->service->setReleaseManifestUrl( BASE_URL . '/test/sample/releases10.xml');
         $updateSites = $this->service->getUpdateSites();
         //replace fake url with the one that will work for test case
         $updateSite = str_replace('$BASE_URL', BASE_URL, $updateSites['default']);
@@ -94,7 +95,7 @@ class ReleasesServiceTestCase extends UnitTestCase {
         
        
         $availableUpdates= $this->service->getAvailableUpdates();
-        $releaseFile = $availableUpdates['2.4.99']['file'];
+        $releaseFile = $availableUpdates['10.10.99']['file'];
         $localFolder = dirname(__FILE__) . '/download/';
 
         $tmpFolder = dirname(__FILE__) .'/tmp/';
@@ -103,28 +104,28 @@ class ReleasesServiceTestCase extends UnitTestCase {
         $zip = new ZipArchive();
         $zip->open($dlPath);
         $zip->extractTo($tmpFolder);
-        $this->assertFalse($zip->locateName('version') === false);
+        $this->assertFalse($zip->locateName('TAO_10.10.99_build/version') === false);
 
-        $this->assertTrue(is_file($tmpFolder.'version'));
-        $versionFileContent = @file_get_contents($tmpFolder.'version');
-        $this->assertEqual($versionFileContent, '2.4.99');
-        
+        $this->assertTrue(is_file($tmpFolder.'TAO_10.10.99_build/version'));
+        $versionFileContent = @file_get_contents($tmpFolder.'TAO_10.10.99_build/version');
+        $this->assertEqual($versionFileContent, '10.10.99');
+
         try {
-            $dlPath = $this->service->downloadRelease('2.4.98', $updateSites['default'], $localFolder);
+            $dlPath = $this->service->downloadRelease('10.10.98', $updateSites['default'], $localFolder);
         }
         catch (Exception $e){
 
             $this->assertIsA($e,'taoUpdate_models_classes_UpdateException');
         }
         try {
-            $dlPath = $this->service->downloadRelease('2.4.99', 'http://localhost/badlnk', $localFolder);
+            $dlPath = $this->service->downloadRelease('10.10.99', 'http://localhost/badlnk', $localFolder);
         }
         catch (Exception $e){
         
             $this->assertIsA($e,'taoUpdate_models_classes_UpdateException');
         }
         helpers_File::remove($localFolder.$releaseFile);
-        helpers_File::remove($tmpFolder.'version');
+        helpers_File::remove($tmpFolder.'TAO_10.10.99_build/version');
 
     }
     
@@ -159,20 +160,25 @@ class ReleasesServiceTestCase extends UnitTestCase {
      * @author "Lionel Lecaque, <lionel@taotesting.com>"
      */
     public function testGetAvailableUpdates(){
+        $this->service->setReleaseManifestUrl( BASE_URL . '/test/sample/releases10.xml');
         $availableUpdates= $this->service->getAvailableUpdates();
         $current = @file_get_contents(ROOT_PATH.'version');
+
         $this->assertFalse(empty($availableUpdates));
         foreach ($availableUpdates as $update){
             $this->assertNotEqual($update,$current);
         }
+        
+        //set Current version to 10.10.88
+        @file_put_contents(ROOT_PATH.'version','10.10.88');
         $this->service->setReleaseManifestUrl( BASE_URL . '/test/sample/releases-patchsOnly.xml');
         $availableUpdates= $this->service->getAvailableUpdates();
        
-        if(isset($availableUpdates['2.4.99']['version'])){
-            $this->assertEqual($availableUpdates['2.4.99']['version'] ,'2.4.99');
+        if(isset($availableUpdates['10.10.99']['version'])){
+            $this->assertEqual($availableUpdates['10.10.99']['version'] ,'10.10.99');
         }
         else {
-            $this->fail('availableUpdates should only contain 2.4.99');
+            $this->fail('availableUpdates should only contain 10.10.99');
         }
         
         try {
@@ -185,6 +191,9 @@ class ReleasesServiceTestCase extends UnitTestCase {
         $this->service->setReleaseManifestUrl( BASE_URL . '/test/sample/releases-noNewPatch.xml');
         $availableUpdates= $this->service->getAvailableUpdates();
         $this->assertTrue(empty($availableUpdates));
+        
+        //set Current version back to current
+        @file_put_contents(ROOT_PATH.'version',$current);
 
     }
 

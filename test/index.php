@@ -25,7 +25,7 @@ require_once dirname(__FILE__) . '/../../tao/test/TaoTestRunner.php';
 $tests = TaoTestRunner::getTests(array('taoUpdate'));
 
 //create the test sutie
-$testSuite = new TestSuite('TAO Update 2.4 unit tests');
+$testSuite = new TestSuite('TAO Update unit tests');
 foreach($tests as $testCase){
 	$testSuite->addFile($testCase);
 }    

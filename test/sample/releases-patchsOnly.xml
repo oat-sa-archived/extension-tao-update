@@ -4,21 +4,21 @@
 	</updateSites>
 	<releases>
 		<release>
-			<version>2.4</version>
-			<comment>TAO Release 2.4</comment>
+			<version>10.10</version>
+			<comment>TAO Release 10.10</comment>
 			<patchs>
 
 				<patch>
-					<version>2.4.2</version>
-					<comment>TAO Release 2.4.2</comment>
+					<version>10.10.2</version>
+					<comment>TAO Release 10.10.2</comment>
 				</patch>
 				<patch>
-					<version>2.4.3</version>
-					<comment>TAO Release 2.4.3</comment>
+					<version>10.10.88</version>
+					<comment>TAO Release 10.10.88</comment>
 				</patch>
 				<patch>
-					<version>2.4.99</version>
-					<comment>TAO Release 2.4.99</comment>
+					<version>10.10.99</version>
+					<comment>TAO Release 10.10.99</comment>
 				</patch>
 			</patchs>
 		</release>
