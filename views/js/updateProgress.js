@@ -8,7 +8,6 @@ function updateProgessClass(){
 	this.availableStepsUrl = this.moduleUrl + 'getUpdateSteps'
 	
 	this.img_root = root_url + "/taoUpdate/views/img/";
-	
 	this.availableSteps = [];
 	this.stepIndex = 0;
 	
@@ -17,7 +16,6 @@ function updateProgessClass(){
 
 updateProgessClass.prototype.init = function(){
 	var self = this;
-
 	
 	$.ajax({
 		type: "POST",
@@ -49,7 +47,7 @@ updateProgessClass.prototype.init = function(){
 				var i = 0;
 				for (var update in data){
 					var row = data[update];
-					row.actions = '<input type="radio" name="update-to-version" id="' + update + '" />'
+					row.actions = '<input type="radio" name="update-to-version" value="' + update + '" />'
 					self.addRow(self.$updateGrid, i, row);
 					i++;
 				}
@@ -63,15 +61,10 @@ updateProgessClass.prototype.init = function(){
 	return true;
 }
 
-updateProgessClass.prototype.back = function(){
-	$("#init-update").show();
-	$("#update-inProgress").hide();
-	
-}
-
 updateProgessClass.prototype.activeSteps = function(){
+	this.$stepGrid.empty();
 	$("#init-update").hide();
-	$("#update-inProgress").show();
+
 	var self = this;
 	
 	$.getJSON(self.availableStepsUrl, function(data) {
@@ -125,29 +118,62 @@ updateProgessClass.prototype.updateProgress = function() {
 	
 		this.stepIndex++;
 	}else{
+		$("#init-update").show();
+		this.$stepGrid.show();
+		$("#update-table-container").hide();
 
-		//end
+		$('#update-button-container').hide();
+		var info = $('#update-info').removeClass('ui-state-error').addClass('ui-state-highlight');
+		info.html('<img src="'+this.img_root+'tick.png"/>' +   __('New Version have been downloaded and will now be extracted, we will not replace current installation') );	
+
 	}
 }
 
+updateProgessClass.prototype.setParams = function(data){
+	this.params = data;
+}
+updateProgessClass.prototype.addParams = function(action){
+	
+	if(this.params != null && action !=null){
+		var truc = {'action':action,'versionName':this.params.versionName};
+		var encoded = jQuery.param(truc);
+		return '?'  + encoded;
+	}
+	return;
+}
 
 updateProgessClass.prototype.run = function(step){
 	var self = this;
-	var action = step.action;
-	var actionStatusTag = $('#update-step-action-' + action);
 
+	var actionStatusTag = $('#update-step-action-' + step.action);
+	var url = self.moduleUrl + 'run'  + this.addParams(step.action) ;
 
-	var url = self.moduleUrl + action;
-	console.log(url);
+	
+	
 	actionStatusTag.html( __('In progress...'));
 	$('<img src="'+ self.img_root + 'ajax-loader-small.gif' +'" title="'+ __('In progress...') +'"/>').css('top', 2).appendTo(actionStatusTag);
 
 	$.getJSON(url, function(data) {
 
-		console.log(data);
+		if(data.success == 1){
+			actionStatusTag.html( __('Complete') + ' <img src="'+self.img_root+'tick.png"/>');	
+			self.updateProgress();
+		}
+		else {
 
-		actionStatusTag.html( __('Complete') + ' <img src="'+self.img_root+'tick.png"/>');
-		self.updateProgress();
+			$("#init-update").show();
+
+			
+			actionStatusTag.html( __('Fail') + ' <img src="'+self.img_root+'failed.png"/>');
+			var error = $('#update-info').removeClass('ui-state-highlight').addClass('ui-state-error');
+			error.empty();
+			$.each(data.failed, function(key, val) {
+				$('<p>' + val +'<p>').appendTo(error);
+				
+				
+			});
+
+		}
 
 	});
 		
