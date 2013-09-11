@@ -220,7 +220,7 @@ class UpdateService {
 	        //already shield
 	        return true;
 	    }
-	    if(is_writable($extFolder . '/.htaccess')){
+	    if(!is_writable($extFolder . '/.htaccess')){
 	        throw new UpdateException('Bad permission ' . $extFolder . '/.htaccess');
 	    }
 	    File::copy($extFolder . '/.htaccess', $extFolder . '/htaccess.1',true,false);
