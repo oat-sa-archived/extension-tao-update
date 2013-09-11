@@ -21,6 +21,7 @@
 
 require_once dirname(__FILE__) . '/../../tao/test/TaoTestRunner.php';
 require_once dirname(__FILE__) . '/../includes/raw_start.php';
+require_once INCLUDES_PATH.'/simpletest/web_tester.php';
 
 /**
  * @license GPLv2
@@ -29,7 +30,7 @@ require_once dirname(__FILE__) . '/../includes/raw_start.php';
  * @author "Lionel Lecaque, <lionel@taotesting.com>"
  *
  */
-class ShieldServiceTestCase extends UnitTestCase {
+class ShieldServiceTestCase extends  WebTestCase {
     protected $service;
 
     /**
@@ -37,25 +38,35 @@ class ShieldServiceTestCase extends UnitTestCase {
      */
     public function setUp(){
         TaoTestRunner::initTest();
+
         $this->service = taoUpdate_models_classes_ShieldService::singleton();
 
     }
 
     public function testShield(){
-        $this->assertTrue(is_file(ROOT_PATH . '/filemanager/.htaccess'));
-        $this->assertTrue($this->service->shield('filemanager'));
-        $this->assertTrue(is_file(ROOT_PATH . '/filemanager/htaccess.bak'));
         
-        $this->assertTrue($this->service->unShield('filemanager'));
+        $fakeBackup = ROOT_PATH .'filemanager/htaccess.1';
+        file_put_contents($fakeBackup, 'test');
+        try {
+            //fake backup is here should raise exception
+            $this->assertFalse($this->service->shield('filemanager', 'taoUpdate/test/sample/deadend.html'));
+        }
+        catch (Exception $e){
+            unlink($fakeBackup);
+            $this->assertTrue($e instanceof taoUpdate_models_classes_UpdateException);
+        }
+        //no backup so unshield return false
+        $this->assertFalse($this->service->unShield('filemanager'));
+        
+        $this->get(ROOT_URL.'filemanager' );
+        $this->assertTitle('Access Forbidden');
         $this->assertTrue(is_file(ROOT_PATH . '/filemanager/.htaccess'));
+        $this->assertTrue($this->service->shield('filemanager', 'taoUpdate/test/sample/deadend.html'));
+        $this->get(ROOT_URL.'filemanager' );
+        $this->assertTitle('DEADEND');
+        $this->assertTrue($this->service->unShield('filemanager'));
     
     
-    }
-    
-    public function testShieldExtensions(){
-    
-        //$this->assertTrue($this->service->shieldExtensions());
-        //$this->assertTrue($this->service->unShieldExtensions());
     }
 
     
