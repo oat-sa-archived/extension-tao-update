@@ -23,21 +23,7 @@
  * 
  */
 class taoUpdate_models_classes_ShieldService extends tao_models_classes_Service{
-    /**
-     *
-     * @access
-     * @author "Lionel Lecaque, <lionel@taotesting.com>"
-     * @return boolean
-     */
-    public function unShieldExtensions(){
-        $extmanger = common_ext_ExtensionsManager::singleton();
-        $extlists = $extmanger->getInstalledExtensions();
-        $returnvalue = true;
-        foreach (array_keys($extlists) as $ext){
-            $returnvalue &= $this->unShield($ext);
-        }
-        return $returnvalue ;
-    }
+
     
     /**
      *
@@ -64,9 +50,11 @@ class taoUpdate_models_classes_ShieldService extends tao_models_classes_Service{
      */
     public function shield($ext , $destination){
         $extFolder = ROOT_PATH . DIRECTORY_SEPARATOR . $ext;
-    
-        helpers_File::copy($extFolder . '/.htaccess', $extFolder . '/htaccess.bak',true,false);
-        if(is_file($extFolder . '/htaccess.bak')){
+        if(is_file($extFolder . '/htaccess.1')){
+            throw new taoUpdate_models_classes_UpdateException('Previous lock, htaccess.1 still exits, delete it');
+        }
+        helpers_File::copy($extFolder . '/.htaccess', $extFolder . '/htaccess.1',true,false);
+        if(is_file($extFolder . '/htaccess.1')){
             file_put_contents($extFolder . '/.htaccess', "Options +FollowSymLinks\n"
                 . "<IfModule mod_rewrite.c>\n"
                     . "RewriteEngine On\n"
@@ -89,12 +77,15 @@ class taoUpdate_models_classes_ShieldService extends tao_models_classes_Service{
      */
     public function unShield($ext){
         $extFolder = ROOT_PATH . DIRECTORY_SEPARATOR . $ext;
-         
+         if(!is_file($extFolder.'/htaccess.1')){
+             common_Logger::w('Previous lock, htaccess.1 do not exits something may have go wrong');
+             return false;
+         }
         if(unlink($extFolder.'/.htaccess')){
-            return helpers_File::copy($extFolder.'/htaccess.bak', $extFolder.'/.htaccess',true,false);
+            return tao_helpers_File::move($extFolder.'/htaccess.1', $extFolder.'/.htaccess',true,false);
         }
         else {
-            common_Logger::e('Fail to remove htaccess in ' . $ext . ' . You may copy by hand file htaccess.bak');
+            common_Logger::e('Fail to remove htaccess in ' . $ext . ' . You may copy by hand file htaccess.1');
             return false;
         }
     }

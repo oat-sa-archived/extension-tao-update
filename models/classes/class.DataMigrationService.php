@@ -25,9 +25,15 @@
 class taoUpdate_models_classes_DataMigrationService extends tao_models_classes_Service{
     
     const UPDATE_STEP= 'updateStep.json';
+    const RELEASE_INFO= 'release.json';
     
-    
-    public function getUpdateScripts(){
+    public function getUpdateScriptsJson(){
         return @file_get_contents(BASE_DATA . self::UPDATE_STEP);
     }
+    
+    public function getReleaseInfo(){
+        return json_decode(@file_get_contents(BASE_DATA . self::RELEASE_INFO),true);
+    }
+    
+    
 }
