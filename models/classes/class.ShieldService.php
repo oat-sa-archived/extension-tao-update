@@ -35,8 +35,17 @@ class taoUpdate_models_classes_ShieldService extends tao_models_classes_Service{
         $extmanger = common_ext_ExtensionsManager::singleton();
         $extlists = $extmanger->getInstalledExtensions();
         $returnvalue = true;
+        try {
         foreach (array_keys($extlists) as $ext){
             $returnvalue &= $this->shield($ext,taoUpdate_models_classes_Service::DEPLOY_FOLDER);
+        }
+        }
+        catch (taoUpdate_models_classes_UpdateException $e){
+            common_Logger::e('Error during shield, revert all extensions');
+            foreach (array_keys($extlists) as $ext){
+                $this->unShield($ext);
+            }
+            throw $e;
         }
         return $returnvalue;
     }
@@ -51,7 +60,7 @@ class taoUpdate_models_classes_ShieldService extends tao_models_classes_Service{
     public function shield($ext , $destination){
         $extFolder = ROOT_PATH . DIRECTORY_SEPARATOR . $ext;
         if(is_file($extFolder . '/htaccess.1')){
-            throw new taoUpdate_models_classes_UpdateException('Previous lock, htaccess.1 still exits, delete it');
+            throw new taoUpdate_models_classes_UpdateException('Previous lock, htaccess.1 still exits, delete it in ' . $extFolder);
         }
         helpers_File::copy($extFolder . '/.htaccess', $extFolder . '/htaccess.1',true,false);
         if(is_file($extFolder . '/htaccess.1') && is_writable($extFolder . '/.htaccess')){
@@ -64,7 +73,7 @@ class taoUpdate_models_classes_ShieldService extends tao_models_classes_Service{
                                 return true;
         }
         else {
-            throw new taoUpdate_models_classes_UpdateException('Previous lock, htaccess.1 still exits, delete it');
+            throw new taoUpdate_models_classes_UpdateException('.htaccess is not writtable in ' . $extFolder);
         }
     }
     
@@ -78,7 +87,7 @@ class taoUpdate_models_classes_ShieldService extends tao_models_classes_Service{
     public function unShield($ext){
         $extFolder = ROOT_PATH . DIRECTORY_SEPARATOR . $ext;
          if(!is_file($extFolder.'/htaccess.1')){
-             common_Logger::w('Previous lock, htaccess.1 do not exits something may have go wrong');
+             common_Logger::d('Previous lock, htaccess.1 do not exits something may have go wrong');
              return false;
          }
         if(unlink($extFolder.'/.htaccess')){
