@@ -30,7 +30,7 @@ class taoUpdate_actions_Data extends tao_actions_CommonModule {
     }
     
     public function provideSteps(){
-        echo $this->service->getUpdateScripts();
+        echo $this->service->getUpdateScriptsJson();
     }
     
     
