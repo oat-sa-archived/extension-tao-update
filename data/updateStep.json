@@ -1,1 +1,1 @@
-[{"action":"taoUpdate_scripts_update_Test","name":"test"},{"action":"taoUpdate_scripts_update_Test2","name":"Test2"},{"action":"taoUpdate_scripts_update_RemoveTaoUpdate","name":"uninstall Tao Update"}]
+[{"action":"taoUpdate_scripts_update_Test","name":"test"},{"action":"taoUpdate_scripts_update_RemoveHtAccess","name":"Remove HtAccess"},{"action":"taoUpdate_scripts_update_UpdateVersionFile","name":"uninstall Tao Update"},{"action":"taoUpdate_scripts_update_RemoveTaoUpdate","name":"uninstall Tao Update"}]
