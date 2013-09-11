@@ -41,13 +41,23 @@ class UpdateService {
     protected $updateManifest = null;
     private $releaseManifest = null;
     
-    
     private static $instances = array();
     
+    /**
+     * 
+     * @access private
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     */
     private function __construct(){
         
     }
-    
+    /**
+     * 
+     * @access public
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     * @param unknown $key
+     * @return boolean
+     */
     public static function isAllowed($key){
         if($key == 'toto'){
             Logger::d('TOTO BACKDOOR ENABLE');
@@ -59,7 +69,12 @@ class UpdateService {
         }
         return false;
     }
-    
+    /**
+     * 
+     * @access public
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     * @return mixed
+     */
     public function getReleaseManifest(){
         if ($this->releaseManifest == null) {
             $data = file_get_contents(DIR_DATA . self::RELEASE_INFO);
@@ -67,7 +82,13 @@ class UpdateService {
         }
         return $this->releaseManifest;
     }
-
+    /**
+     * 
+     * @access public
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     * @throws UpdateException
+     * @return array
+     */
 	public function getUpdateManifests() {
 	    if ($this->updateManifest == null) {
 	        $this->updateManifest = array();
@@ -85,7 +106,12 @@ class UpdateService {
 		return $this->updateManifest;
 	}
 	
-
+    /**
+     * 
+     * @access public
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     * @return UpdateService
+     */
 	public static function getInstance(){
 	    $serviceName = get_called_class();
 	    if (!isset(self::$instances[$serviceName])) {
@@ -95,13 +121,22 @@ class UpdateService {
 	    $returnValue = self::$instances[$serviceName];
 	    return $returnValue;
 	}
-	
-	
+	/**
+	 * 
+	 * @access public
+	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
+	 * @return boolean
+	 */	
 	public function checkDeploymentFolder(){
 	    $releaseManifest = $this->getReleaseManifest();
 	    return is_writable($releaseManifest['old_root_path']);
 	}
-	
+	/**
+	 * 
+	 * @access public
+	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
+	 * @throws UpdateException
+	 */
 	public function deployNewRelease(){
         $releaseManifest = $this->getReleaseManifest();
         $destination = $releaseManifest['old_root_path'];
@@ -114,17 +149,22 @@ class UpdateService {
         $this->restoreOldData();
 	    
         //shield all ext
-        foreach ($releaseManifest['extensions'] as $ext){
-            $this->shield($ext);
-        }
-        
-        //unshield taoUpdate
-        //$this->unShield(self::UPDATE_EXT);
-        
+		 foreach ($releaseManifest['extensions'] as $extName){
+	        if($this->shield($extName) === false) {
+	            throw new UpdateException('Fail to shild extension ' . $extName);
+	        }
+	    }
+       
         //move token
         File::move(ROOT_PATH. self::FILE_KEY, $destination. self::UPDATE_EXT.'data/');
+        File::move(DIR_DATA . self::RELEASE_INFO, $destination. self::UPDATE_EXT.'data/'.self::RELEASE_INFO);
+        
 	}
-	
+	/**
+	 * 
+	 * @access public
+	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
+	 */
 	private function restoreOldData(){
 	    
 	    $updateManifest = $this->getUpdateManifests();
@@ -141,7 +181,13 @@ class UpdateService {
 	    }
 	}
 	
-	
+	/**
+	 * 
+	 * @access public
+	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
+	 * @param unknown $ext
+	 * @param unknown $data
+	 */
 	private function restoreData($ext, $data){
 	    if(is_array($data)){
 	        foreach ($data as $d){
@@ -158,13 +204,27 @@ class UpdateService {
     	    File::copy($src, $dest,true,false);
 	    }
 	}
-	
-	public function shield($ext){
+	/**
+	 * 
+	 * @access private
+	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
+	 * @param string $ext
+	 * @return boolean
+	 * @throws UpdateException
+	 */
+	private function shield($ext){
 	    $releaseManifest = $this->getReleaseManifest();
 	    $extFolder = $releaseManifest['old_root_path'] . DIRECTORY_SEPARATOR . $ext;
 	
-	    File::copy($extFolder . '/.htaccess', $extFolder . '/htaccess.bak',true,false);
-	    if(is_file($extFolder . '/htaccess.bak')){
+	    if(is_file($extFolder . '/htaccess.1')){
+	        //already shield
+	        return true;
+	    }
+	    if(is_writable($extFolder . '/.htaccess')){
+	        throw new UpdateException('Bad permission ' . $extFolder . '/.htaccess');
+	    }
+	    File::copy($extFolder . '/.htaccess', $extFolder . '/htaccess.1',true,false);
+	    if(is_file($extFolder . '/htaccess.1')){
 	        file_put_contents($extFolder . '/.htaccess', "Options +FollowSymLinks\n"
 	            . "<IfModule mod_rewrite.c>\n"
 	                . "RewriteEngine On\n"
@@ -179,26 +239,29 @@ class UpdateService {
 	    }
 	}
 	
-	public function unShield($ext){
-	    $releaseManifest = $this->getReleaseManifest();
-	    $extFolder = $releaseManifest['old_root_path'] . DIRECTORY_SEPARATOR . $ext;
-	     
-	    if(unlink($extFolder.'/.htaccess')){
-	        return File::copy($extFolder.'/htaccess.bak', $extFolder.'/.htaccess',true,false);
-	    }
-	    else {
-	        Logger::e('Fail to remove htaccess in ' . $ext . ' . You may copy by hand file htaccess.bak');
-	        return false;
-	    }
-	}
+
 	
-	
+	/**
+	 * 
+	 * @access public
+	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
+	 * @throws UpdateException
+	 */
 	public function finishFileUpdate(){
-	    
+	    $releaseManifest = $this->getReleaseManifest();
+	    foreach ($releaseManifest['extensions'] as $extName){
+	        if($this->shield($extName) === false) {
+	            throw new UpdateException('Fail to shild extension ' . $extName);
+	        }
+	    }
 	}
     
 	
-	
+	/**
+	 * 
+	 * @access public
+	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
+	 */
 	public function getUpdateScripts(){
 	    return @file_get_contents(DIR_DATA . self::UPDATE_STEP);
 	}
