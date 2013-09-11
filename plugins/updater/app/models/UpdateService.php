@@ -63,6 +63,9 @@ class UpdateService {
             Logger::d('TOTO BACKDOOR ENABLE');
             return true;
         }
+        if (!is_file(ROOT_PATH. self::FILE_KEY)) {
+        	return false;
+        }
         $fileKey = file_get_contents(ROOT_PATH. self::FILE_KEY);
         if ($fileKey == $key) {
         	return true;
@@ -77,6 +80,9 @@ class UpdateService {
      */
     public function getReleaseManifest(){
         if ($this->releaseManifest == null) {
+            if(!is_file(DIR_DATA . self::RELEASE_INFO)){
+                return null;
+            }
             $data = file_get_contents(DIR_DATA . self::RELEASE_INFO);
             $this->releaseManifest = json_decode($data,true);
         }
@@ -156,7 +162,7 @@ class UpdateService {
 	    }
        
         //move token
-        File::move(ROOT_PATH. self::FILE_KEY, $destination. self::UPDATE_EXT.'data/');
+        File::move(ROOT_PATH. self::FILE_KEY, $destination. self::UPDATE_EXT.'data/'.self::FILE_KEY);
         File::move(DIR_DATA . self::RELEASE_INFO, $destination. self::UPDATE_EXT.'data/'.self::RELEASE_INFO);
         
 	}
