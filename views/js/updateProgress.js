@@ -16,7 +16,7 @@ function updateProgessClass(){
 
 updateProgessClass.prototype.init = function(){
 	var self = this;
-	
+
 	$.ajax({
 		type: "POST",
 		url: self.availableUpdatesUrl,
@@ -63,7 +63,8 @@ updateProgessClass.prototype.init = function(){
 
 updateProgessClass.prototype.activeSteps = function(){
 	this.$stepGrid.empty();
-	$("#init-update").hide();
+	$('#update-table-container').hide();
+
 
 	var self = this;
 	
