@@ -41,6 +41,7 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
     
     private $releasesService;
     private $backupService;
+    private $shieldService;
 
 
 
@@ -49,6 +50,7 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	    $this->releasesService = taoUpdate_models_classes_ReleasesService::singleton();
 	    $this->releasesService->setReleaseManifestUrl(RELEASES_MANIFEST);
 	    $this->backupService = taoUpdate_models_classes_BackupService::singleton();
+	    $this->shieldService = taoUpdate_models_classes_ShieldService::singleton();
 	}
 
     
@@ -205,6 +207,7 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	    $folder = $this->backupService->createBackupFolder();
 	    $this->backupService->storeAllFiles($folder);
 	    $this->backupService->storeDatabase($folder);
+	    $this->shieldService->shieldExtensions();
 	}
 	
     /**

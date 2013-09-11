@@ -36,7 +36,7 @@ class taoUpdate_models_classes_ShieldService extends tao_models_classes_Service{
         $extlists = $extmanger->getInstalledExtensions();
         $returnvalue = true;
         foreach (array_keys($extlists) as $ext){
-            $returnvalue &= $this->shield($ext);
+            $returnvalue &= $this->shield($ext,taoUpdate_models_classes_Service::DEPLOY_FOLDER);
         }
         return $returnvalue;
     }
@@ -54,7 +54,7 @@ class taoUpdate_models_classes_ShieldService extends tao_models_classes_Service{
             throw new taoUpdate_models_classes_UpdateException('Previous lock, htaccess.1 still exits, delete it');
         }
         helpers_File::copy($extFolder . '/.htaccess', $extFolder . '/htaccess.1',true,false);
-        if(is_file($extFolder . '/htaccess.1')){
+        if(is_file($extFolder . '/htaccess.1') && is_writable($extFolder . '/.htaccess')){
             file_put_contents($extFolder . '/.htaccess', "Options +FollowSymLinks\n"
                 . "<IfModule mod_rewrite.c>\n"
                     . "RewriteEngine On\n"
@@ -64,7 +64,7 @@ class taoUpdate_models_classes_ShieldService extends tao_models_classes_Service{
                                 return true;
         }
         else {
-            return false;
+            throw new taoUpdate_models_classes_UpdateException('Previous lock, htaccess.1 still exits, delete it');
         }
     }
     
