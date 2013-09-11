@@ -126,7 +126,7 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
         $curl = curl_init();
         $distantRelease = $updateSite . $releaseFileName;
         if(!$fp = @fopen($localFolder.$releaseFileName, 'w')){
-            throw new taoUpdate_models_classes_UpdateException('Fail to open stream check permission on ' . $localFolder.$releaseName);
+            throw new taoUpdate_models_classes_UpdateException('Fail to open stream check permission on ' . $localFolder.$releaseFileName);
         }    
         curl_setopt ($curl, CURLOPT_URL, $distantRelease);
         curl_setopt($curl, CURLOPT_FILE, $fp);
