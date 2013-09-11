@@ -33,7 +33,7 @@
 			<div id="update-table-container">
 			<?=__('Select the update you want to install')?>
 			<br/>
-
+			
 				<table id="update-grid" />
 			</div>
 
