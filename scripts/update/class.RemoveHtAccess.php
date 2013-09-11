@@ -21,12 +21,17 @@
  */
 
 
-class taoUpdate_scripts_update_UpdateVersionFile extends tao_scripts_Runner {
+class taoUpdate_scripts_update_RemoveHtAccess extends tao_scripts_Runner {
     public function run(){
-        if(is_file(ROOT_PATH . 'version')){
-            $old_version = file_get_contents(ROOT_PATH . 'version');
-            file_put_contents(ROOT_PATH . 'versionhistory', '|'.$old_version,FILE_APPEND);
+        $dataMigrationService = taoUpdate_models_classes_DataMigrationService::singleton();
+        $releaseInfo = $dataMigrationService->getReleaseInfo();
+        $shieldService = taoUpdate_models_classes_ShieldService::singleton();
+        
+        $exts = array_merge($releaseInfo['extensions'],$releaseInfo['old_extensions']);
+        foreach ($exts as $ext){
+            if($shieldService->unShield($ext) == false){
+                $this->err('Fail to re activate ' . $ext);
+            }
         }
-        file_put_contents(ROOT_PATH . 'version', TAO_VERSION);
     }
 }
