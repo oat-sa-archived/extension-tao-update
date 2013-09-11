@@ -240,21 +240,6 @@ class UpdateService {
 	}
 	
 
-	
-	/**
-	 * 
-	 * @access public
-	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
-	 * @throws UpdateException
-	 */
-	public function finishFileUpdate(){
-	    $releaseManifest = $this->getReleaseManifest();
-	    foreach ($releaseManifest['extensions'] as $extName){
-	        if($this->shield($extName) === false) {
-	            throw new UpdateException('Fail to shild extension ' . $extName);
-	        }
-	    }
-	}
     
 	
 	/**
