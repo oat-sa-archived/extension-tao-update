@@ -122,21 +122,6 @@ class ServiceTestCase extends UnitTestCase {
         helpers_File::remove($path);
     }
     
-    public function testShield(){
-//         $this->assertTrue(is_file(ROOT_PATH.'/filemanager/.htaccess'));
-//         $this->assertTrue($this->service->shield('filemanager'));
-//         $this->assertTrue(is_file(ROOT_PATH.'/filemanager/htaccess.bak'));
-        
-//         $this->assertTrue($this->service->unShield('filemanager'));
-//         $this->assertTrue(is_file(ROOT_PATH.'/filemanager/.htaccess'));
-        
-        
-    }
 
-    public function testShieldExtensions(){
-
-        //$this->assertTrue($this->service->shieldExtensions());
-        //$this->assertTrue($this->service->unShieldExtensions());
-    }
     
 }
