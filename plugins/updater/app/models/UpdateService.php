@@ -102,11 +102,14 @@ class UpdateService {
 	        
             $releaseManifest = $this->getReleaseManifest();
 	        foreach ($releaseManifest['extensions'] as $extName){
-	            if (!is_file($extDir.$extName.'.json')) {
-	            	throw new UpdateException('Release manifest not found ' . $extDir.$extName.'.json');
-	            }
-	            $fileContent = @file_get_contents($extDir.$extName.'.json');
-	            $this->updateManifest[$extName] = json_decode($fileContent,true);
+	            //skip extensions that was not installed
+	            if(in_array($extName,$releaseManifest['old_extensions'])){
+    	            if (!is_file($extDir.$extName.'.json')) {
+    	            	throw new UpdateException('Release manifest not found ' . $extDir.$extName.'.json');
+    	            }
+    	            $fileContent = @file_get_contents($extDir.$extName.'.json');
+    	            $this->updateManifest[$extName] = json_decode($fileContent,true);
+	            }  
 	        }
 	    }
 		return $this->updateManifest;
