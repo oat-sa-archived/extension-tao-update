@@ -184,6 +184,8 @@ class UpdateService {
 	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
 	 */
 	public function restartTaoContext(){
+	    $releaseManifest = $this->getReleaseManifest();
+	    $destination = $releaseManifest['old_root_path'];
 	    if($this->unShield('taoUpdate') === false) {
 	        Logger::w('Problem restoring access to taoUpdate to finish update');
 	    }
