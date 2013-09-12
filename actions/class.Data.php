@@ -40,7 +40,7 @@ class taoUpdate_actions_Data extends tao_actions_CommonModule {
         
     }
     
-    public function scriptRunner($script){
+    public function scriptRunner($script,$extension){
         $error = false;
         $errorStack = array();
         if($script != null){

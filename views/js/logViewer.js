@@ -18,7 +18,7 @@ logViewerClass.prototype.init= function(){
         		$("#log").append(formatedLine);
         	});
         	//console.log('ttot');
-        	setTimeout(function(){self.init()}, 30000); // refresh every 30 seconds
+        	setTimeout(function(){self.init()}, 5000); // refresh every 30 seconds
             
         }
     })
