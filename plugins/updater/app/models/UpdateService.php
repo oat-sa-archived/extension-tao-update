@@ -223,7 +223,7 @@ class UpdateService {
 	 */
 	private function shield($ext){
 	    $releaseManifest = $this->getReleaseManifest();
-	    $extFolder = $releaseManifest['old_root_path'] . DIRECTORY_SEPARATOR . $ext;
+	    $extFolder = $releaseManifest['old_root_path'] .  $ext;
 	
 	    if(is_file($extFolder . '/htaccess.1')){
 	        //already shield
