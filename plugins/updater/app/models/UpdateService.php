@@ -163,7 +163,10 @@ class UpdateService {
 	            throw new UpdateException('Fail to shild extension ' . $extName);
 	        }
 	    }
-       
+	    if($this->unShield('taoUpdate') === false) {
+	        Logger::w('Problem restoring access to taoUpdate to finish update');
+	    }
+	    
         //move token
         File::move(ROOT_PATH. self::FILE_KEY, $destination. self::UPDATE_EXT.'data/'.self::FILE_KEY);
         File::move(DIR_DATA . self::RELEASE_INFO, $destination. self::UPDATE_EXT.'data/'.self::RELEASE_INFO);
@@ -211,6 +214,31 @@ class UpdateService {
     	    $dest = $releaseManifest['old_root_path'] . $ext . DIRECTORY_SEPARATOR . $data;
     	    Logger::t('Copy ' . $src . ' to ' . $dest);
     	    File::copy($src, $dest,true,false);
+	    }
+	}
+	
+
+	/**
+	 *
+	 * @access
+	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
+	 * @param unknown $ext
+	 * @return boolean
+	 */
+	public function unShield($ext){
+	    $releaseManifest = $this->getReleaseManifest();
+	    $extFolder = $releaseManifest['old_root_path'] .  $ext;
+	    
+	    if(!is_file($extFolder.'/htaccess.1')){
+	        Logger::d('Previous lock, htaccess.1 do not exits something may have go wrong');
+	        return false;
+	    }
+	    if(unlink($extFolder.'/.htaccess')){
+	        return File::move($extFolder.'/htaccess.1', $extFolder.'/.htaccess',false);
+	    }
+	    else {
+	        Logger::e('Fail to remove htaccess in ' . $ext . ' . You may copy by hand file htaccess.1');
+	        return false;
 	    }
 	}
 	/**
