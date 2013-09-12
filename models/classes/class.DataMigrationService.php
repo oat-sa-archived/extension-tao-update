@@ -42,8 +42,10 @@ class taoUpdate_models_classes_DataMigrationService extends tao_models_classes_S
         
         $releaseInfo = $this->getReleaseInfo();
         $releaseExts = $releaseInfo['extensions'];
+
         $toInstall = array();
         foreach ($extlists as $availlableExt){
+
             $ext = $availlableExt->getID();
             if(in_array($ext, $releaseExts)){
                 $toInstall[$ext] = $extmanger->getExtensionById($ext);
@@ -58,7 +60,7 @@ class taoUpdate_models_classes_DataMigrationService extends tao_models_classes_S
                 if (count($missing) == 0) {
                     try {
 
-                        $extinstaller = new tao_install_ExtensionInstaller($extension);
+                        $extinstaller = new tao_install_ExtensionInstaller($extension,false);
                         	
                         set_time_limit(60);
                         	
