@@ -122,16 +122,8 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	    $data['old_root_path'] = ROOT_PATH;
 	    $data['release_path'] =  self::RELEASE_FOLDER . $this->releasesService->getReleaseFolder($release);
 	    $extmanger = common_ext_ExtensionsManager::singleton();
-	    $avExt = $extmanger->getAvailableExtensions();
-	    
-	    //build array with id of availlabe
-	    array_walk($avExt, function(&$ext){
-	    	   $ext = $ext->getID();
-	    });
-	    
 	    $instExt =  array_keys($extmanger->getInstalledExtensions());
-	    $ext = array_merge($avExt,$instExt);
-	    $data['old_extensions'] = $ext;
+	    $data['old_extensions'] = $instExt;
 	    $releaseManifest = json_encode($data);
 	    file_put_contents($deployFolder . self::RELEASE_INFO, $releaseManifest);;
 	}
