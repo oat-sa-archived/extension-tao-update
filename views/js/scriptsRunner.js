@@ -44,7 +44,7 @@ scriptsRunnerClass.prototype.run = function(step){
 	var name = step.name;
 	var action = step.action;
 	var actionStatusTag = $('#update-step-action-' + action);
-	var url = root_url + 'taoUpdate/Data/scriptRunner?script=' + action + '&extension=' + step.extension ;
+	var url = root_url + 'taoUpdate/Data/scriptRunner?script=' + action;
 
 	$('<img src="' + img_url + 'ajax-loader-small.gif" title="Running"/>').appendTo(actionStatusTag);
 	
