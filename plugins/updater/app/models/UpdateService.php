@@ -163,15 +163,37 @@ class UpdateService {
 	            throw new UpdateException('Fail to shild extension ' . $extName);
 	        }
 	    }
+    }
+    /**
+     * 
+     * @access public
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     */
+	public function replaceGenerisExtPath(){
+	    $releaseManifest = $this->getReleaseManifest();
+	    $path = $releaseManifest['old_root_path'] . DIRECTORY_SEPARATOR .'generis' .DIRECTORY_SEPARATOR .'common' .DIRECTORY_SEPARATOR .'conf' . DIRECTORY_SEPARATOR . 'generis.conf.php';
+	    $generisConfContent = file_get_contents($path);
+	    $toReplace = "define('EXTENSION_PATH' , GENERIS_BASE_PATH.DIRECTORY_SEPARATOR.'..');";
+	    $newVal = "define('EXTENSION_PATH' , ROOT_PATH);";
+	    $generisConfContent = str_replace($toReplace, $newVal, $generisConfContent);
+	    file_put_contents($path, $generisConfContent);
+	}
+	/**
+	 * 
+	 * @access public
+	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
+	 */
+	public function restartTaoContext(){
 	    if($this->unShield('taoUpdate') === false) {
 	        Logger::w('Problem restoring access to taoUpdate to finish update');
 	    }
+	     
+	    //move token
+	    File::move(ROOT_PATH. self::FILE_KEY, $destination. self::UPDATE_EXT.'data'.DIRECTORY_SEPARATOR.self::FILE_KEY);
+	    File::move(DIR_DATA . self::RELEASE_INFO, $destination. self::UPDATE_EXT.'data'.DIRECTORY_SEPARATOR.self::RELEASE_INFO);
 	    
-        //move token
-        File::move(ROOT_PATH. self::FILE_KEY, $destination. self::UPDATE_EXT.'data/'.self::FILE_KEY);
-        File::move(DIR_DATA . self::RELEASE_INFO, $destination. self::UPDATE_EXT.'data/'.self::RELEASE_INFO);
-        
 	}
+	
 	/**
 	 * 
 	 * @access public

@@ -27,15 +27,13 @@ namespace app\scripts;
 
 use OatBox\Common\ScriptRunner;
 use OatBox\Common\Logger;
+use app\models\UpdateService;
 
-class Test extends ScriptRunner {
+class ReplaceGenerisExtPath extends ScriptRunner {
     
     public function run(){
-        Logger::d('test Debug with TAG',array('[TAG]'));
-        Logger::e('test error');
-        Logger::t('test trace');
-        Logger::i('test info');
-
+        $service = UpdateService::getInstance();
+        $service->replaceGenerisExtPath();
 
     }
     
