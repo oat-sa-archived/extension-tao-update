@@ -43,6 +43,9 @@ class taoUpdate_actions_Data extends tao_actions_CommonModule {
     public function scriptRunner($script,$extension){
         $error = false;
         $errorStack = array();
+        if(isset($extension) && $extension != null){
+            common_ext_ExtensionsManager::singleton()->getExtensionById($extension);
+        }
         if($script != null){
     
             $parameters = array();
