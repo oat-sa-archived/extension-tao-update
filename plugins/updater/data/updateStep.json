@@ -1,1 +1,1 @@
-[{"action":"OldVersionArchiver","name":"Archive Old"},{"action":"NewVersionDeployer","name":"Deploy New"},{"action":"ReplaceGenerisExtPath","name":"Update Generis Config"},{"action":"RestartTaoContect","name":"Restart TAO Context"}]
+[{"action":"OldVersionArchiver","name":"Archive Old"},{"action":"NewVersionDeployer","name":"Deploy New"},{"action":"ReplaceGenerisExtPath","name":"Update Generis Config"},{"action":"RestartTaoContext","name":"Restart TAO Context"}]
