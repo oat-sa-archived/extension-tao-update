@@ -14,8 +14,6 @@ scriptsRunnerClass.prototype.init = function(){
 	self.$updateMsg.hide();
 	$.getJSON(self.availableStepsUrl, function(data) {
 		$.each(data, function(key, val) {
-			
-
 			self.$step.append('<li id="update-step-action-' + val.action + '">' + val.name + '</li>');
 			self.availableSteps.push(val);
 		});
