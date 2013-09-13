@@ -1,3 +1,9 @@
+<script type="text/javascript">
+
+var successMsg = "<?= get_data('successMsg') ;?> <a href=\"<?= get_data('successUrl') ;?>\">"  + __('Click here to proceed'); + '</a>'
+console.log(successMsg);
+
+</script>
 <script type="text/javascript" src="<?=BASE_WWW?>js/updateProgress.js"></script>
 <script type="text/javascript" src="<?=BASE_WWW?>js/update.js"></script>
 <div id="compilation-title" class="ui-widget-header ui-corner-top ui-state-default">
