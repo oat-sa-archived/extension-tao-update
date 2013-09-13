@@ -1,7 +1,7 @@
 <script type="text/javascript">
 
-var successMsg = '<?= get_data("successMsg") ;?><a href="<?= get_data("successUrl") ;?>>'  + __('Click here to proceed'); + '</a>';console.log(successMsg);
-
+var successMsg = '<?= get_data("successMsg") ;?>';
+var successLink ='<?= get_data("successUrl") ;?>';
 </script>
 <script type="text/javascript" src="<?=BASE_WWW?>js/updateProgress.js"></script>
 <script type="text/javascript" src="<?=BASE_WWW?>js/update.js"></script>
