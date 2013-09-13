@@ -127,11 +127,11 @@ class Main extends \OatBox\Controller\Module {
         else{
         
             if($this->releaseManifest['status'] == 'patch'){
-                $successMsg = 'Patch have been deployed, update completed, you will be <a>redirect to TAO HOME</a>';
+                $successMsg = 'Patch have been deployed, update completed, <a>return to TAO HOME</a>';
                 $successLink = ROOT_URL.'..';
             }
             else {
-                $successMsg = 'First step of your update is achieved, you will be <a>redirect to the TAO Data Migration page</a>';
+                $successMsg = 'First phase of your update is achieved, in next phase will migrate your data according to new version. <a>Click to proceed.</a>';
                 $successLink = ROOT_URL.'../taoUpdate/data/index?key=' . $this->service->getkey();
             }
             $this->setData('successLink', $successLink);
