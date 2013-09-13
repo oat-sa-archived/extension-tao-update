@@ -40,6 +40,9 @@ class taoUpdate_actions_Data extends tao_actions_CommonModule {
         $key = $this->getRequestParameter('key');
         $fileKey =  BASE_DATA . taoUpdate_models_classes_Service::FILE_KEY;
         if(is_file($fileKey) && @file_get_contents($fileKey) == $key) {
+            
+            $this->setData('successMsg','Update completed, you may return to <a>TAO Home</a>');
+
             $this->setData('logUrl', BASE_WWW . 'templates/update.log');
             $this->setView('logViewer.tpl');
         }

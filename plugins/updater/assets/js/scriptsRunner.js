@@ -40,8 +40,7 @@ scriptsRunnerClass.prototype.updateProgress = function() {
 		$('<h3>Success</h3>').addClass('sucessMsg').appendTo(this.$updateMsg);
 		var result = this.$successMsg.replace('<a>','<a href="' + this.$successLink + '">');
 		$('<p>' + result +'</p>').addClass('sucessMsg').appendTo(this.$updateMsg);
-		console.log(result);
-		
+
 		
 		$('<br/>').appendTo(this.$updateMsg);
 	}

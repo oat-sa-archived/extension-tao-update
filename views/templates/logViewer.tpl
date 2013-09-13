@@ -36,14 +36,14 @@
 			<script type="text/javascript">
 				var logUrl = "<?= get_data('logUrl') ;?>";
 				var root_url = "<?= ROOT_URL ;?>";
-				var successLink = "<?= get_data('successLink') ;?>";
+				var successMsg = "<?= get_data('successMsg') ;?>";
 				var img_url = "<?=BASE_WWW?>img/";
 				
 				var logViewer = new logViewerClass(logUrl);
 				logViewer.init();
 				hideLog();
 				
-				var scriptRunner = new scriptsRunnerClass();
+				var scriptRunner = new scriptsRunnerClass(successMsg,root_url);
 				scriptRunner.init();
 				
 				function showLog(){

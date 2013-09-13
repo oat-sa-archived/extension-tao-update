@@ -1,11 +1,13 @@
 
 
-function scriptsRunnerClass(){
+function scriptsRunnerClass(successMsg,successLink){
 	this.$step = $('#step');
 	this.availableStepsUrl = root_url + 'taoUpdate/Data/provideSteps';
 	this.$updateMsg = $('#updateMsg');
 	this.availableSteps = [];
 	this.stepIndex = 0;
+	this.successMsg = successMsg;
+	this.successLink = successLink;
 
 }
 
@@ -33,6 +35,8 @@ scriptsRunnerClass.prototype.updateProgress = function() {
 	}else{
 		this.$updateMsg.show();
 		$('<h3>Success</h3>').addClass('sucessMsg').appendTo(this.$updateMsg);
+		var result = this.successMsg.replace('<a>','<a href="' + this.successLink + '">');
+		$('<p>' + result +'</p>').addClass('sucessMsg').appendTo(this.$updateMsg);
 
 	}
 }
