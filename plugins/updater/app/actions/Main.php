@@ -118,11 +118,11 @@ class Main extends \OatBox\Controller\Module {
      */
     public function index(){
         if (!$this->hasRequestParameter('key')) {
-            $this->redirect(Uri::url('maintenance'));
+			$this->redirect(ROOT_URL . Uri::url('maintenance','Main'));
         }
         $key = $this->getRequestParameter('key');
         if(!UpdateService::isAllowed($key)){
-            $this->redirect(Uri::url('maintenance'));
+            $this->redirect(ROOT_URL . Uri::url('maintenance','Main'));
         }
         else{
         
