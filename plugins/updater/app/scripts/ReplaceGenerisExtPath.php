@@ -33,6 +33,7 @@ class ReplaceGenerisExtPath extends ScriptRunner {
     
     public function run(){
         $service = UpdateService::getInstance();
+        //only need to go from 2.4 to 2.5 
         $service->replaceGenerisExtPath();
 
     }
