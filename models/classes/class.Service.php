@@ -93,7 +93,14 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
       */
 	public function getKey() {
 	    if($this->key == null){
-	        $this->generateKey();
+	        $path = ROOT_PATH . self::DEPLOY_FOLDER;
+	        if(!is_file($path . self::FILE_KEY)){
+	            $this->generateKey();
+	        } 
+	        else {
+	            $this->key = file_get_contents($path . self::FILE_KEY);
+	        }
+	        
 	    }
 		return $this->key;
 	}
