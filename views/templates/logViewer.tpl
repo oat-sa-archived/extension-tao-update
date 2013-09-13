@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
-	<link rel="stylesheet" type="text/css" href="<?=TAOBASE_WWW?>css/reset.css" />
+	<link rel="stylesheet" type="text/css" href="<?=BASE_WWW?>css/reset.css" />
 	<link rel="stylesheet" type="text/css" href="<?=BASE_WWW?>css/logViewer.css" />
 	 <script src="<?=BASE_WWW ;?>js/jquery-1.8.0.min.js"></script>
 	<script type="text/javascript" src="<?=BASE_WWW?>js/scriptsRunner.js"></script>
