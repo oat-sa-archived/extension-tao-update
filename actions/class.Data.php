@@ -24,9 +24,17 @@ class taoUpdate_actions_Data extends tao_actions_CommonModule {
     
     protected function _isAllowed()
     {
-        $session = new taoUpdate_models_classes_Session();
-        common_session_SessionManager::startSession($session);
-        return true;
+        if (!$this->hasRequestParameter('key')) {
+            $this->setView('maintenance.tpl');
+        }
+        $key = $this->getRequestParameter('key');
+        $fileKey =  DIR_DATA . taoUpdate_models_classes_Service::FILE_KEY; 
+        if(is_file($fileKey) && @file_get_content($fileKey) == $key) {
+            $session = new taoUpdate_models_classes_Session();
+            common_session_SessionManager::startSession($session);
+            return true;
+        }
+        return false;
     }
     
     public function provideSteps(){
