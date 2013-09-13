@@ -1,5 +1,5 @@
 var updateProgress = null;
-updateProgress = new updateProgessClass(successMsg);
+updateProgress = new updateProgessClass(successMsg,successLink);
 updateProgress.init();
 
 
