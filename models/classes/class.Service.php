@@ -36,9 +36,7 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
     const UPDATOR_SRC =   'plugins/updater/';
     
    
-    
-    private $key;
-    
+   
     private $releasesService;
     private $backupService;
     private $shieldService;
@@ -51,51 +49,59 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	    $this->releasesService->setReleaseManifestUrl(RELEASES_MANIFEST);
 	    $this->backupService = taoUpdate_models_classes_BackupService::singleton();
 	    $this->shieldService = taoUpdate_models_classes_ShieldService::singleton();
-	}
+	    $this->createDeployFolder();
+        $this->generateKey();
+    }
 
-    
-
-    
     /**
-     * 
+     *
      * @access
+     *
      * @author "Lionel Lecaque, <lionel@taotesting.com>"
      * @throws taoUpdate_models_classes_UpdateException
      * @return string
      */
-    public function createDeployFolder(){
+     private function createDeployFolder()
+     {
         $path = ROOT_PATH . self::DEPLOY_FOLDER;
-        if(is_dir($path)){
-             common_Logger::i('Folder already exist remove it ' . $path);
+        if (is_dir($path)) {
+            common_Logger::i('Folder already exist remove it ' . $path);
             helpers_File::remove($path);
         }
         if(!mkdir($path, 0755, true)) {
             throw  new taoUpdate_models_classes_UpdateException('fail to create deploy folder' );
         }
-        
-        file_put_contents($path . self::FILE_KEY, $this->getKey());
-
         return $path;
-     }
+      }
 
+      /**
+       * 
+       * @access public
+       * @author "Lionel Lecaque, <lionel@taotesting.com>"
+       */
+      public function getKey(){
+          $path = ROOT_PATH . self::DEPLOY_FOLDER;
+          return @file_get_contents($path . self::FILE_KEY);
+      }
+     
      /**
       * 
       * @access
       * @author "Lionel Lecaque, <lionel@taotesting.com>"
       * @return string
       */
-	public function getKey() {
-	    if($this->key == null){
+	  private function generateKey() {
+            
 	        $path = ROOT_PATH . self::DEPLOY_FOLDER;
 	        if(!is_file($path . self::FILE_KEY)){
-	            $this->key = base_convert(time(),10,5);
+	            $key = base_convert(time(),10,5);
+	            file_put_contents($path . self::FILE_KEY, $key);
 	        } 
 	        else {
-	            $this->key = file_get_contents($path . self::FILE_KEY);
+	            $key = file_get_contents($path . self::FILE_KEY);
 	        }
-	        
-	    }
-		return $this->key;
+	    
+		return $key;
 	}
 	
 
@@ -178,7 +184,7 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	        $updaterConstants['constants']['ROOT_URL'] = ROOT_URL . self::DEPLOY_FOLDER;
 	        $this->setUpdaterConstant($updaterConstants);
 	        
-	        $deployFolder = $this->createDeployFolder();
+	        $deployFolder = ROOT_PATH . self::DEPLOY_FOLDER;
 	        $this->deployUpdater($deployFolder);
 	        $this->buildReleaseManifest($release,$deployFolder . $updaterDataFolder);
 	        return $this->releasesService->extractRelease($downloadFile, $deployFolder . $updaterDataFolder . self::RELEASE_FOLDER);
