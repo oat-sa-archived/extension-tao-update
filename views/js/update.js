@@ -1,4 +1,3 @@
-var successMsg = "<?= get_data('successMsg') ;?> <a href=\"<?= get_data('successUrl') ;?>\">"  + __('Click here to proceed'); + '</a>'
 var updateProgress = null;
 updateProgress = new updateProgessClass(successMsg);
 updateProgress.init();
