@@ -72,6 +72,16 @@ class UpdateService {
         }
         return false;
     }
+    
+    /**
+     * 
+     * @access public
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     */
+    public function getkey(){
+        return file_get_contents(ROOT_PATH. self::FILE_KEY);
+    }
+    
     /**
      * 
      * @access public
