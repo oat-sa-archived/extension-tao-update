@@ -54,14 +54,7 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	}
 
     
-    /**
-     * 
-     * @access
-     * @author "Lionel Lecaque, <lionel@taotesting.com>"
-     */
-    private function generateKey(){
-        $this->key = base_convert(time(),10,5);
-    }
+
     
     /**
      * 
@@ -95,7 +88,7 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	    if($this->key == null){
 	        $path = ROOT_PATH . self::DEPLOY_FOLDER;
 	        if(!is_file($path . self::FILE_KEY)){
-	            $this->generateKey();
+	            $this->key = base_convert(time(),10,5);
 	        } 
 	        else {
 	            $this->key = file_get_contents($path . self::FILE_KEY);
