@@ -26,7 +26,6 @@ namespace app\actions;
 
 use app\models\UpdateService;
 use OatBox\Common\Uri;
-use app\scripts\Test;
 use OatBox\Common\Logger;
 use app\scripts\OldVersionRestorer;
 use app\scripts\NewVersionDeployer;
