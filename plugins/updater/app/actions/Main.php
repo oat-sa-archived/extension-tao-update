@@ -110,7 +110,7 @@ class Main extends \OatBox\Controller\Module {
         }
         else {
             $successMsg = 'First step of your update is achieved, you will be <a>redirect to the TAO Data Migration page</a>';
-            $successLink = ROOT_URL.'../taoUpdate/data/migrate';
+            $successLink = ROOT_URL.'../taoUpdate/data/index';
         }
         $this->setData('successLink', $successLink);
         $this->setData('successMsg', $successMsg);
