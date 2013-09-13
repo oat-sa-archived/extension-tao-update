@@ -36,11 +36,22 @@ class Main extends \OatBox\Controller\Module {
     private $service;
     private $releaseManifest;
     
+    /**
+     * 
+     * @access public
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     */
     public function __construct(){
         $this->service = UpdateService::getInstance();
         $this->releaseManifest = $this->service->getReleaseManifest();
     }
 
+    /**
+     * 
+     * @access public
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     * @param string $script
+     */
     public function scriptRunner($script){
         $error = false;
         $errorStack = array();
@@ -93,34 +104,20 @@ class Main extends \OatBox\Controller\Module {
 
     }
     
-    public function serviceTest(){
-        $this->service->test();
-    }
-    
+    /**
+     * 
+     * @access public
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     */
     public function provideSteps(){
         echo $this->service->getUpdateScripts();
     }
-
-    
-    public function test(){
-        
-        if($this->releaseManifest['status'] == 'patch'){
-            $successMsg = 'Patch have been deployed, update completed, you will be <a>redirect to TAO HOME</a>';
-            $successLink = ROOT_URL.'..';
-        }
-        else {
-            $successMsg = 'First step of your update is achieved, you will be <a>redirect to the TAO Data Migration page</a>';
-            $successLink = ROOT_URL.'../taoUpdate/data/index';
-        }
-        $this->setData('successLink', $successLink);
-        $this->setData('successMsg', $successMsg);
-        $this->setData('ROOT_URL',ROOT_URL);
-        $this->setView('logViewer.tpl');
-    }
-
-    
-    public function index() {
-        
+    /**
+     * 
+     * @access public
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     */
+    public function index(){
         if (!$this->hasRequestParameter('key')) {
             $this->redirect(Uri::url('maintenance'));
         }
@@ -129,31 +126,28 @@ class Main extends \OatBox\Controller\Module {
             $this->redirect(Uri::url('maintenance'));
         }
         else{
-
-            
-           //echo 'Start Upgrading TAO';
-           
-           $parameters = array();
-
-           $options = array(
-               'argv' => array(0 => 'Script OldVersionRemover'),  
-               'output_mode' => 'log_only'
-           );
-           try {
-           //new OldVersionArchiver(array('parameters' => $parameters),$options );
-           }
-           catch(\Exception $e){
-               Logger::e('Error occurs during update ' . $e->getMessage());
-           }
-           $this->setData('ROOT_URL',ROOT_URL);
-           $this->setView('logViewer.tpl');
-          
-        }
-       
         
+            if($this->releaseManifest['status'] == 'patch'){
+                $successMsg = 'Patch have been deployed, update completed, you will be <a>redirect to TAO HOME</a>';
+                $successLink = ROOT_URL.'..';
+            }
+            else {
+                $successMsg = 'First step of your update is achieved, you will be <a>redirect to the TAO Data Migration page</a>';
+                $successLink = ROOT_URL.'../taoUpdate/data/index';
+            }
+            $this->setData('successLink', $successLink);
+            $this->setData('successMsg', $successMsg);
+            $this->setData('ROOT_URL',ROOT_URL);
+            $this->setView('logViewer.tpl');
+        
+        }
     }
-    
-    
+
+    /**
+     * 
+     * @access public
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     */
     public function maintenance() {
         $this->setView('maintenance.tpl');;
         
