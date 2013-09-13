@@ -1,12 +1,13 @@
 
 
-function updateProgessClass(successMsg){
+function updateProgessClass(successMsg,successUrl){
 	this.$updateGrid = $('#update-grid');
 	this.$stepGrid = $('#update-step-grid');
 	this.moduleUrl = root_url + 'taoUpdate/Update/'
 	this.availableUpdatesUrl = this.moduleUrl + 'availableUpdates';
 	this.availableStepsUrl = this.moduleUrl + 'getUpdateSteps'
 	this.successMsg = successMsg;
+	this.successUrl = successUrl;
 	this.img_root = root_url + "/taoUpdate/views/img/";
 	this.availableSteps = [];
 	this.stepIndex = 0;
@@ -125,7 +126,7 @@ updateProgessClass.prototype.updateProgress = function() {
 
 		$('#update-button-container').hide();
 		var info = $('#update-info').removeClass('ui-state-error').addClass('ui-state-highlight');
-		info.html('<img src="'+this.img_root+'tick.png"/>' + this.successMsg );	
+		info.html('<img src="'+this.img_root+'tick.png"/>' + this.successMsg + '<a href="' + this.successUrl + '">Click here to proceed.</a>');	
 
 	}
 }
