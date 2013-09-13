@@ -71,9 +71,6 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
      * @return string
      */
     public function createDeployFolder(){
-        if($this->key == null){
-            throw  new taoUpdate_models_classes_UpdateException('key is missing, should have been generated before' );
-        }
         $path = ROOT_PATH . self::DEPLOY_FOLDER;
         if(is_dir($path)){
              common_Logger::i('Folder already exist remove it ' . $path);
@@ -83,7 +80,7 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
             throw  new taoUpdate_models_classes_UpdateException('fail to create deploy folder' );
         }
         
-        file_put_contents($path . self::FILE_KEY, $this->key);
+        file_put_contents($path . self::FILE_KEY, $this->getKey());
 
         return $path;
      }
@@ -92,16 +89,13 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
       * 
       * @access
       * @author "Lionel Lecaque, <lionel@taotesting.com>"
-      * @throws taoUpdate_models_classes_UpdateException
       * @return string
       */
 	public function getKey() {
-	    $keyFile = ROOT_PATH . self::DEPLOY_FOLDER . self::FILE_KEY;
-	    if (!is_file($keyFile)) {
-	        throw  new taoUpdate_models_classes_UpdateException('Deploy Folder have not been created yet you could not access the key' );
+	    if($this->key == null){
+	        $this->generateKey();
 	    }
-	    return @file_get_contents($path . self::FILE_KEY);
-
+		return $this->key;
 	}
 	
 
