@@ -59,7 +59,7 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
      * @access
      * @author "Lionel Lecaque, <lionel@taotesting.com>"
      */
-    public function generateKey(){
+    private function generateKey(){
         $this->key = base_convert(time(),10,5);
     }
     
@@ -175,7 +175,6 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	 * @throws taoUpdate_models_classes_UpdateException
 	 */
 	public function deploy($release){
-	    $this->generateKey();
 	    $releaseFileName = $this->releasesService->getReleaseFileName($release);
 	    $downloadFile = BASE_DATA . self::RELEASES_DOWNLOAD_FOLDER . $releaseFileName;
 	    if(is_file($downloadFile)){
