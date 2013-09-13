@@ -185,15 +185,28 @@ class UpdateService {
 	 */
 	public function restartTaoContext(){
 	    $releaseManifest = $this->getReleaseManifest();
-	    $destination = $releaseManifest['old_root_path'];
-	    if($this->unShield('taoUpdate') === false) {
-	        Logger::w('Problem restoring access to taoUpdate to finish update');
-	    }
-	     
-	    //move token
-	    File::move(ROOT_PATH. self::FILE_KEY, $destination. self::UPDATE_EXT.'data'.DIRECTORY_SEPARATOR.self::FILE_KEY);
-	    File::move(DIR_DATA . self::RELEASE_INFO, $destination. self::UPDATE_EXT.'data'.DIRECTORY_SEPARATOR.self::RELEASE_INFO);
-	    
+	    if($releaseManifest['status'] == 'stable'){
+        	    $destination = $releaseManifest['old_root_path'];
+        	    if($this->unShield('taoUpdate') === false) {
+        	        Logger::w('Problem restoring access to taoUpdate to finish update');
+        	    }
+        	     
+        	    //move token
+        	    File::move(ROOT_PATH. self::FILE_KEY, $destination. self::UPDATE_EXT.'data'.DIRECTORY_SEPARATOR.self::FILE_KEY);
+        	    File::move(DIR_DATA . self::RELEASE_INFO, $destination. self::UPDATE_EXT.'data'.DIRECTORY_SEPARATOR.self::RELEASE_INFO);
+    	 }
+    	 else if ($releaseManifest['status'] == 'patch'){
+    	     foreach ($releaseManifest['old_extensions'] as $ext){
+    	         if($this->unShield($ext) === false) {
+    	             Logger::w('Problem restoring access to '. $ext .' to finish update');
+    	         }
+    	     }
+    	     
+    	     File::remove(ROOT_PATH. self::FILE_KEY);
+    	 }
+    	 else{
+    	     Logger::e('Status not reconized ' . $releaseManifest['status']);	     
+    	 }
 	}
 	
 	/**
