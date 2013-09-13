@@ -16,7 +16,6 @@ class taoUpdate_actions_Data extends tao_actions_CommonModule {
 		'file'			=>  self::getTemplatePath('update.log') ,
 		)));
 		
-		common_Logger::t('test');
 
 	}
 
@@ -24,17 +23,9 @@ class taoUpdate_actions_Data extends tao_actions_CommonModule {
     
     protected function _isAllowed()
     {
-        if (!$this->hasRequestParameter('key')) {
-            $this->setView('maintenance.tpl');
-        }
-        $key = $this->getRequestParameter('key');
-        $fileKey =  DIR_DATA . taoUpdate_models_classes_Service::FILE_KEY; 
-        if(is_file($fileKey) && @file_get_content($fileKey) == $key) {
-            $session = new taoUpdate_models_classes_Session();
-            common_session_SessionManager::startSession($session);
-            return true;
-        }
-        return false;
+        $session = new taoUpdate_models_classes_Session();
+        common_session_SessionManager::startSession($session);
+        return true;
     }
     
     public function provideSteps(){
@@ -43,8 +34,18 @@ class taoUpdate_actions_Data extends tao_actions_CommonModule {
     
     
     public function index(){
-        $this->setData('logUrl', BASE_WWW . 'templates/update.log');
-        $this->setView('logViewer.tpl');
+        if (!$this->hasRequestParameter('key')) {
+            $this->setView('maintenance.tpl');
+        }
+        $key = $this->getRequestParameter('key');
+        $fileKey =  BASE_DATA . taoUpdate_models_classes_Service::FILE_KEY;
+        if(is_file($fileKey) && @file_get_contents($fileKey) == $key) {
+            $this->setData('logUrl', BASE_WWW . 'templates/update.log');
+            $this->setView('logViewer.tpl');
+        }
+        else{
+            $this->setView('maintenance.tpl');
+        }
         
     }
     
