@@ -59,7 +59,7 @@ class ShieldServiceTestCase extends  WebTestCase {
         $this->assertFalse($this->service->unShield('filemanager'));
         
         $this->get(ROOT_URL.'filemanager' );
-        $this->assertTitle('Access Forbidden');
+        $this->assertTitle('Access Denied');
         $this->assertTrue(is_file(ROOT_PATH . '/filemanager/.htaccess'));
         $this->assertTrue($this->service->shield('filemanager', 'taoUpdate/test/sample/deadend.html'));
         $this->get(ROOT_URL.'filemanager' );

@@ -46,10 +46,14 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 
 	protected function __construct() {
 	    $this->releasesService = taoUpdate_models_classes_ReleasesService::singleton();
-	    $this->releasesService->setReleaseManifestUrl(RELEASES_MANIFEST);
+	    $this->initReleaseService(RELEASES_MANIFEST);
 	    $this->backupService = taoUpdate_models_classes_BackupService::singleton();
 	    $this->shieldService = taoUpdate_models_classes_ShieldService::singleton();
         $this->generateKey();
+    }
+    
+    public function initReleaseService($releaseManifest){
+        $this->releasesService->setReleaseManifestUrl($releaseManifest);
     }
 
     /**
@@ -60,7 +64,7 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
      * @throws taoUpdate_models_classes_UpdateException
      * @return string
      */
-     private function createDeployFolder()
+     public function createDeployFolder()
      {
         $path = ROOT_PATH . self::DEPLOY_FOLDER;
         if (is_dir($path)) {

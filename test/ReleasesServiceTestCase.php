@@ -99,17 +99,23 @@ class ReleasesServiceTestCase extends UnitTestCase {
         $localFolder = dirname(__FILE__) . '/download/';
 
         $tmpFolder = dirname(__FILE__) .'/tmp/';
-        $dlPath = $this->service->downloadRelease($releaseFile, $updateSites['default'], $localFolder);
-        $this->assertTrue(is_file($dlPath));
-        $zip = new ZipArchive();
-        $zip->open($dlPath);
-        $zip->extractTo($tmpFolder);
-        $this->assertFalse($zip->locateName('TAO_10.10.99_build/version') === false);
-
-        $this->assertTrue(is_file($tmpFolder.'TAO_10.10.99_build/version'));
-        $versionFileContent = @file_get_contents($tmpFolder.'TAO_10.10.99_build/version');
-        $this->assertEqual($versionFileContent, '10.10.99');
-
+        try {
+            $dlPath = $this->service->downloadRelease($releaseFile, $updateSites['default'], $localFolder);
+            $this->assertTrue(is_file($dlPath));
+            $zip = new ZipArchive();
+            $zip->open($dlPath);
+            $zip->extractTo($tmpFolder);
+            $this->assertFalse($zip->locateName('TAO_10.10.99_build/version') === false);
+    
+            $this->assertTrue(is_file($tmpFolder.'TAO_10.10.99_build/version'));
+            $versionFileContent = @file_get_contents($tmpFolder.'TAO_10.10.99_build/version');
+            $this->assertEqual($versionFileContent, '10.10.99');
+        }
+        catch(taoUpdate_models_classes_UpdateException $e){
+            $this->fail('Exception raised ' . $e->getMessage());
+        }
+        
+        
         try {
             $dlPath = $this->service->downloadRelease('10.10.98', $updateSites['default'], $localFolder);
         }
@@ -124,8 +130,13 @@ class ReleasesServiceTestCase extends UnitTestCase {
         
             $this->assertIsA($e,'taoUpdate_models_classes_UpdateException');
         }
-        helpers_File::remove($localFolder.$releaseFile);
-        helpers_File::remove($tmpFolder.'TAO_10.10.99_build/version');
+        try {
+            helpers_File::remove($localFolder.$releaseFile);
+            helpers_File::remove($tmpFolder.'TAO_10.10.99_build/version');
+        }
+        catch (common_Exception $e){
+            $this->fail('Exception raised ' . $e->getMessage());
+        }
 
     }
     
@@ -173,7 +184,6 @@ class ReleasesServiceTestCase extends UnitTestCase {
         @file_put_contents(ROOT_PATH.'version','10.10.88');
         $this->service->setReleaseManifestUrl( BASE_URL . '/test/sample/releases-patchsOnly.xml');
         $availableUpdates= $this->service->getAvailableUpdates();
-       
         if(isset($availableUpdates['10.10.99']['version'])){
             $this->assertEqual($availableUpdates['10.10.99']['version'] ,'10.10.99');
         }

@@ -38,7 +38,7 @@ class ServiceTestCase extends UnitTestCase {
     public function setUp(){
         TaoTestRunner::initTest();
         $this->service = taoUpdate_models_classes_Service::singleton();
-
+        $this->service->initReleaseService(BASE_URL . '/test/sample/releases10.xml');
     }
     /**
      * 
@@ -51,14 +51,21 @@ class ServiceTestCase extends UnitTestCase {
         }
         catch (Exception $e){
             $this->assertIsA($e, 'taoUpdate_models_classes_UpdateException');
+
         }
-        $this->service->generateKey();
-        $path = $this->service->createDeployFolder();
-        $this->assertTrue(is_dir($path));
-        $filepath = $path .taoUpdate_models_classes_Service::FILE_KEY;
-        $this->assertTrue(is_file($filepath));
-        $fileContent = @file_get_contents($filepath);
-        $this->assertEqual($fileContent, $this->service->getKey());
+        
+        try {
+            $this->assertNotNull($this->service->getKey());
+            $path = $this->service->createDeployFolder();
+            $this->assertNotNull($this->service->getKey());
+            $this->assertTrue(is_dir($path));
+
+            $fileContent = @file_get_contents($filepath);
+            $this->assertEqual($fileContent, $this->service->getKey());
+        }
+        catch (taoUpdate_models_classes_UpdateException $e){
+            $this->fail('Exception Raised ' . $e->getMessage());
+        }
  
     }
     
@@ -106,8 +113,12 @@ class ServiceTestCase extends UnitTestCase {
         $this->assertEqual($releaseInfo['version'], $release);
         $this->assertEqual(count($releaseInfo['extensions']),3);
         $extmanger = common_ext_ExtensionsManager::singleton();
+        
         //check if actual extension are set in manifest
-        $this->assertTrue(count($releaseInfo['old_extensions']) >= count($extmanger->getInstalledExtensions()) + count($extmanger->getAvailableExtensions()));
+        foreach ($releaseInfo['old_extensions'] as $ext){
+             $this->assertTrue(in_array($ext, array_keys($extmanger->getInstalledExtensions())));
+        }
+       
         $this->assertEqual($releaseInfo['old_root_path'],ROOT_PATH);
         helpers_File::remove($folder . 'release.json');
         $this->assertFalse(is_file($folder . 'release.json'));

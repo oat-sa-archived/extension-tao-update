@@ -35,7 +35,12 @@ class BackupServiceTestCase extends UnitTestCase {
      * @var taoUpdate_models_classes_BackupService
      */
     private $service;
-
+    /**
+     * 
+     * @var string
+     */
+    private $folder;
+    
     /**
      * tests initialization
      */
@@ -46,9 +51,31 @@ class BackupServiceTestCase extends UnitTestCase {
     }
     
     public function testCreate() {
-        $folder = $this->service->createBackupFolder();
-        $this->service->storeAllFiles($folder);
-        $this->service->storeDatabase($folder);
+        try {
+            $this->folder = $this->service->createBackupFolder();
+            $this->service->storeAllFiles($this->folder);
+            $srcFile = $this->folder . DIRECTORY_SEPARATOR.
+                    taoUpdate_models_classes_BackupService::SRC_BACKUP_FILE_PREFFIX. 
+                    TAO_VERSION.
+                    taoUpdate_models_classes_BackupService::SRC_BACKUP_FILE_SUFFIX;
+            $this->assertTrue(is_file($srcFile));
+            $this->service->storeDatabase($this->folder);
+            $dbFile = $this->folder . DIRECTORY_SEPARATOR.
+                    taoUpdate_models_classes_BackupService::DB_BACKUP_FILE_PREFFIX.
+                    TAO_VERSION.
+                    taoUpdate_models_classes_BackupService::DB_BACKUP_FILE_SUFFIX.
+                    '.zip';
+
+            $this->assertTrue(is_file($dbFile));
+        }
+        catch(taoUpdate_models_classes_UpdateException $e){
+            $this->fail('Exception raised ' . $e->getMessage());
+        }
+
+    }
+    
+    public function tearDown(){
+        helpers_File::remove($this->folder);
     }
     
     

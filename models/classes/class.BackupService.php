@@ -41,8 +41,8 @@ class taoUpdate_models_classes_BackupService extends tao_models_classes_Service{
         $timestamps = date('Ymd-His', time());
         $basePath = BASE_DATA . self::BACKUP_DIR . DIRECTORY_SEPARATOR ;
         $path = $basePath . $timestamps  ;
-        if(!mkdir($path, 0755, true)) {
-            throw  new taoUpdate_models_classes_UpdateException('fail to create backup folder');
+        if(!@mkdir($path, 0755, true)) {
+            throw  new taoUpdate_models_classes_UpdateException('fail to create backup folder in ' . $basePath . ' check rights');
         }
         return $path;
     }
