@@ -237,7 +237,12 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
                 $message = "Unable to reach the update server located at " .$this->getReleaseManifestUrl();
                 common_Logger::w($message);
                 common_Logger::i('Use local file instead');
-                $this->dom =  @simplexml_load_file(RELEASES_LOCAL_MANIFEST);
+                if(is_file(RELEASES_LOCAL_MANIFEST)){
+                    $this->dom =  @simplexml_load_file(RELEASES_LOCAL_MANIFEST);
+                }
+                else{
+                    throw new taoUpdate_models_classes_UpdateException('Problems getting releases manifest either distant one or local one');
+                }   
             }
         }
         return $this->dom;
