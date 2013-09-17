@@ -2,7 +2,6 @@
 
 function scriptsRunnerClass(successMsg,successLink){
 	this.$step = $('#step');
-	console.log(successMsg);
 	this.availableStepsUrl = root_url + 'Main/provideSteps';
 	this.$updateMsg = $('#updateMsg');
 	this.availableSteps = [];
