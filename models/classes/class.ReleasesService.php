@@ -126,7 +126,7 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
         //file is only 18M but default php value is 128M but some packaging (ie MAMP) are set to 8MB
         ini_set('memory_limit', '128');
         if($updateSite == 'local'){
-            throw new taoUpdate_models_classes_ReleaseDownloadException('Update site is local package, no download available');
+            throw new taoUpdate_models_classes_LocalReleaseException('Update site is local package, no download available');
         }
         $curl = curl_init();
         $distantRelease = $updateSite . $releaseFileName;

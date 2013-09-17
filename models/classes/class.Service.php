@@ -211,6 +211,22 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	    $this->shieldService->shieldExtensions();
 	}
 	
+
+	private function copyLocalVersion($release,$fileName,$downloadFolder){
+	    common_Logger::i('Problem getting release from distant server will use local file instead');
+	    $srcFolder = BASE_DATA . self::RELEASES_LOCAL_FOLDER ;
+	    if (is_file($srcFolder.$fileName)) {
+	        helpers_File::copy($srcFolder.$fileName, $downloadFolder . $fileName,false);
+	        $path = $downloadFolder . $fileName;
+	    }
+	    else{
+	        throw new taoUpdate_models_classes_UpdateException('Could not find a release with file ' . $fileName);
+	    }
+	    return $path;
+	    
+	}
+	
+	
     /**
      * 
      * @access public
@@ -234,17 +250,11 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
             
         	
             } catch (taoUpdate_models_classes_ReleaseDownloadException $e2) {
-                common_Logger::i('Problem getting release from distant server will use local file instead');
-                $srcFolder = BASE_DATA . self::RELEASES_LOCAL_FOLDER ;
-                if (is_file($srcFolder.$fileName)) {
-                        helpers_File::copy($srcFolder.$fileName, $downloadFolder . $fileName,false);
-                        $path = $downloadFolder . $fileName;
-                }
-                else{
-                    throw new taoUpdate_models_classes_UpdateException('Could not find a release with file ' . $fileName);
-                }
+                $path = $this->copyLocalVersion($release, $fileName, $downloadFolder);
 
             }
+        } catch (taoUpdate_models_classes_LocalReleaseException $e){
+            $path = $this->copyLocalVersion($release, $fileName, $downloadFolder);
         }
 	    return $path;
 
