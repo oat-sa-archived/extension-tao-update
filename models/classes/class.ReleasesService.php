@@ -123,6 +123,8 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
      * @return string
      */
     public function downloadRelease($releaseFileName,$updateSite, $localFolder){
+        //file is only 18M but default php value is 128M but some packaging (ie MAMP) are set to 8MB
+        ini_set('memory_limit', '128');
         $curl = curl_init();
         $distantRelease = $updateSite . $releaseFileName;
         if(!$fp = @fopen($localFolder.$releaseFileName, 'w')){
@@ -131,10 +133,9 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
         curl_setopt ($curl, CURLOPT_URL, $distantRelease);
         curl_setopt($curl, CURLOPT_FILE, $fp);
         curl_setopt($curl,  CURLOPT_RETURNTRANSFER, TRUE);
-        curl_exec ($curl);
+        $contents = curl_exec ($curl);
         $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        if ( $httpCode == 200 ) {
-            $contents = curl_exec($curl);
+        if ( $httpCode == 200 ) {     
             fwrite($fp, $contents);
             
         } else {
