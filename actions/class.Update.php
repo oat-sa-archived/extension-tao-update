@@ -153,7 +153,7 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
         $hasProperRole = array_key_exists($this->allowedRole, $roles);
         $isUpdateAvailable = $this->getAvailabeUpdates() != null ? true : false;
 
-        $this->setData('updatesaAvailable', json_encode(array_values($this->getAvailabeUpdates())));
+        $this->setData('updatesaAvailable', json_encode($this->getAvailabeUpdates()));
         $this->setData('hasProperRole', $hasProperRole);
         
         $isDesignModeEnabled = taoUpdate_helpers_Optimization::isDesignModeEnabled();
