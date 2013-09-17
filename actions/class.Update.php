@@ -36,22 +36,6 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
         $this->setView('maintenance.tpl');
 	}
 	
-    /**
-     * 
-     * @access
-     * @author "Lionel Lecaque, <lionel@taotesting.com>"
-     */
-	public function availableUpdates(){
-	    try {
-    	    echo json_encode($this->getavailabeUpdates());
-	    }
-	    catch (taoUpdate_models_classes_UpdateException $e){
-	        //could not reach update server
-	        common_Logger::e($e->getMessage());
-	    }
-	    
-
-	}
 	
 
 	
