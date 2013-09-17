@@ -255,12 +255,12 @@ class UpdateService {
     	    $srcPath = DIR_DATA . 'old/';
     	    $src = $srcPath. $ext . DIRECTORY_SEPARATOR . $data;
     	    $dest = $releaseManifest['old_root_path'] . $ext . DIRECTORY_SEPARATOR . $data;
-    	    if(is_file($src) || is_dir(src)){
+    	    if(is_file($src) || is_dir($src)){
         	    Logger::t('Copy ' . $src . ' to ' . $dest);
         	    File::copy($src, $dest,true,false);
     	    }
     	    else{
-    	        Logger::w('Could not copy data' . $src .' from old installation, check extension manifest ' . $ext);
+    	        Logger::w('Could not copy data ' . $src .' from old installation, check extension manifest ' . $ext);
     	    }
 	    }
 	}
