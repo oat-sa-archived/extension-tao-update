@@ -2,9 +2,9 @@
 <manifest>
 	<updateSites>
 		<updateSite>
-			<id>local</id>
+			<id>default</id>
 			<url>local</url>
-			<key>96db3da3652c2ce91fd6b07f397ab3f5</key>
+			<key>1f22d547c23f9c15bdd327ea3deec32e</key>
 		</updateSite>
 	</updateSites>
 	<releases>

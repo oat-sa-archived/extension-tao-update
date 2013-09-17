@@ -222,18 +222,15 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	public function downloadRelease($release){
 	    
 	    $fileName = $this->releasesService->getReleaseFileName($release);
-
-	    $updateSites = $this->releasesService->getUpdateSites();
-	    
+	    $updateSites = $this->releasesService->getUpdateSites();    
 	    $downloadFolder = BASE_DATA . self::RELEASES_DOWNLOAD_FOLDER ;
         try {
             $path = $this->releasesService->downloadRelease($fileName, $updateSites['default'], $downloadFolder);
-            
-            
+    
         } catch (taoUpdate_models_classes_ReleaseDownloadException $e) {
             common_Logger::i('Main update Site not reachable try to connect alternate');
             try {
-            $path = $this->releasesService->downloadRelease($fileName, $updateSites['default'], $downloadFolder);
+                $path = $this->releasesService->downloadRelease($fileName, $updateSites['default'], $downloadFolder);
             
         	
             } catch (taoUpdate_models_classes_ReleaseDownloadException $e2) {

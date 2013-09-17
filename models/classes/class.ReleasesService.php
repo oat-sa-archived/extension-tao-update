@@ -125,6 +125,9 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
     public function downloadRelease($releaseFileName,$updateSite, $localFolder){
         //file is only 18M but default php value is 128M but some packaging (ie MAMP) are set to 8MB
         ini_set('memory_limit', '128');
+        if($updateSite == 'local'){
+            throw new taoUpdate_models_classes_UpdateException('Update site is local package, no download available');
+        }
         $curl = curl_init();
         $distantRelease = $updateSite . $releaseFileName;
         if(!$fp = @fopen($localFolder.$releaseFileName, 'w')){
@@ -235,7 +238,7 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
             $this->dom = @simplexml_load_file($this->getReleaseManifestUrl());
             if (!$this->dom){
                 $message = "Unable to reach the update server located at " .$this->getReleaseManifestUrl();
-                common_Logger::w($message);
+                common_Logger::i($message);
                 common_Logger::i('Use local file instead');
                 if(is_file(RELEASES_LOCAL_MANIFEST)){
                     $this->dom =  @simplexml_load_file(RELEASES_LOCAL_MANIFEST);
@@ -248,7 +251,13 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
         return $this->dom;
     }
  
-
+    /**
+     * 
+     * @access 
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     * @param unknown $release
+     * @return string
+     */
     public function getReleaseManifest($release){
         $versions = $this->getVersions(true);
         return $versions[$release];
@@ -290,7 +299,7 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
 
     
     /**
-     * @access
+     * @access private
      * @author "Lionel Lecaque, <lionel@taotesting.com>"
      * @param string $id
      * @param string $url
@@ -307,7 +316,7 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
     }
     
     /**
-     * @access
+     * @access public
      * @author "Lionel Lecaque, <lionel@taotesting.com>"
      * @return array 
      */
