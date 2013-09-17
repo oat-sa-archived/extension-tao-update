@@ -57,4 +57,12 @@
      public function getInterfaceLanguage(){
          return DEFAULT_LANG;
      }
+     /**
+      * (non-PHPdoc)
+      * @see common_session_Session::refresh()
+      */
+     public function refresh() {
+         // nothing to do here
+     }
+      
  }
