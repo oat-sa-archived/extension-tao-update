@@ -124,7 +124,7 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
      */
     public function downloadRelease($releaseFileName,$updateSite, $localFolder){
         //file is only 18M but default php value is 128M but some packaging (ie MAMP) are set to 8MB
-        ini_set('memory_limit', '128');
+       
         if($updateSite == 'local'){
             throw new taoUpdate_models_classes_LocalReleaseException('Update site is local package, no download available');
         }
@@ -132,11 +132,18 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
         $distantRelease = $updateSite . $releaseFileName;
         if(!$fp = @fopen($localFolder.$releaseFileName, 'w')){
             throw new taoUpdate_models_classes_UpdateException('Fail to open stream check permission on ' . $localFolder.$releaseFileName);
-        }    
+        } 
+
         curl_setopt ($curl, CURLOPT_URL, $distantRelease);
         curl_setopt($curl, CURLOPT_FILE, $fp);
         curl_setopt($curl,  CURLOPT_RETURNTRANSFER, TRUE);
-        $contents = curl_exec ($curl);
+         try {   
+             ini_set('memory_limit', '128M');
+             $contents = curl_exec ($curl);
+        } catch (Exception $e){
+            throw new taoUpdate_models_classes_UpdateException('Exception catched ' . $e->getMessage());
+            
+        }
         $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         if ( $httpCode == 200 ) {     
             fwrite($fp, $contents);
