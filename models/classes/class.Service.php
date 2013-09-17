@@ -108,7 +108,9 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
         return $key;
     }
 	
-
+    public function hasAvailableUpdates(){
+        return $this->releasesService->hasAvailableUpdates();
+    }
 	
     /**
      * 
@@ -211,7 +213,16 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	    $this->shieldService->shieldExtensions();
 	}
 	
-
+    /**
+     * 
+     * @access 
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     * @param string $release
+     * @param string $fileName
+     * @param string $downloadFolder
+     * @throws taoUpdate_models_classes_UpdateException
+     * @return string
+     */
 	private function copyLocalVersion($release,$fileName,$downloadFolder){
 	    common_Logger::i('Problem getting release from distant server will use local file instead');
 	    $srcFolder = BASE_DATA . self::RELEASES_LOCAL_FOLDER ;

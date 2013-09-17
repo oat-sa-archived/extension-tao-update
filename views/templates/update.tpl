@@ -2,6 +2,8 @@
 
 var successMsg = '<?= get_data("successMsg") ;?>';
 var successLink ='<?= get_data("successUrl") ;?>';
+var availlableUpdates = JSON.parse('<?= get_data("updatesaAvailable") ;?>');
+
 </script>
 <script type="text/javascript" src="<?=BASE_WWW?>js/updateProgress.js"></script>
 <script type="text/javascript" src="<?=BASE_WWW?>js/update.js"></script>

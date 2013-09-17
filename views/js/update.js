@@ -1,6 +1,6 @@
 var updateProgress = null;
 updateProgress = new updateProgessClass(successMsg,successLink);
-updateProgress.init();
+updateProgress.init(availlableUpdates);
 
 
 function initUpdate(){

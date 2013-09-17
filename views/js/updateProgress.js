@@ -15,51 +15,44 @@ function updateProgessClass(successMsg,successUrl){
 }
 
 
-updateProgessClass.prototype.init = function(){
+updateProgessClass.prototype.init = function(availlableUpdates){
 	var self = this;
 
-	$.ajax({
-		type: "POST",
-		url: self.availableUpdatesUrl,
-		data: {},
-		dataType: 'json',
-		success: function(data){
-			require(['require', 'jquery', 'grid/tao.grid'], function(req, $) {
-					self.$updateGrid.jqGrid({
-						
-					datatype: "local", 
-					hidegrid : false,
-					colNames: [ __('Version'), __('File'),''], 
-					colModel: [ 
-						{name: 'version', index: 'version', sortable: false},
-						{name: 'file', index: 'file', align: 'center', sortable: false},
-						{name:'actions',index:'actions', align:"center", width: 30, sortable: false}
-						
-					], 
-			
-					rowNum:10,
-					height: 'auto', 
-					width:'auto', 
-			
-					caption: __("Available Update"),
-								         
-				});
-					
-				var i = 0;
-				for (var update in data){
-					var row = data[update];
-					row.actions = '<input type="radio" name="update-to-version" value="' + update + '" />'
-					self.addRow(self.$updateGrid, i, row);
-					i++;
-				}
-			
+	require(['require', 'jquery', 'grid/tao.grid'], function(req, $) {
+		self.$updateGrid.jqGrid({
 
-			});	
+			datatype: "local", 
+			hidegrid : false,
+			colNames: [ __('Version'), __('File'),''], 
+			colModel: [ 
+			           {name: 'version', index: 'version',align: 'center', sortable: false},
+			           {name: 'file', index: 'file', align: 'center', sortable: false},
+			           {name:'actions',index:'actions', align:"center", width: 30, sortable: false}
 
+			           ], 
+
+			           rowNum:10,
+			           height: 'auto', 
+			           width:'auto', 
+
+			           caption: __("Available Update"),
+
+		});
+
+		var i = 0;
+
+		for (var update in availlableUpdates){
+			var row = availlableUpdates[update];
+
+			row.actions = '<input type="radio" name="update-to-version" value="' + update + '" />'
+			self.addRow(self.$updateGrid, i, row);
+			i++;
 		}
-	});
+
+	});	
+
 	
-	return true;
+
 }
 
 updateProgessClass.prototype.activeSteps = function(){

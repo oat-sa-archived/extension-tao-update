@@ -133,9 +133,8 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
 	        try {
 	           $this->availabeUpdates = $this->service->getAvailableUpdates();
 	        }
-	        catch (taoUpdate_models_classes_UpdateException $e){
-	            //could not reach update server
-	            common_Logger::e($e->getMessage());
+	        catch (Exception $e){
+	            common_Logger::e('could not reach update server ' . $e->getMessage());
 	        }
 	    }
 	    return $this->availabeUpdates;
@@ -147,10 +146,15 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
 	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
 	 */
 	public function settings(){
+	    
+	    try {
         $currentUser = $this->userService->getCurrentUser();
         $roles = $this->userService->getUserRoles($currentUser);
         $hasProperRole = array_key_exists($this->allowedRole, $roles);
         $isUpdateAvailable = $this->getAvailabeUpdates() != null ? true : false;
+
+        $this->setData('updatesaAvailable', json_encode(array_values($this->getAvailabeUpdates())));
+        $this->setData('hasProperRole', $hasProperRole);
         
         $isDesignModeEnabled = taoUpdate_helpers_Optimization::isDesignModeEnabled();
         $this->setData('isDesignModeEnabled', $isDesignModeEnabled);
@@ -163,6 +167,10 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
         $this->setData('successMsg', $successMsg);
         $this->setData('successUrl', $successUrl);
         $this->setView('settings_update.tpl');
+	    }
+	    catch (Exception $e){
+	         //
+	    }
 	}
 	
 
