@@ -18,8 +18,8 @@
  *
  * @author "Lionel Lecaque, <lionel@taotesting.com>"
  * @license GPLv2
- * @package package_name
- * @subpackage 
+ * @package updater
+ * @subpackage app\scripts
  *
  */
 
@@ -33,7 +33,10 @@ use OatBox\Common\Logger;
 class OldVersionArchiver extends ScriptRunner {
     
     
-
+    /**
+     * (non-PHPdoc)
+     * @see \OatBox\Common\ScriptRunner::preRun()
+     */
 	protected function preRun() {
 
 	    
@@ -54,8 +57,11 @@ class OldVersionArchiver extends ScriptRunner {
 
 	    
 	}
-
     
+    /**
+     * (non-PHPdoc)
+     * @see \OatBox\Common\ScriptRunner::run()
+     */
     public function run(){
          $service = UpdateService::getInstance();
         $extManifests = $service->getUpdateManifests();
@@ -67,7 +73,7 @@ class OldVersionArchiver extends ScriptRunner {
             File::move( $oldRootPath. $ext, DIR_DATA .'old/'.$ext,false);
             
         }
-        $rootFiles = array('.htaccess.bak','index.php','favicon.ico','fdl-1.3.txt','gpl-2.0.txt','license','version','readme.txt');
+        $rootFiles = array('.htaccess','index.php','favicon.ico','fdl-1.3.txt','gpl-2.0.txt','license','version','readme.txt');
         foreach ($rootFiles as $file){
             
             if(is_file($oldRootPath . $file)){
