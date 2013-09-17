@@ -234,8 +234,10 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
         if ($this->dom == null) {
             $this->dom = @simplexml_load_file($this->getReleaseManifestUrl());
             if (!$this->dom){
-                $message = __("Unable to reach the update server located at ").$this->getReleaseManifestUrl();
-                throw new taoUpdate_models_classes_UpdateException($message);
+                $message = "Unable to reach the update server located at " .$this->getReleaseManifestUrl();
+                common_Logger::w($message);
+                common_Logger::i('Use local file instead');
+                $this->dom =  @simplexml_load_file(RELEASES_LOCAL_MANIFEST);
             }
         }
         return $this->dom;
