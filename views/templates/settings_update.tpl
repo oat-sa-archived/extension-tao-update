@@ -4,6 +4,6 @@
 		<?=get_data('message')?>
 	</div>
 <?endif?>
-<? if (get_data('hasProperRole')) include('update.tpl'); else include('sysAdminRoleRequired.tpl');?>
+<?include('update.tpl');?>
 
 <?include(TAO_TPL_PATH.'footer.tpl')?>

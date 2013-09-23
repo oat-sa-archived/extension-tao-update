@@ -11,7 +11,7 @@
 
 class taoUpdate_actions_Update extends tao_actions_CommonModule {
     
-    private  $allowedRole ='http://www.tao.lu/Ontologies/TAO.rdf#SysAdminRole';
+
     private $availabeUpdates = null;
     private $userService;
     protected  $service;
@@ -23,28 +23,41 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
         parent::__construct();
         $this->userService = tao_models_classes_UserService::singleton();
         $this->service = taoUpdate_models_classes_Service::singleton();
-
-   
     }
-
+    /**
+     * 
+     * @author "Lionel Lecaque, <lionel@taotesting.com>"
+     * @return boolean
+     */
+    public function getClassService() {
+        return taoResultServer_models_classes_ResultServerAuthoringService::singleton();
+    }
+    
 	/**
 	 * the say  action 
-	 * @return 
+	 * 
 	 */
 	public function maintenance(){
-
         $this->setView('maintenance.tpl');
 	}
 	
 	
+	
+	/* (non-PHPdoc)
+	 * @see tao_actions_CommonModule::_isAllowed()
+	 */
+	protected function _isAllowed() {
+		return tao_helpers_SysAdmin::isSysAdmin();	
+	}
+
 
 	
 	/**
 	 * 
 	 * @access
 	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
-	 * @param unknown $action
-	 * @param unknown $versionName
+	 * @param string $action
+	 * @param string $versionName
 	 */
 	public function run($action,$versionName){
 	    $error = false;
@@ -132,18 +145,16 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
 	public function settings(){
 	    
 	    try {
-        $currentUser = $this->userService->getCurrentUser();
-        $roles = $this->userService->getUserRoles($currentUser);
-        $hasProperRole = array_key_exists($this->allowedRole, $roles);
+
         $isUpdateAvailable = $this->getAvailabeUpdates() != null ? true : false;
 
         $this->setData('updatesaAvailable', json_encode($this->getAvailabeUpdates()));
-        $this->setData('hasProperRole', $hasProperRole);
+
         
         $isDesignModeEnabled = taoUpdate_helpers_Optimization::isDesignModeEnabled();
         $this->setData('isDesignModeEnabled', $isDesignModeEnabled);
         $this->setData('isUpdateAvailable', $isUpdateAvailable);
-        $this->setData('hasProperRole', $hasProperRole);
+
         $successMsg =  __('New Version have been downloaded and will now be extracted, we will now replace current installation. ');
         $successUrl = ROOT_URL .taoUpdate_models_classes_Service::DEPLOY_FOLDER . 'Main/index?key=' . $this->service->getKey();  
         
