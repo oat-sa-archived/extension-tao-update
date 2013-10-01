@@ -47,7 +47,11 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
 	 * @see tao_actions_CommonModule::_isAllowed()
 	 */
 	protected function _isAllowed() {
-		return tao_helpers_SysAdmin::isSysAdmin();	
+		$userService = tao_models_classes_UserService::singleton();
+		$currentUser = $userService->getCurrentUser();
+		$sysAdminRole =  new core_kernel_classes_Resource(INSTANCE_ROLE_SYSADMIN) ;
+		$returnValues = $currentUser != null ? $userService->userHasRoles($currentUser,$sysAdminRole) : false;
+		return $returnValues;
 	}
 
 
