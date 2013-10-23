@@ -88,4 +88,17 @@ class taoUpdate_models_classes_DataMigrationService extends tao_models_classes_S
         
     }
     
+    public function installExtension($extension){
+        // if all dependencies are installed
+        $installed	= array_keys(common_ext_ExtensionsManager::singleton()->getInstalledExtensions());
+        $missing	= array_diff($extension->getDependencies(), $installed);
+        foreach ($missing as $dependency) {
+            $this->installExtension($dependency);
+        }
+        
+        $extinstaller = new tao_install_ExtensionInstaller($extension,false);
+        set_time_limit(60);
+        $extinstaller->install();
+    }
+    
 }

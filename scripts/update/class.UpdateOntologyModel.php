@@ -65,15 +65,11 @@ class taoUpdate_scripts_update_UpdateOntologyModel extends tao_scripts_Runner {
         $property = new core_kernel_classes_Property($data['p']);
         $object = $data['o'];
         $lg = $data['l'];
-        if ($subject->getUri() == 'http://www.tao.lu/Ontologies/taoFuncACL.rdf#moduleExtension') {
-            core_kernel_classes_DbWrapper::singleton()->debug = true;
-        }
         if (!empty($lg)) {
             $subject->removePropertyValueByLg($property, $lg);
         } else {
             $subject->removePropertyValue($property, $object);
         }
-            core_kernel_classes_DbWrapper::singleton()->debug = false;
         if ($this->exists($subject, $property, $object, $lg)) {
             $this->err('Did not remove '.$subject->getUri().':'.$property->getUri().':"'.$object.'"@'.$lg);
         }
