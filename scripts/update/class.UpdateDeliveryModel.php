@@ -30,6 +30,8 @@ class taoUpdate_scripts_update_UpdateDeliveryModel extends tao_scripts_Runner {
     const OLD_TESTRUNNER_SERVICE = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#ServiceTestContainer';
     
     const OLD_RESULT_SERVER = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#ResultServer';
+    const OLD_CODING_METHOD = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#DeliveryCodingMethode';
+    const OLD_ACTIV = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#active';
     
     public function run() {
         
@@ -56,6 +58,8 @@ class taoUpdate_scripts_update_UpdateDeliveryModel extends tao_scripts_Runner {
                 $delivery->editPropertyValues(new core_kernel_classes_Property(PROPERTY_DELIVERY_CONTENT), $newContent);
                 $delivery->removePropertyValues(new core_kernel_classes_Property(self::OLD_RESULT_SERVER));
                 $delivery->removePropertyValues(new core_kernel_classes_Property(self::AUTH_MODE));
+                $delivery->removePropertyValues(new core_kernel_classes_Property(self::OLD_CODING_METHOD));
+                $delivery->removePropertyValues(new core_kernel_classes_Property(self::OLD_ACTIV));
             } else {
                 $this->err('Delivery '.$delivery->getUri().' is either already migrated or inconsistent');
             }
