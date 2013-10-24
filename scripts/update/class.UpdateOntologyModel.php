@@ -28,6 +28,7 @@ class taoUpdate_scripts_update_UpdateOntologyModel extends tao_scripts_Runner {
         core_kernel_classes_Session::singleton()->setUpdatableModels(core_kernel_classes_Session::singleton()->getLoadedModels());
         $this->out('Loading extensions');
         $diffPath = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ontologyData' . DIRECTORY_SEPARATOR;
+        // remove All
         foreach (common_ext_ExtensionsManager::singleton()->getInstalledExtensions() as $extension) {
             $diffFile = $diffPath . 'diff' . ucfirst($extension->getId()) . '.php';
             if (file_exists($diffFile)) {
@@ -36,6 +37,14 @@ class taoUpdate_scripts_update_UpdateOntologyModel extends tao_scripts_Runner {
                 foreach ($data['toRemove'] as $tripple) {
                     $this->remove($tripple);
                 }
+            }
+        }
+        // add All
+        foreach (common_ext_ExtensionsManager::singleton()->getInstalledExtensions() as $extension) {
+            $diffFile = $diffPath . 'diff' . ucfirst($extension->getId()) . '.php';
+            if (file_exists($diffFile)) {
+                $this->out('Updating model of '.$extension->getId());
+                $data = include $diffFile;
                 foreach ($data['toAdd'] as $tripple) {
                     $this->add($tripple);
                 }

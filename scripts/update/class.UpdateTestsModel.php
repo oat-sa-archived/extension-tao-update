@@ -27,9 +27,11 @@ class taoUpdate_scripts_update_UpdateTestsModel extends tao_scripts_Runner {
     const MODE_SIMPLE = 'http://www.tao.lu/Ontologies/TAOTest.rdf#AuthoringModeSimple';
     const MODE_ADVANCED = 'http://www.tao.lu/Ontologies/TAOTest.rdf#AuthoringModeAdvanced';
     
+    const OLD_ITEMRUNNER_SERVICE = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#ServiceItemRunner';
+    
     public function run(){
         // load the constants
-        common_ext_ExtensionsManager::singleton()->getExtensionById('taoTests');
+        common_ext_ExtensionsManager::singleton()->getExtensionById('taoWfTest');
         
         $testClass = new core_kernel_classes_Class(TAO_TEST_CLASS);
         
@@ -57,12 +59,72 @@ class taoUpdate_scripts_update_UpdateTestsModel extends tao_scripts_Runner {
         }
     }
     
-    private function replaceWfDefinition($test, $workflow) {
-        $emptyWF = $test->getUniquePropertyValue(new core_kernel_classes_Property(TEST_TESTCONTENT_PROP));
+    private function replaceWfDefinition(core_kernel_classes_Resource $test, core_kernel_classes_Resource $workflow) {
+        $this->out('For test: '.$test->getLabel());
+        
+        $contentProp = new core_kernel_classes_Property(TEST_TESTCONTENT_PROP);
         // delete empty WF
+        $emptyWF = $test->getUniquePropertyValue($contentProp);
+        $test->editPropertyValues($contentProp, $workflow);
+        $emptyWF->delete();
+        
+        $authoringService = wfAuthoring_models_classes_ProcessService::singleton();
         // foreach activity in workflow
-        // foreach service
-        // if service is item, replace service definition and parameters
+        foreach (wfEngine_models_classes_ProcessDefinitionService::singleton()->getAllActivities($workflow) as $activity) {
+            foreach (wfEngine_models_classes_ActivityService::singleton()->getInteractiveServices($activity) as $service) {
+                $serviceDefinition = $service->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_SERVICEDEFINITION));
+                if ($serviceDefinition->getUri() == self::OLD_ITEMRUNNER_SERVICE) {
+                    $this->out('to replace: '.$service->getLabel());
+                    
+                    
+                    // retrieve item
+                    $item = $this->getItem($service);
+                    // create service
+                    $newService = $this->createContainerService($item);
+                    $newService->setLabel($service->getLabel());
+                    
+                    $activity->removePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES), $service);
+                    //delete its related properties
+                    $deleted = $authoringService->deleteActualParameters($service);
+                    //delete call of service itself
+                    $deleted = $service->delete(true);
+                    
+                    $activity->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES), $newService);
+                }
+            }
+            $this->out('done activity: '.$activity->getLabel());
+        }
+    }
+    
+    private function getItem(core_kernel_classes_Resource $service) {
+        $inParameterCollection = $service->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN));
+        
+        $propActualParamConstantValue = new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_CONSTANTVALUE);
+        $propActualParamFormalParam = new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER);
+        $propFormalParamName = new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_NAME);
+        
+        foreach ($inParameterCollection->getIterator() as $inParameter){
+
+            $formalParameter = $inParameter->getUniquePropertyValue($propActualParamFormalParam);
+            if ($formalParameter->getUri() == 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemUri') {
+                $inParameterConstant = $inParameter->getOnePropertyValue($propActualParamConstantValue);
+                if (!is_null($inParameterConstant) && $inParameterConstant instanceof core_kernel_classes_Resource) {
+                    return $inParameterConstant;
+                } else {
+                    throw new common_exception_InconsistentData('missing item constant for service '.$service->getUri());
+                }
+            }
+        }
+        throw new common_exception_InconsistentData('no item parameter for '.$service->getUri());
+    }
+    
+    private function createContainerService(core_kernel_classes_Resource $item) {
+        $service = new tao_models_classes_service_ServiceCall(new core_kernel_classes_Resource(INSTANCE_ITEMCONTAINER_SERVICE));
+        $service->addInParameter(new tao_models_classes_service_ConstantParameter(
+            new core_kernel_classes_Resource(INSTANCE_FORMALPARAM_ITEMURI),
+            $item
+        ));
+        return $service->toOntology();
     }
     
     private function requireWfAdvTest() {
