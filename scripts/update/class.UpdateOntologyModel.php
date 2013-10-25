@@ -23,6 +23,18 @@
 
 class taoUpdate_scripts_update_UpdateOntologyModel extends tao_scripts_Runner {
     
+    private $updateQuery;
+    private $namespaceCache;
+    
+    public function __construct($inputFormat = array(), $options = array())
+    {
+        $this->updateQuery = core_kernel_classes_DbWrapper::singleton()->prepare(
+            "INSERT INTO statements VALUES (?,?,?,?,?,DEFAULT,'updateScript','yyy[admin,administrators,authors]','yyy[admin,administrators,authors]','yyy[admin,administrators,authors]',CURRENT_TIMESTAMP)"
+        );
+        $this->namespaceCache = common_ext_NamespaceManager::singleton()->getAllNamespaces();
+        parent::__construct($inputFormat, $options);
+    }
+    
     public function run(){
         $this->out('Bypassing model restriction');
         core_kernel_classes_Session::singleton()->setUpdatableModels(core_kernel_classes_Session::singleton()->getLoadedModels());
@@ -58,14 +70,21 @@ class taoUpdate_scripts_update_UpdateOntologyModel extends tao_scripts_Runner {
         $subject = new core_kernel_classes_Resource($data['s']);
         $property = new core_kernel_classes_Property($data['p']);
         $object = $data['o'];
-        $lg = $data['l'];
-        if (!empty($data['l'])) {
-            $subject->setPropertyValueByLg($property, $object, $lg);
-        } else {
-            $subject->setPropertyValue($property, $object);
-        }
+        $lg = is_null($data['l']) ? '' : $data['l'];
         if (!$this->exists($subject, $property, $object, $lg)) {
-            $this->err('Did not add '.$subject->getUri().':'.$property->getUri().':"'.$object.'"@'.$lg);
+            $nsPrefix = substr($data['s'], 0, strpos($data['s'], '#')+1);
+            $ns = isset($this->namespaceCache[$nsPrefix])
+                ? $this->namespaceCache[$nsPrefix]->getModelId()
+                : common_ext_NamespaceManager::singleton()->getLocalNamespace()->getModelId();
+            
+            if (!$this->updateQuery->execute(array($ns, $subject->getUri(), $property->getUri(), $object, $lg))) {
+                $this->err('Add query failed');
+            }
+            if (!$this->exists($subject, $property, $object, $lg)) {
+                $this->err('Did not add '.$subject->getUri().':'.$property->getUri().':"'.$object.'"@'.$lg);
+            }
+        } else {
+            $this->err('Already existed '.$subject->getUri().':'.$property->getUri().':"'.$object.'"@'.$lg);
         }
     }
     
@@ -74,22 +93,26 @@ class taoUpdate_scripts_update_UpdateOntologyModel extends tao_scripts_Runner {
         $property = new core_kernel_classes_Property($data['p']);
         $object = $data['o'];
         $lg = $data['l'];
-        if (!empty($lg)) {
-            $subject->removePropertyValueByLg($property, $lg);
-        } else {
-            $subject->removePropertyValue($property, $object);
-        }
         if ($this->exists($subject, $property, $object, $lg)) {
-            $this->err('Did not remove '.$subject->getUri().':'.$property->getUri().':"'.$object.'"@'.$lg);
+            if (!empty($lg)) {
+                $subject->removePropertyValueByLg($property, $lg);
+            } else {
+                $subject->removePropertyValue($property, $object);
+            }
+            if ($this->exists($subject, $property, $object, $lg)) {
+                $this->err('Did not remove '.$subject->getUri().':'.$property->getUri().':"'.$object.'"@'.$lg);
+            }
+        } else {
+            $this->err('Did not exist '.$subject->getUri().':'.$property->getUri().':"'.$object.'"@'.$lg);
         }
     }
     
     private function exists($subject, $property, $object, $lg) {
         $subject = new core_kernel_classes_Resource($subject->getUri());
-        $values = empty($lg) ? $subject->getPropertyValues($property) : $subject->getPropertyValuesByLg($property, $lg);
+        $values = $subject->getPropertyValuesByLg($property, $lg);
         $found = false;
         foreach ($values as $value) {
-            $raw = $value instanceof core_kernel_classes_Resource ? $value->getUri() : $value;
+            $raw = (string)($value instanceof core_kernel_classes_Resource ? $value->getUri() : $value);
             if ($raw == $object) {
                 $found = true;
                 break;
