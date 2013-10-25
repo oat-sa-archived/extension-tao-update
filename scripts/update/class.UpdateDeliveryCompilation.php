@@ -26,6 +26,8 @@ class taoUpdate_scripts_update_UpdateDeliveryCompilation extends tao_scripts_Run
     const OLD_DELIVERY_COMPILED = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#DeliveryProcess';
     const OLD_DELIVERY_ISCOMPILED = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#Compiled';
     
+    const OLD_ITEMRUNNER_SERVICE = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#ServiceItemRunner';
+    
     public function run() {
         
         common_log_Dispatcher::singleton()->init(array(
@@ -99,10 +101,72 @@ class taoUpdate_scripts_update_UpdateDeliveryCompilation extends tao_scripts_Run
     }
     
     private function replaceItemRunner(core_kernel_classes_Resource $workflow, $directory) {
+        $authoringService = wfAuthoring_models_classes_ProcessService::singleton();
+        // foreach activity in workflow
+        foreach (wfEngine_models_classes_ProcessDefinitionService::singleton()->getAllActivities($workflow) as $activity) {
+            foreach (wfEngine_models_classes_ActivityService::singleton()->getInteractiveServices($activity) as $service) {
+                $serviceDefinition = $service->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_SERVICEDEFINITION));
+                if ($serviceDefinition->getUri() == self::OLD_ITEMRUNNER_SERVICE) {
+                    $this->out('to replace: '.$service->getLabel());
         
+        
+                    // retrieve item
+                    $item = $this->getItem($service);
+                    // create service
+                    $itemDirectory = $this->createNamedSubDirectory($directory, $activity);
+                    $newService = $this->compileItem($item, $itemDirectory);
+                    $newService->setLabel($service->getLabel());
+        
+                    $activity->removePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES), $service);
+                    //delete its related properties
+                    $deleted = $authoringService->deleteActualParameters($service);
+                    //delete call of service itself
+                    $deleted = $service->delete(true);
+        
+                    $activity->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES), $newService);
+                }
+            }
+            $this->out('done activity: '.$activity->getLabel());
+        }
+    }
+
+    private function getItem(core_kernel_classes_Resource $service) {
+        $inParameterCollection = $service->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN));
+    
+        $propActualParamConstantValue = new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_CONSTANTVALUE);
+        $propActualParamFormalParam = new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER);
+        $propFormalParamName = new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_NAME);
+    
+        foreach ($inParameterCollection->getIterator() as $inParameter){
+    
+            $formalParameter = $inParameter->getUniquePropertyValue($propActualParamFormalParam);
+            if ($formalParameter->getUri() == 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemUri') {
+                $inParameterConstant = $inParameter->getOnePropertyValue($propActualParamConstantValue);
+                if (!is_null($inParameterConstant) && $inParameterConstant instanceof core_kernel_classes_Resource) {
+                    return $inParameterConstant;
+                } else {
+                    throw new common_exception_InconsistentData('missing item constant for service '.$service->getUri());
+                }
+            }
+        }
+        throw new common_exception_InconsistentData('no item parameter for '.$service->getUri());
     }
     
-    private function compileItem(core_kernel_classes_Resource $workflow) {
+    protected function createNamedSubDirectory(core_kernel_file_File $rootDirectory, $activity) {
+        $name = md5($activity->getUri());
+        $relPath = $rootDirectory->getRelativePath() . DIRECTORY_SEPARATOR . $name;
+        $absPath = $rootDirectory->getAbsolutePath() . DIRECTORY_SEPARATOR . $name;
     
+        if (!is_dir($absPath) && !mkdir($absPath)) {
+            throw new taoItems_models_classes_CompilationFailedException("Could not create sub-directory '${absPath}'.");
+        }
+        
+        return $rootDirectory->getFileSystem()->createFile('', $relPath);
+    }
+    
+    private function compileItem(core_kernel_classes_Resource $item, $directory) {
+        $compiler = taoItems_models_classes_ItemsService::singleton()->getCompiler($item);
+        $service = $compiler->compile($directory);
+        return $service->toOntology();
     }
 }

@@ -67,10 +67,12 @@ class taoUpdate_models_classes_ShieldService extends tao_models_classes_Service{
             file_put_contents($extFolder . '/.htaccess', "Options +FollowSymLinks\n"
                 . "<IfModule mod_rewrite.c>\n"
                     . "RewriteEngine On\n"
-                        . "RewriteCond %{REQUEST_URI} !/" .$destination ." [NC]\n"
-                            . "RewriteRule ^.*$ " . ROOT_URL .$destination . " [L]\n"
-                                . "</IfModule>");
-                                return true;
+                    . "RewriteCond %{REQUEST_URI} !/views/  [NC]\n"
+                    
+//                        . "RewriteCond %{REQUEST_URI} !/" .$destination ." [NC]\n"
+                    . "RewriteRule ^.*$ " . ROOT_URL .$destination . " [L]\n"
+                . "</IfModule>");
+            return true;
         }
         else {
             throw new taoUpdate_models_classes_UpdateException('.htaccess is not writtable in ' . $extFolder);

@@ -313,7 +313,8 @@ class UpdateService {
 	        file_put_contents($extFolder . '/.htaccess', "Options +FollowSymLinks\n"
 	            . "<IfModule mod_rewrite.c>\n"
 	                . "RewriteEngine On\n"
-                    . "RewriteCond %{REQUEST_URI} !/" .self::DEPLOY_FOLDER ." [NC]\n"
+                    . "RewriteCond %{REQUEST_URI} !/views/  [NC]\n"
+//                    . "RewriteCond %{REQUEST_URI} !/" .self::DEPLOY_FOLDER ." [NC]\n"
 					. "RewriteRule ^.*$ " . ROOT_URL .self::DEPLOY_FOLDER . " [L]\n"
 														  
 	                            . "</IfModule>");

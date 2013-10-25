@@ -23,10 +23,17 @@
 
 class taoUpdate_scripts_update_UninstallLtiProvider extends tao_scripts_Runner {
     public function run(){
-        common_Logger::t('Uninstall Tao Update');
-        $db = core_kernel_classes_DbWrapper::singleton();
-        $db->debug = true;
-        $sql = "DELETE from extensions where id ='ltiProvider';";
-        $db->exec($sql);
+        $ext = common_ext_ExtensionsManager::singleton()->getExtensionById('ltiProvider');
+        if ($ext->isInstalled()) {
+            common_Logger::t('Uninstall ltiProvider');
+            $db = core_kernel_classes_DbWrapper::singleton();
+            $sql = "DELETE from extensions where id ='ltiProvider';";
+            $db->exec($sql);
+            tao_helpers_File::delTree($ext->getConstant('BASE_PATH'));
+            
+            $newExt = common_ext_ExtensionsManager::singleton()->getExtensionById('taoLti');
+            taoUpdate_models_classes_DataMigrationService::singleton()->installExtension($newExt);
+            
+        }
     }
 }
