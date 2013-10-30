@@ -76,8 +76,13 @@ class taoUpdate_helpers_DbBackup
             $data = '';
             foreach ($q as $pieces) {
                 foreach ($pieces as &$value) {
-                    //$value = htmlentities(addslashes($value));
-                    $value = $this->dbWrapper->quote($value);
+                    if ($this->dbWrapper instanceof core_kernel_classes_PgsqlDbWrapper) {
+                        $value = $this->dbWrapper->quote($value);
+                    }
+                    else {
+                        $value = htmlentities(addslashes($value));
+                    }
+
                 }
                 $data .= 'INSERT INTO ' . $tableName . ' VALUES (' . implode(',', $pieces) . ');' . "\n";
             }
@@ -97,7 +102,7 @@ class taoUpdate_helpers_DbBackup
                 $stmt = $this->dbWrapper->query('SHOW CREATE TABLE ' . $tableName);
                 $q = $stmt->fetchAll();
                 $q[0][1] = preg_replace("/AUTO_INCREMENT=[\w]*./", '', $q[0][1]);
-                return $q[0][1];
+                return $q[0][1] . ";";
             }
             // return $this->dbWrapper->getColumnNames($tableName);
         } catch (PDOException $e) {
