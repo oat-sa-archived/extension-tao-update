@@ -65,7 +65,7 @@ class BackupServiceTestCase extends UnitTestCase {
                     TAO_VERSION.
                     taoUpdate_models_classes_BackupService::DB_BACKUP_FILE_SUFFIX.
                     '.zip';
-
+			
             $this->assertTrue(is_file($dbFile));
         }
         catch(taoUpdate_models_classes_UpdateException $e){
