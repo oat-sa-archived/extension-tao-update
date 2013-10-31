@@ -29,10 +29,13 @@ class taoUpdate_helpers_DbBackup
 
     private function generate()
     {
+        if ($this->dbWrapper instanceof core_kernel_classes_MySqlDbWrapper) {
+            $this->dump .= "SET SESSION SQL_MODE='ANSI_QUOTES';\n";
+        }
         foreach ($this->tables as $tbl) {
-            $this->dump .= '--CREATING TABLE ' . $tbl['name'] . "\n";
+            //$this->dump .= '--CREATING TABLE ' . $tbl['name'] . "\n";
             $this->dump .= $tbl['create'] . "\n";
-            $this->dump .= '--INSERTING DATA INTO ' . $tbl['name'] . "\n";
+            //$this->dump .= '--INSERTING DATA INTO ' . $tbl['name'] . "\n";
             $this->dump .= $tbl['data'] . "\n\n\n";
         }
         
@@ -72,17 +75,12 @@ class taoUpdate_helpers_DbBackup
     {
         try {
             $stmt = $this->dbWrapper->query('SELECT * FROM ' . $tableName);
-            $q = $stmt->fetchAll(PDO::FETCH_NUM);
+            $q = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $data = '';
             foreach ($q as $pieces) {
+                //var_dump($q);
                 foreach ($pieces as &$value) {
-                    if ($this->dbWrapper instanceof core_kernel_classes_PgsqlDbWrapper) {
-                        $value = $this->dbWrapper->quote($value);
-                    }
-                    else {
-                        $value = htmlentities(addslashes($value));
-                    }
-
+                    $value = $this->dbWrapper->quote($value); 
                 }
                 $data .= 'INSERT INTO ' . $tableName . ' VALUES (' . implode(',', $pieces) . ');' . "\n";
             }
