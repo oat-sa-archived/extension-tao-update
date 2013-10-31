@@ -22,7 +22,7 @@
 						
 			
 		</div>
-		<div id="footer">System administrator may find information about how finish the update in README file</div>
+		<div id="footer">System administrator may find information about how finish the update in README file in deplowNewTao Folder</div>
 		
 	</div>
 	</body>
