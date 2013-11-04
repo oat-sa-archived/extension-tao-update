@@ -54,6 +54,7 @@ class Main extends \OatBox\Controller\Module {
     public function scriptRunner($script){
         $error = false;
         $errorStack = array();
+        set_time_limit(300);
         if($script != null){
 
             $parameters = array();
