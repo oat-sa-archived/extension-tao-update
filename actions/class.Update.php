@@ -67,7 +67,7 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
 	public function run($action,$versionName){
 	    $error = false;
 	    $failed = array();
-	    
+	    set_time_limit(300);
 	    if($versionName == null || $action == null){
 	        $error = true;
 	        $failed[] = 'No version selected';
