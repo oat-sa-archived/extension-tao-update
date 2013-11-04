@@ -29,7 +29,7 @@ class taoUpdate_scripts_update_UpdateDeliveryExecution extends tao_scripts_Runne
         common_ext_ExtensionsManager::singleton()->getExtensionById('taoWfDelivery');
         
         $compilationClass = new core_kernel_classes_Class(CLASS_COMPILEDDELIVERY);
-        foreach ($compilationClass->getInstances() as $compiledDelivery) {
+        foreach ($compilationClass->getInstances(true) as $compiledDelivery) {
             $workflow = $this->getWorkflow($compiledDelivery);
             $executions = wfEngine_models_classes_ProcessExecutionService::singleton()->getProcessExecutionsByDefinition($workflow);
             foreach ($executions as $execution) {

@@ -45,7 +45,7 @@ class taoUpdate_scripts_update_UpdateDeliveryCompilation extends tao_scripts_Run
         
         $deliveryClass = new core_kernel_classes_Class(TAO_DELIVERY_CLASS);
         
-        foreach ($deliveryClass->getInstances() as $delivery) {
+        foreach ($deliveryClass->getInstances(true) as $delivery) {
             $this->out('looking for compiled '.$delivery->getLabel());
             $workflow = $delivery->getOnePropertyValue(new core_kernel_classes_Property(self::OLD_DELIVERY_COMPILED));
             if (!is_null($workflow) && $workflow instanceof core_kernel_classes_Resource) {

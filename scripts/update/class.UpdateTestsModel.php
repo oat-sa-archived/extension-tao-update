@@ -38,7 +38,7 @@ class taoUpdate_scripts_update_UpdateTestsModel extends tao_scripts_Runner {
         $simpleModelInstance = new core_kernel_classes_Resource('http://www.tao.lu/Ontologies/TAOTest.rdf#SimpleTestModel');
         $advancedModelInstance = new core_kernel_classes_Resource('http://www.tao.lu/Ontologies/TAOTest.rdf#WfTestModel');
         
-        foreach ($testClass->getInstances() as $test) {
+        foreach ($testClass->getInstances(true) as $test) {
             $values = $test->getPropertiesValues(array(self::AUTH_MODE, TEST_TESTCONTENT_PROP));
             if (count($values[self::AUTH_MODE]) == 1 && count($values[TEST_TESTCONTENT_PROP]) == 1) {
                 $oldWorkflow = current($values[TEST_TESTCONTENT_PROP]);

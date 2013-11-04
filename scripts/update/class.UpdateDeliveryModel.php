@@ -44,7 +44,7 @@ class taoUpdate_scripts_update_UpdateDeliveryModel extends tao_scripts_Runner {
         $simpleModel = new core_kernel_classes_Resource('http://www.tao.lu/Ontologies/TAODelivery.rdf#SimpleDeliveryContent');
         $wfModel = new core_kernel_classes_Resource('http://www.tao.lu/Ontologies/TAODelivery.rdf#WfDeliveryContent');
         
-        foreach ($deliveryClass->getInstances() as $delivery) {
+        foreach ($deliveryClass->getInstances(true) as $delivery) {
             $values = $delivery->getPropertiesValues(array(
                 self::AUTH_MODE,
                 PROPERTY_DELIVERY_CONTENT,
