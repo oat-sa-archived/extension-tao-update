@@ -20,14 +20,16 @@
 				<extension>taoSubjects</extension>
 				<extension>wfAuthoring</extension>
 				<extension>taoQTI</extension>
+				<extension>taoQtiTest</extension>
 				<extension>taoTests</extension>
 				<extension>taoDelivery</extension>
 				<extension>taoGroups</extension>
 				<extension>taoResults</extension>
-				<extension>ltiProvider</extension>
-				<extension>taoCoding</extension>
-				<extension>taoCampaign</extension>
-				<extension>ltiDeliveryProvider</extension>
+				<extension>taoWfTest</extension>
+				<extension>taoOpenWebItem</extension>
+				<extension>taoResultServer</extension>
+				<extension>taoSimpleDelivery</extension>
+				<extension>taoQtiCommon</extension>
 			</extensions>
 		</release>
 	</releases>
