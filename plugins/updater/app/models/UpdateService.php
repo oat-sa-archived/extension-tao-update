@@ -278,8 +278,8 @@ class UpdateService {
 	    $extFolder = $releaseManifest['old_root_path'] .  $ext;
 	    
 	    if(!is_file($extFolder.'/htaccess.1')){
-	        Logger::d('Previous lock, htaccess.1 do not exits something may have go wrong');
-	        return false;
+	        Logger::d('Previous lock, htaccess.1 do not exits something new extension');
+	        return true;
 	    }
 	    if(unlink($extFolder.'/.htaccess')){
 	        return File::move($extFolder.'/htaccess.1', $extFolder.'/.htaccess',false);
