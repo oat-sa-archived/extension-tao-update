@@ -84,7 +84,7 @@ class taoUpdate_scripts_update_UpdateOntologyModel extends tao_scripts_Runner {
                 $this->err('Did not add '.$subject->getUri().':'.$property->getUri().':"'.$object.'"@'.$lg);
             }
         } else {
-            $this->err('Already existed '.$subject->getUri().':'.$property->getUri().':"'.$object.'"@'.$lg);
+            $this->out('Already existed '.$subject->getUri().':'.$property->getUri().':"'.$object.'"@'.$lg);
         }
     }
     
@@ -103,7 +103,7 @@ class taoUpdate_scripts_update_UpdateOntologyModel extends tao_scripts_Runner {
                 $this->err('Did not remove '.$subject->getUri().':'.$property->getUri().':"'.$object.'"@'.$lg);
             }
         } else {
-            $this->err('Did not exist '.$subject->getUri().':'.$property->getUri().':"'.$object.'"@'.$lg);
+            $this->out('Did not exist '.$subject->getUri().':'.$property->getUri().':"'.$object.'"@'.$lg);
         }
     }
     

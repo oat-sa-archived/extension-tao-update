@@ -43,7 +43,7 @@ class taoUpdate_scripts_update_UpdateStatementsAuthor extends tao_scripts_Runner
                 $login = $data['author'];
                 $user = core_kernel_users_Service::singleton()->getOneUser($login);
                 if (is_null($user)) {
-                    $this->err('User with login '.$login.' not found');
+                    $this->out('User with login '.$login.' not found, skipping');
                 } else {
                     if (!$updateQuery->execute(array($user->getUri(), $login))) {
                         $this->err('Unable to replace '.$login.' with '.$user->getUri());
