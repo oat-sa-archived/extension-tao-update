@@ -10,20 +10,18 @@ $taopath = dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'tao'.DIRECTORY_SEPARA
 	
 return array(
 	'name' => 'taoUpdate',
-	'description' => 'TAO Update extensions 2.4 => 2.5 http://www.taotesting.com',
+	'description' => 'TAO Update extensions 2.5 => 2.6 http://www.taotesting.com',
 	'version' => '0.9',
 	'author' => 'Open Assessment Technologies',
 	'dependencies' => array('tao'),
 	'models' => array(),
 	'install' => array(
 		'rdf' => array(
-		    dirname(__FILE__). '/models/ontology/sysAdminRole.rdf'
 		),
 		'checks' => array(
 	
 		),
 		'php' => array(
-		    dirname(__FILE__). '/scripts/install/addSysAdminRoleToSuperUser.php'
 		)
 	),
 	'classLoaderPackages' => array( 
