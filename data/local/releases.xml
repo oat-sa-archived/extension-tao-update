@@ -9,8 +9,8 @@
 	</updateSites>
 	<releases>
 		<release>
-			<version>2.5</version>
-			<comment>TAO Release 2.5</comment>
+			<version>2.6-alpha3</version>
+			<comment>TAO Release 2.6-alpha3</comment>
 			<extensions>
 				<extension>generis</extension>
 				<extension>tao</extension>
@@ -18,7 +18,6 @@
 				<extension>taoItems</extension>
 				<extension>wfEngine</extension>
 				<extension>taoSubjects</extension>
-				<extension>wfAuthoring</extension>
 				<extension>taoQTI</extension>
 				<extension>taoQtiTest</extension>
 				<extension>taoTests</extension>
