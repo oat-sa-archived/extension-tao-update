@@ -176,13 +176,19 @@ class UpdateService {
      * @author "Lionel Lecaque, <lionel@taotesting.com>"
      */
 	public function replaceGenerisExtPath(){
-	    $releaseManifest = $this->getReleaseManifest();
-	    $path = $releaseManifest['old_root_path'] . DIRECTORY_SEPARATOR .'generis' .DIRECTORY_SEPARATOR .'common' .DIRECTORY_SEPARATOR .'conf' . DIRECTORY_SEPARATOR . 'generis.conf.php';
-	    $generisConfContent = file_get_contents($path);
-	    $toReplace = "define('EXTENSION_PATH' , GENERIS_BASE_PATH.DIRECTORY_SEPARATOR.'..');";
-	    $newVal = "define('EXTENSION_PATH' , ROOT_PATH);";
-	    $generisConfContent = str_replace($toReplace, $newVal, $generisConfContent);
-	    file_put_contents($path, $generisConfContent);
+        $newConfigPath = DIR_DATA.DIRECTORY_SEPARATOR.'generis'. DIRECTORY_SEPARATOR.'generis.conf.php';
+        if(is_file($newConfigPath)){
+            $releaseManifest = $this->getReleaseManifest();
+            $path = $releaseManifest['old_root_path'] . DIRECTORY_SEPARATOR .'generis' .DIRECTORY_SEPARATOR .'common' .DIRECTORY_SEPARATOR .'conf' . DIRECTORY_SEPARATOR . 'generis.conf.php';
+            $generisConfContent = file_get_contents($path);
+            $newConfigContent = file_get_contents($newConfigPath);
+            
+            
+            file_put_contents($path, $generisConfContent . $newConfigContent);
+        }
+
+	    
+	   
 	}
 	/**
 	 * 
