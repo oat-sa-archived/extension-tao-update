@@ -7,3 +7,5 @@ define('ENABLE_LOCK', false);
 
 # default will use defautl php session handling
 define('PHP_SESSION_HANDLER', 'default');
+
+//End of content added during update 2.5 -> 2.6
