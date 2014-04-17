@@ -184,4 +184,22 @@ class File
         
         return (bool) $returnValue;
     }
+    /**
+     * 
+     * clean directory
+     * 
+     * @author Lionel Lecaque, lionel@taotesting.com
+     * @param string $path
+     */
+    public static function emptyDirectory($path)
+    {
+        $returnValue = (bool) false;
+        $handle = opendir($path);
+        while (false !== ($entry = readdir($handle))) {
+            if ($entry != "." && $entry != "..") {
+                self::remove($path . DIRECTORY_SEPARATOR . $entry);
+            }
+        }
+        closedir($handle);
+    }
 }

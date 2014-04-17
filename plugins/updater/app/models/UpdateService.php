@@ -170,26 +170,69 @@ class UpdateService {
 	        }
 	    }
     }
+    
+    
+    private function getConfig($path){
+        return file_get_contents($path);
+    }
+    
+    /**
+     *  check if config path has been changed from template
+     *  
+     * @author Lionel Lecaque, lionel@taotesting.com
+     * @param string $conf
+     * @param string $sample
+     */
+    private function checkConfig($conf,$sample){
+        $check = false;
+        
+        $constToCheck = array('GENERIS_FILES_PATH','GENERIS_CACHE_PATH');
+        foreach ($constToCheck as $check){
+            $contentConf = array();
+            $contentSample = array();
+            preg_match('#'.$check.'\'.?,(.*)\);#',$conf, $contentConf);
+            preg_match('#'.$check.'\'.?,(.*)\);#',$sample, $contentSample);
+            if(isset($contentConf[1]) && $contentSample[1]){
+                $check &= $contentConf[1] == $contentSample[1];
+            }
+        }
+        if($check ==false){
+           Logger::w('generis.conf.php has been modify manually, you should fixit by hand');
+        }
+        else {
+            $releaseManifest = $this->getReleaseManifest();
+            $cacheFoler = $releaseManifest['old_root_path'].DIRECTORY_SEPARATOR.'generis'.DIRECTORY_SEPARATOR.'data/cache';
+            File::emptyDirectory($cacheFoler);
+            mkdir($cacheFoler);
+        }
+ 
+    }
+    
+    
     /**
      * 
      * @access public
      * @author "Lionel Lecaque, <lionel@taotesting.com>"
      */
 	public function replaceGenerisExtPath(){
+	    
+	    
+	    
         $newConfigPath = DIR_DATA.DIRECTORY_SEPARATOR.'generis'. DIRECTORY_SEPARATOR.'generis.conf.php';
+        $path = $releaseManifest['old_root_path'] . DIRECTORY_SEPARATOR .'generis' .DIRECTORY_SEPARATOR .'common' .DIRECTORY_SEPARATOR .'conf' . DIRECTORY_SEPARATOR . 'generis.conf.php';
+        $generisConfContent = $this->getConfig($path);
+
         if(is_file($newConfigPath)){
-            $releaseManifest = $this->getReleaseManifest();
-            $path = $releaseManifest['old_root_path'] . DIRECTORY_SEPARATOR .'generis' .DIRECTORY_SEPARATOR .'common' .DIRECTORY_SEPARATOR .'conf' . DIRECTORY_SEPARATOR . 'generis.conf.php';
-            $generisConfContent = file_get_contents($path);
-            $newConfigContent = file_get_contents($newConfigPath);
-            
-            
+            $releaseManifest = $this->getReleaseManifest();           
+            $newConfigContent = $this->getConfig($newConfigPath);
+     
             file_put_contents($path, $generisConfContent . $newConfigContent);
         }
 
 	    
 	   
 	}
+	
 	/**
 	 * 
 	 * @access public
@@ -197,15 +240,23 @@ class UpdateService {
 	 */
 	public function restartTaoContext(){
 	    $releaseManifest = $this->getReleaseManifest();
+	    	    
 	    if($releaseManifest['status'] == 'stable'){
         	    $destination = $releaseManifest['old_root_path'];
         	    if($this->unShield('taoUpdate') === false) {
         	        Logger::w('Problem restoring access to taoUpdate to finish update');
         	    }
-        	     
-        	    //move token
+        	    $path = $releaseManifest['old_root_path'] . DIRECTORY_SEPARATOR .'generis' .DIRECTORY_SEPARATOR .'common' .DIRECTORY_SEPARATOR .'conf' . DIRECTORY_SEPARATOR . 'generis.conf.php';
+        	    $sample =  $releaseManifest['old_root_path'] . DIRECTORY_SEPARATOR .'generis' .DIRECTORY_SEPARATOR .'common' .DIRECTORY_SEPARATOR .'conf' . DIRECTORY_SEPARATOR . 'sample/generis.conf.php';
+        	    $generisConfContent = $this->getConfig($path);
+        	    $generisTempateConfContent = $this->getConfig($sample);
+        	    $this->checkConfig($generisConfContent, $generisTempateConfContent);
+        	    
+        	    
+        	    
         	    File::move(ROOT_PATH. self::FILE_KEY, $destination. self::UPDATE_EXT.'data'.DIRECTORY_SEPARATOR.self::FILE_KEY);
         	    File::move(DIR_DATA . self::RELEASE_INFO, $destination. self::UPDATE_EXT.'data'.DIRECTORY_SEPARATOR.self::RELEASE_INFO);
+        	    
     	 }
     	 else if ($releaseManifest['status'] == 'patch'){
     	     foreach ($releaseManifest['old_extensions'] as $ext){
