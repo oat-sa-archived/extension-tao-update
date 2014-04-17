@@ -191,7 +191,7 @@ class UpdateService {
             $contentConf = array();
             $contentSample = array();
             preg_match('#'.$check.'\'.?,(.*)\);#',$conf, $contentConf);
-            preg_match('#'.$check.'\'.?,(.*)\);#',$sample, $contentSample);
+            preg_match('#'.$check.'\',(.*)\);#',$sample, $contentSample);
             if(isset($contentConf[1]) && isset($contentSample[1])){
                 Logger::d('conf : ' . $contentConf[1] );
                 Logger::d('sample : ' . $contentSample[1] );
