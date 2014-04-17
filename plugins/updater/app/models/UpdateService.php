@@ -202,8 +202,11 @@ class UpdateService {
         else {
             $releaseManifest = $this->getReleaseManifest();
             $cacheFoler = $releaseManifest['old_root_path'].DIRECTORY_SEPARATOR.'generis'.DIRECTORY_SEPARATOR.'data/cache';
+            
             File::emptyDirectory($cacheFoler);
+            Logger::d($cacheFoler . ' has been emtpy');
             mkdir($cacheFoler);
+            Logger::d($cacheFoler . ' has been created');
         }
  
     }
