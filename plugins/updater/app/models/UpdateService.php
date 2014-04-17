@@ -196,7 +196,7 @@ class UpdateService {
             if(isset($contentConf[1]) && isset($contentSample[1])){
                 Logger::d('conf : ' . $contentConf[1] );
                 Logger::d('sample : ' . $contentSample[1] );
-                $check &= $contentConf[1] == $contentSample[1];
+                //$check &= $contentConf[1] == $contentSample[1];
 
             }
         }
