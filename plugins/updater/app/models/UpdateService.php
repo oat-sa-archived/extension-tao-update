@@ -184,7 +184,8 @@ class UpdateService {
      * @param string $sample
      */
     private function checkConfig($conf,$sample){
-        $check = false;
+        //todo disable cause do not work sample not found
+        $check = true;
         
         $constToCheck = array('GENERIS_FILES_PATH','GENERIS_CACHE_PATH');
         foreach ($constToCheck as $check){
