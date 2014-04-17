@@ -216,7 +216,7 @@ class UpdateService {
      */
 	public function replaceGenerisExtPath(){
 	    
-	    
+	    $releaseManifest = $this->getReleaseManifest();
 	    
         $newConfigPath = DIR_DATA.DIRECTORY_SEPARATOR.'generis'. DIRECTORY_SEPARATOR.'generis.conf.php';
         $path = $releaseManifest['old_root_path'] . DIRECTORY_SEPARATOR .'generis' .DIRECTORY_SEPARATOR .'common' .DIRECTORY_SEPARATOR .'conf' . DIRECTORY_SEPARATOR . 'generis.conf.php';
