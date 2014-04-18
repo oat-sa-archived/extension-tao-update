@@ -211,6 +211,7 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	    $this->backupService->storeAllFiles($folder);
 	    $this->backupService->storeDatabase($folder);
 	    $this->shieldService->shieldExtensions();
+	    common_session_SessionManager::endSession();
 	}
 	
     /**
