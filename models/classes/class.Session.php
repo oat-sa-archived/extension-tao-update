@@ -40,7 +40,7 @@
       * @see common_session_Session::getUserUri()
       */
      public function getUserRoles(){
-         return array(SYS_ADMIN_ROLE =>  new core_kernel_classes_Resource(SYS_ADMIN_ROLE) );
+         return array(SYS_ADMIN_ROLE);
 
      }     
      /**
@@ -56,6 +56,14 @@
       */
      public function getInterfaceLanguage(){
          return DEFAULT_LANG;
+     }
+     
+     /**
+      * (non-PHPdoc)
+      * @see common_session_Session::getUserPropertyValues()
+      */
+     public function getUserPropertyValues($property) {
+         return array();
      }
      /**
       * (non-PHPdoc)
