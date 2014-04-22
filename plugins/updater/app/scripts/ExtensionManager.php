@@ -22,3 +22,57 @@
  * @subpackage 
  *
  */
+
+
+namespace app\scripts;
+
+use OatBox\Common\ScriptRunner;
+use OatBox\Common\Logger;
+use app\models\UpdateService;
+use app\models\KvFilePersistence;
+
+class ExtensionManager extends ScriptRunner {
+
+    public function run(){
+        // get list of old extensions & manifest
+        $list = $this->getExtensionVersions();
+        $this->registerExtensions($list);
+    }
+    
+    /**
+     * Generate a list of installed extensions and their versions
+     * 
+     * @return array an assoiciativ array with extensionId => extensionVersion
+     */
+    private function getExtensionVersions() {
+        $manifest = UpdateService::getInstance()->getReleaseManifest();
+        $list = array();
+        foreach ($manifest['old_extensions'] as $extId) {
+            $list[$extId] = '0';
+        }
+        return $list;
+    }
+    
+
+    /**
+     * Add the end of an installation register the new extension
+     *
+     * @param common_ext_Extension $extension
+     * @return boolean
+     */
+    private function registerExtensions($versionList)
+    {
+        $extList = array();
+        foreach ($versionList as $extId => $extVersion) {
+            $extList[$extId] = array(
+                'installed' => $extVersion,
+                'enabled' => true
+            );
+        }
+        $configPath = ROOT_PATH.'generis/data/generis/config';
+        $configPersistence = new KvFilePersistence($configPath, 3, true);
+        
+        $persistenceKey = 'generis'.'_'.'extension';
+        $configPersistence->set($persistenceKey, $extList);
+    }
+}
