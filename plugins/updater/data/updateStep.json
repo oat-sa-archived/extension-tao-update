@@ -1,5 +1,6 @@
 [{"action":"OldVersionArchiver","name":"Archive Old"},
 {"action":"NewVersionDeployer","name":"Deploy New"},
 {"action":"ReplaceGenerisExtPath","name":"Update Generis Config"},
+{"action":"ExtensionManager","name":"Update extension structure"}
 {"action":"RestartTaoContext","name":"Restart TAO Context"}
 ]
