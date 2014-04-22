@@ -69,7 +69,7 @@ class ExtensionManager extends ScriptRunner {
                 'enabled' => true
             );
         }
-        $configPath = ROOT_PATH.'generis/data/generis/config';
+        $configPath = ROOT_PATH.'../generis/data/generis/config';
         $configPersistence = new KvFilePersistence($configPath, 3, true);
         
         $persistenceKey = 'generis'.'_'.'extension';
