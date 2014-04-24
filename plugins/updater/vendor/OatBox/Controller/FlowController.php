@@ -45,7 +45,7 @@ class FlowController
 		$enforcer = new ActionEnforcer($context);
 		$enforcer->execute();
 		
-		throw new \InterruptedActionException('Interrupted action after a forward',
+		throw new InterruptedActionException('Interrupted action after a forward',
 											 $tempModuleName,
 											 $tempActionName);
 	}
@@ -58,7 +58,7 @@ class FlowController
 		header(HTTPToolkit::statusCodeHeader($statusCode));
 		header(HTTPToolkit::locationHeader($url));
 		
-		throw new \InterruptedActionException('Interrupted action after a redirection', 
+		throw new InterruptedActionException('Interrupted action after a redirection', 
 											 $context->getModuleName(),
 											 $context->getActionName());
 	}
