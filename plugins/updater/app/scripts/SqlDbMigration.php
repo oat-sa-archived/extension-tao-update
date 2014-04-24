@@ -28,6 +28,7 @@ namespace app\scripts;
 use OatBox\Common\ScriptRunner;
 use OatBox\Common\Logger;
 use app\models\UpdateService;
+use app\models\SqlPersistence;
 
 class SqlDbMigration extends ScriptRunner {
     
