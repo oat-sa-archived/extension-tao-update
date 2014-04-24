@@ -24,6 +24,9 @@ return array(
 		'php' => array(
 		)
 	),
+    'acl' => array(
+        array('grant', 'http://www.tao.lu/Ontologies/generis.rdf#AnonymousRole',array('ext'=>'taoUpdate','mod' => 'data'))
+     ),
 	'classLoaderPackages' => array( 
 		dirname(__FILE__).'/actions/',
 		dirname(__FILE__).'/helpers/'
