@@ -37,9 +37,7 @@ class ExtensionManager extends ScriptRunner {
         // get list of old extensions & manifest
         $list = $this->getExtensionVersions();
         $this->registerExtensions($list);
-        
-        //add funAcl
-        $this->registerExtensions(array('funcAcl' => '0'));
+
     }
     
     /**
@@ -53,6 +51,7 @@ class ExtensionManager extends ScriptRunner {
         foreach ($manifest['old_extensions'] as $extId) {
             $list[$extId] = '0';
         }
+        $list['funcAcl'] = '0';
         return $list;
     }
     
