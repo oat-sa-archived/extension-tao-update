@@ -83,6 +83,9 @@ class SqlPersistence
         while ($row = $result->fetch()) {
             $id = $row['modelid'];
             $uri = $row['modeluri'];
+            if(substr($uri,-1) != '#'){
+                $uri .= '#' ;
+            }
             $namespaces[$id] = $uri;
             $newNs[$this->modelid[$id]] = $uri;
         }
