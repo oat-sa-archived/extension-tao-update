@@ -3,5 +3,6 @@
 {"action":"ReplaceGenerisExtPath","name":"Update Generis Config"},
 {"action":"SqlDbMigration","name":"Migrate Sql Dbase"},
 {"action":"ExtensionManager","name":"Update extension structure"},
+{"action":"SetAclImplementation","name":"Set Acl Implementation"},
 {"action":"RestartTaoContext","name":"Restart TAO Context"}
 ]
