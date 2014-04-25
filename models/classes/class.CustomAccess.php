@@ -26,7 +26,7 @@
  * @package tao
  
  */
-class taoUpdate_models_classes_accessControl_CustomAccess
+class taoUpdate_models_classes_CustomAccess
     implements tao_models_classes_accessControl_AccessControl
 {
     /**
