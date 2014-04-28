@@ -39,6 +39,6 @@ class SetAclImplementation extends ScriptRunner {
         $configPersistence = new KvFilePersistence($configPath, 3, true);
         
         $persistenceKey = 'tao'.'_'.'AclImplementation';
-        $configPersistence->set($persistenceKey, 'taoUpdate_models_classes_accessControl_CustomAccess');
+        $configPersistence->set($persistenceKey, 'taoUpdate_models_classes_CustomAccess');
     }
 }
