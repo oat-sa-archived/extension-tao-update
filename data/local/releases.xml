@@ -18,7 +18,7 @@
 				<extension>taoItems</extension>
 				<extension>wfEngine</extension>
 				<extension>taoSubjects</extension>
-				<extension>taoQTI</extension>
+				<extension>taoQtiItem</extension>
 				<extension>taoQtiTest</extension>
 				<extension>taoTests</extension>
 				<extension>taoDelivery</extension>
