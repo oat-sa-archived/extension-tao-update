@@ -39,7 +39,7 @@ class taoUpdate_models_classes_CustomAccess
      * (non-PHPdoc)
      * @see tao_models_classes_accessControl_AccessControl::hasAccess()
      */
-    public function hasAccess($extension, $controller, $action, $parameters) {
+    public function hasAccess($action, $controller, $extension, $parameters) {
         if($extension == 'taoUpdate' && $controller = 'data'){
             return true;
         }else {
