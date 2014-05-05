@@ -165,18 +165,22 @@ class File
             
             // Loop through the folder
             $dir = dir($source);
-            while (false !== $entry = $dir->read()) {
-                // Skip pointers
-                if ($entry == '.' || $entry == '..') {
-                    continue;
+            if ($dir == false) {
+                Logger::w('Source '.$source.' not found');
+            } else {
+                while (false !== $entry = $dir->read()) {
+                    // Skip pointers
+                    if ($entry == '.' || $entry == '..') {
+                        continue;
+                    }
+                    
+                    // Deep copy directories
+                    self::copy("${source}/${entry}", "${destination}/${entry}", $recursive, $ignoreSystemFiles);
                 }
                 
-                // Deep copy directories
-                self::copy("${source}/${entry}", "${destination}/${entry}", $recursive, $ignoreSystemFiles);
+                // Clean up
+                $dir->close();
             }
-            
-            // Clean up
-            $dir->close();
             return true;
         } else {
             return false;
