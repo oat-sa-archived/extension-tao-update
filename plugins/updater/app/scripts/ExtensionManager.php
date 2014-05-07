@@ -32,6 +32,10 @@ use app\models\UpdateService;
 use app\models\KvFilePersistence;
 
 class ExtensionManager extends ScriptRunner {
+    
+    private static $renamedExtensions = array(
+    	'taoQTI' => 'taoQtiItem'
+    );
 
     public function run(){
         // get list of old extensions & manifest
@@ -49,7 +53,11 @@ class ExtensionManager extends ScriptRunner {
         $manifest = UpdateService::getInstance()->getReleaseManifest();
         $list = array();
         foreach ($manifest['old_extensions'] as $extId) {
-            $list[$extId] = '0';
+            if (isset(self::$renamedExtensions[$extId])) {
+                $list[self::$renamedExtensions[$extId]] = '0';
+            } else {
+                $list[$extId] = '0';
+            }
         }
         $list['funcAcl'] = '0';
         return $list;
