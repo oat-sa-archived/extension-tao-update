@@ -28,9 +28,7 @@ class taoUpdate_scripts_update_UpdateOntologyModel extends tao_scripts_Runner {
     
     public function __construct($inputFormat = array(), $options = array())
     {
-        $this->updateQuery = core_kernel_classes_DbWrapper::singleton()->prepare(
-            "INSERT INTO statements VALUES (?,?,?,?,?,DEFAULT,'updateScript','yyy[admin,administrators,authors]','yyy[admin,administrators,authors]','yyy[admin,administrators,authors]',CURRENT_TIMESTAMP)"
-        );
+        $this->updateQuery = "INSERT INTO statements VALUES (?,?,?,?,?,DEFAULT,'updateScript','yyy[admin,administrators,authors]','yyy[admin,administrators,authors]','yyy[admin,administrators,authors]',CURRENT_TIMESTAMP)";
         $this->namespaceCache = common_ext_NamespaceManager::singleton()->getAllNamespaces();
         parent::__construct($inputFormat, $options);
     }
@@ -39,7 +37,7 @@ class taoUpdate_scripts_update_UpdateOntologyModel extends tao_scripts_Runner {
         $this->out('Bypassing model restriction');
         core_kernel_classes_Session::singleton()->setUpdatableModels(core_kernel_classes_Session::singleton()->getLoadedModels());
         $this->out('Loading extensions');
-        $diffPath = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ontologyData' . DIRECTORY_SEPARATOR;
+        $diffPath = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ontologyData26' . DIRECTORY_SEPARATOR;
         // remove All
         foreach (common_ext_ExtensionsManager::singleton()->getInstalledExtensions() as $extension) {
             $diffFile = $diffPath . 'diff' . ucfirst($extension->getId()) . '.php';
@@ -77,7 +75,7 @@ class taoUpdate_scripts_update_UpdateOntologyModel extends tao_scripts_Runner {
                 ? $this->namespaceCache[$nsPrefix]->getModelId()
                 : common_ext_NamespaceManager::singleton()->getLocalNamespace()->getModelId();
             
-            if (!$this->updateQuery->execute(array($ns, $subject->getUri(), $property->getUri(), $object, $lg))) {
+            if (!core_kernel_classes_DbWrapper::singleton()->query($this->updateQuery,array($ns, $subject->getUri(), $property->getUri(), $object, $lg))) {
                 $this->err('Add query failed');
             }
             if (!$this->exists($subject, $property, $object, $lg)) {

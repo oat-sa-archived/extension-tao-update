@@ -1,4 +1,5 @@
 [{"action":"taoUpdate_scripts_update_UpdateOntologyModel","name":"Update Ontology Model","extension":"taoUpdate"},
+{"action":"taoUpdate_scripts_update_funcAcl_UpdateAclModel","name":"Update ACL Model","extension":"taoUpdate"},
 {"action":"taoUpdate_scripts_update_RemoveHtAccess","name":"Remove HtAccess","extension":"taoUpdate"},
 {"action":"taoUpdate_scripts_update_UpdateVersionFile","name":"Update Version File","extension":"taoUpdate"},
 {"action":"taoUpdate_scripts_update_RemoveTaoUpdate","name":"uninstall Tao Update","extension":"taoUpdate"}]
