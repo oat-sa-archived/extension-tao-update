@@ -160,7 +160,7 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
         $this->setData('isDesignModeEnabled', $isDesignModeEnabled);
         $this->setData('isUpdateAvailable', $isUpdateAvailable);
 
-        $successMsg =  __('New Version have been downloaded and will now be extracted, we will now replace current installation. ');
+        $successMsg =  __('New Version has been downloaded and will now be extracted, we will now replace current installation. ');
         $successUrl = ROOT_URL .taoUpdate_models_classes_Service::DEPLOY_FOLDER . 'Main/index?key=' . $this->service->getKey();  
         
         
