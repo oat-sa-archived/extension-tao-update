@@ -113,8 +113,8 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
                 'status' =>  __('stand by'),
             ),
             array(
-                'action' => 'backup',
-                'name' => __('Create Backup and lock TAO'),
+                'action' => 'lock',
+                'name' => __('Lock the TAO Platform'),
                 'status' => __('stand by'),
             ),
 
