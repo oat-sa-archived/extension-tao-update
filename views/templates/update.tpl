@@ -17,13 +17,14 @@ var availlableUpdates = JSON.parse('<?= get_data("updatesaAvailable") ;?>');
 	 	<?if(get_data('isUpdateAvailable')):?>
 		 	<div id="update-info" class="ext-home-container ui-state-highlight">
 	
-				<?= __("New version of TAO is availlable, you may launch upgrade procedure that will perform following step")?>
-					<ul>
+				<?= __("New version of TAO is availlable, you may launch upgrade procedure that will perform following step.")?>
+				<ul>
 						<li>lock the platform</li>
 						<li>download last version if possible</li>
 						<li>deploy last version</li>
-					</ul>
-
+				</ul>
+				<strong><?= __("We strongly recommand you to backup your root folder and database before launching the update")?></strong>
+				
 			</div>
 			<br/>
 
