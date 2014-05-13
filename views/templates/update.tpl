@@ -20,7 +20,6 @@ var availlableUpdates = JSON.parse('<?= get_data("updatesaAvailable") ;?>');
 				<?= __("New version of TAO is availlable, you may launch upgrade procedure that will perform following step")?>
 					<ul>
 						<li>lock the platform</li>
-						<li>create backups</li>
 						<li>download last version if possible</li>
 						<li>deploy last version</li>
 					</ul>

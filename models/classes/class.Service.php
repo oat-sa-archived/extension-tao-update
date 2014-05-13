@@ -202,16 +202,25 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	
 	/**
 	 * 
+	 * @author Lionel Lecaque, lionel@taotesting.com
+	 */
+	public function lock(){
+	    $this->shieldService->shieldExtensions();
+	    common_session_SessionManager::endSession();
+	}
+	
+	
+	/**
+	 * 
+	 * 
 	 * @access
 	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
 	 */
 	public function backup(){
-	   
+	    //todo work but is very long with large amount of file
 	    $folder = $this->backupService->createBackupFolder();
 	    $this->backupService->storeAllFiles($folder);
 	    $this->backupService->storeDatabase($folder);
-	    $this->shieldService->shieldExtensions();
-	    common_session_SessionManager::endSession();
 	}
 	
     /**
