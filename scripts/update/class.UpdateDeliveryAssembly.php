@@ -39,8 +39,19 @@ class taoUpdate_scripts_update_UpdateDeliveryAssembly extends tao_scripts_Runner
         // load the constants
 		common_ext_ExtensionsManager::singleton()->getExtensionById('taoDelivery');
 
-		 $this->migrateCompiledDeliveryToAssembly();
+		$this->migrateCompiledDeliveryToAssembly();
+		$this->removeAssemblyFromGroup();
 
+    }	
+    
+    private function removeAssemblyFromGroup(){
+        $grpClass = new core_kernel_classes_Class(TAO_GROUP_CLASS);
+        $deliveryProp = new core_kernel_classes_Property(PROPERTY_GROUP_DELVIERY);
+        foreach ($grpClass->getInstances(true) as $grp){
+            if($grp->getOnePropertyValue($deliveryProp) != null){
+                $grp->removePropertyValues($deliveryProp);
+            }
+        }
     }
     
     /**
