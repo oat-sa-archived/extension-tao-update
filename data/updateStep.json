@@ -4,6 +4,7 @@
 {"action":"taoUpdate_scripts_update_UpdateDeliveryModel","name":"Update Delivery Model","extension":"taoUpdate"},
 {"action":"taoUpdate_scripts_update_UpdateDeliveryAssembly","name":"Update Delivery Assembly","extension":"taoUpdate"},
 {"action":"taoUpdate_scripts_update_UpdateDeliveryExecution","name":"Update Delivery Execution","extension":"taoUpdate"},
+{"action":"taoUpdate_scripts_update_SertupServiceFileStorage","name":"Update File Source","extension":"taoUpdate"},
 {"action":"taoUpdate_scripts_update_RemoveHtAccess","name":"Remove HtAccess","extension":"taoUpdate"},
 {"action":"taoUpdate_scripts_update_UpdateVersionFile","name":"Update Version File","extension":"taoUpdate"},
 {"action":"taoUpdate_scripts_update_RemoveTaoUpdate","name":"uninstall Tao Update","extension":"taoUpdate"}]
