@@ -1,5 +1,4 @@
 <?php
-namespace update;
 
 class taoUpdate_scripts_update_SertupServiceFileStorage extends tao_scripts_Runner
 {
