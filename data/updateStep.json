@@ -1,5 +1,5 @@
 [{"action":"taoUpdate_scripts_update_UpdateOntologyModel","name":"Update Ontology Model","extension":"taoUpdate"},
-{"action":"taoUpdate_scripts_update_setRdfModel","name":"Set Rdf Model config","extension":"taoUpdate"},
+{"action":"taoUpdate_scripts_update_SetRdfModel","name":"Set Rdf Model config","extension":"taoUpdate"},
 {"action":"taoUpdate_scripts_update_funcAcl_UpdateAclModel","name":"Update ACL Model","extension":"taoUpdate"},
 {"action":"taoUpdate_scripts_update_UpdateDeliveryModel","name":"Update Delivery Model","extension":"taoUpdate"},
 {"action":"taoUpdate_scripts_update_UpdateDeliveryAssembly","name":"Update Delivery Assembly","extension":"taoUpdate"},
