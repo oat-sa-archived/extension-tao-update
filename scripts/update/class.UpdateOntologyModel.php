@@ -35,7 +35,8 @@ class taoUpdate_scripts_update_UpdateOntologyModel extends tao_scripts_Runner {
     
     public function run(){
         $this->out('Bypassing model restriction');
-        core_kernel_classes_Session::singleton()->setUpdatableModels(core_kernel_classes_Session::singleton()->getLoadedModels());
+        $oldUpdatableModels = core_kernel_persistence_smoothsql_SmoothModel::getUpdatableModelIds();
+        core_kernel_persistence_smoothsql_SmoothModel::forceUpdatableModelIds(core_kernel_persistence_smoothsql_SmoothModel::getReadableModelIds());
         $this->out('Loading extensions');
         $diffPath = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ontologyData26' . DIRECTORY_SEPARATOR;
         // remove All
@@ -61,7 +62,7 @@ class taoUpdate_scripts_update_UpdateOntologyModel extends tao_scripts_Runner {
             }
         }
         $this->out('Restoring model restriction');
-        core_kernel_classes_Session::singleton()->update();
+        core_kernel_persistence_smoothsql_SmoothModel::forceUpdatableModelIds($oldUpdatableModels);
     }
     
     private function add($data){
