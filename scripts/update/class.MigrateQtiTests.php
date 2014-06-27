@@ -32,7 +32,9 @@
 class taoUpdate_scripts_update_MigrateQtiTests extends tao_scripts_Runner {
 
     public function run() {
-
+        common_ext_ExtensionsManager::singleton()->getExtensionById('taoTests');
+        common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+        
         $ds = DIRECTORY_SEPARATOR;
         
         // 1. Find all the tests that have the QTI Test Model.
