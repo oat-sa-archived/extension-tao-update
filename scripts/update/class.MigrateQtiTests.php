@@ -54,7 +54,7 @@ class taoUpdate_scripts_update_MigrateQtiTests extends tao_scripts_Runner {
             $pathinfo = pathinfo($qtiTestFilePath);
             $targetDirPath = $pathinfo['dirname'] . $ds . $pathinfo['filename'];
             
-            if (!@mkdir($targetDirPath,0777, true)) {
+            if (!@mkdir($targetDirPath)) {
                 $this->err("Unable to create QTI Test Content directory at location '${targetDirPath}'.");
             }
             else {
