@@ -6,6 +6,7 @@
 {"action":"taoUpdate_scripts_update_UpdateDeliveryExecution","name":"Update Delivery Execution","extension":"taoUpdate"},
 {"action":"taoUpdate_scripts_update_SertupServiceFileStorage","name":"Update File Source","extension":"taoUpdate"},
 {"action":"taoUpdate_scripts_update_MigrateQtiTests","name":"Migrate QTI Test","extension":"taoUpdate"},
+{"action":"taoResults_scripts_update_taoResultsUpdate","name":"Migrate Results","extension":"taoResults"},
 {"action":"taoUpdate_scripts_update_RemoveHtAccess","name":"Remove HtAccess","extension":"taoUpdate"},
 {"action":"taoUpdate_scripts_update_UpdateVersionFile","name":"Update Version File","extension":"taoUpdate"},
 {"action":"taoUpdate_scripts_update_RemoveTaoUpdate","name":"uninstall Tao Update","extension":"taoUpdate"}]
