@@ -39,7 +39,7 @@ class taoUpdate_scripts_update_MigrateQtiTests extends tao_scripts_Runner {
         
         // 1. Find all the tests that have the QTI Test Model.
         $testClass = new core_kernel_classes_Class(TAO_TEST_CLASS);
-        $qtiTests = $testClass->searchInstances(array(PROPERTY_TEST_TESTMODEL => INSTANCE_TEST_MODEL_QTI));
+        $qtiTests = $testClass->searchInstances(array(PROPERTY_TEST_TESTMODEL => INSTANCE_TEST_MODEL_QTI),array('recursive' => true, 'like' => false));
         
         // 2. Find the test definition file for each test.
         $testContentProp = new core_kernel_classes_Property(TEST_TESTCONTENT_PROP);

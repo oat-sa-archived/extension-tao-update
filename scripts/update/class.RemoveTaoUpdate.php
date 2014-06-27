@@ -23,10 +23,9 @@
 
 class taoUpdate_scripts_update_RemoveTaoUpdate extends tao_scripts_Runner {
     public function run(){
-        common_Logger::t('Uninstall Tao Update');
+        common_Logger::t('Uninstall Tao Update TODO');
         $db = core_kernel_classes_DbWrapper::singleton();
-        $db->debug = true;
-        $sql = "DELETE from extensions where id ='taoUpdate';";
-        $db->exec($sql);
+        
+
     }
 }
