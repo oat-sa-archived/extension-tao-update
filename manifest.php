@@ -11,9 +11,16 @@ $taopath = dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'tao'.DIRECTORY_SEPARA
 return array(
 	'name' => 'taoUpdate',
 	'description' => 'TAO Update extensions 2.5 => 2.6 http://www.taotesting.com',
-	'version' => '0.9',
+	'version' => '1.0',
+    'license' => 'GPL-2.0',
 	'author' => 'Open Assessment Technologies',
-	'dependencies' => array('tao'),
+	'requires' => array(
+	    'tao' => '2.5',
+	    'taoItems' => '2.5',
+	    'taoTests' => '2.5',
+	    'taoGroups' => '2.5',
+	    'taoDelivery' => '2.5',
+	),
 	'models' => array(),
 	'install' => array(
 		'rdf' => array(
@@ -24,6 +31,8 @@ return array(
 		'php' => array(
 		)
 	),
+    'uninstall' => array(
+    ),
     'acl' => array(
         array('grant', 'http://www.tao.lu/Ontologies/generis.rdf#AnonymousRole',array('ext'=>'taoUpdate','mod' => 'data'))
      ),
