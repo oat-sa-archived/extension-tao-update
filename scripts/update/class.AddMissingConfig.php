@@ -23,10 +23,13 @@
  *
  */
 
-class taoUpdate_scripts_update_AddQtiTestConfig extends tao_scripts_Runner {
+class taoUpdate_scripts_update_AddMissingConfig extends tao_scripts_Runner {
 
     public function run() {
         taoUpdate_helpers_ExtensionConfigUpdater::update('taoQtiTest', ROOT_PATH .'taoQtiTest/includes/config.php' );
+        taoUpdate_helpers_ExtensionConfigUpdater::update('taoItems', ROOT_PATH .'taoItems/includes/config.php' );
+        taoUpdate_helpers_ExtensionConfigUpdater::update('tao', ROOT_PATH .'tao/includes/config.php' );
+        
     }
     
 }
