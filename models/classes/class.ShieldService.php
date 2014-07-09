@@ -89,14 +89,14 @@ class taoUpdate_models_classes_ShieldService extends tao_models_classes_Service{
     public function unShield($ext){
         $extFolder = ROOT_PATH . DIRECTORY_SEPARATOR . $ext;
          if(!is_file($extFolder.'/htaccess.1')){
-             common_Logger::d('Previous lock, htaccess.1 do not exits something may have go wrong');
+             common_Logger::d('Previous lock, htaccess.1 do not exits something may have go wrong, please check');
              return false;
          }
         if(unlink($extFolder.'/.htaccess')){
             return tao_helpers_File::move($extFolder.'/htaccess.1', $extFolder.'/.htaccess',true,false);
         }
         else {
-            common_Logger::e('Fail to remove htaccess in ' . $ext . ' . You may copy by hand file htaccess.1');
+            common_Logger::i('Fail to remove htaccess in ' . $ext . ' . You may copy by hand file htaccess.1');
             return false;
         }
     }
