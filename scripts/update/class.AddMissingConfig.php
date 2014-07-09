@@ -30,6 +30,9 @@ class taoUpdate_scripts_update_AddMissingConfig extends tao_scripts_Runner {
         taoUpdate_helpers_ExtensionConfigUpdater::update('taoItems', ROOT_PATH .'taoItems/includes/config.php' );
         taoUpdate_helpers_ExtensionConfigUpdater::update('tao', ROOT_PATH .'tao/includes/config.php' );
         taoQtiTest_models_classes_QtiTestService::singleton()->setQtiTestAcceptableLatency('PT5S');
+        taoDelivery_models_classes_execution_ServiceProxy::singleton()->setImplementation('taoDelivery_models_classes_execution_OntologyService');
+        $resultServer = new core_kernel_classes_Resource(RESOURCE_TAORESULT_SERVER);
+        taoResultServer_models_classes_ResultServerAuthoringService::singleton()->setDefaultResultServer($resultServer);
     }
     
 }
