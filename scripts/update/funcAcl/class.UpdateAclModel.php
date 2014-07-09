@@ -24,14 +24,7 @@
  */
 
 
-namespace oat\taoUpdate\scripts\update\funcAcl;
 
-use tao_scripts_Runner;
-use common_ext_ExtensionsManager;
-use funcAcl_models_classes_Initialisation;
-use funcAcl_models_classes_FuncAcl;
-use tao_models_classes_accessControl_AccessRule;
-use tao_models_classes_accessControl_AclProxy;
 
 /**
  * Cleanup script that searches for shadows of files and deletes them 
