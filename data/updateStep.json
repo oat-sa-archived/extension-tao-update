@@ -5,7 +5,7 @@
 {"action":"taoUpdate_scripts_update_UpdateDeliveryAssembly","name":"Update Delivery Assembly","extension":"taoUpdate"},
 {"action":"taoUpdate_scripts_update_UpdateDeliveryExecution","name":"Update Delivery Execution","extension":"taoUpdate"},
 {"action":"taoUpdate_scripts_update_SertupServiceFileStorage","name":"Update File Source","extension":"taoUpdate"},
-{"action":"taoUpdate_scripts_update_AddQtiTestConfig","name":"Add Qti Test Config","extension":"taoUpdate"},
+{"action":"taoUpdate_scripts_update_AddMissingConfig","name":"Add Missing Config","extension":"taoUpdate"},
 {"action":"taoUpdate_scripts_update_MigrateQtiTests","name":"Migrate QTI Test","extension":"taoUpdate"},
 {"action":"taoResults_scripts_update_taoResultsUpdate","name":"Migrate Results","extension":"taoResults"},
 {"action":"taoUpdate_scripts_update_RemoveHtAccess","name":"Remove HtAccess","extension":"taoUpdate"},
