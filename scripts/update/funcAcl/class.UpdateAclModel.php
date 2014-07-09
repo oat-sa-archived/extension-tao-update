@@ -24,7 +24,7 @@
  */
 
 
-//namespace oat\taoUpdate\scripts\update\funcAcl;
+namespace oat\taoUpdate\scripts\update\funcAcl;
 
 use tao_scripts_Runner;
 use common_ext_ExtensionsManager;
