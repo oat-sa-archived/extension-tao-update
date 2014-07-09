@@ -89,7 +89,7 @@ class taoUpdate_models_classes_ShieldService extends tao_models_classes_Service{
     public function unShield($ext){
         $extFolder = ROOT_PATH . DIRECTORY_SEPARATOR . $ext;
          if(!is_file($extFolder.'/htaccess.1')){
-             common_Logger::d('Previous lock, htaccess.1 do not exits something may have go wrong, please check');
+             common_Logger::d('Previous lock,  ' . $extFolder . '/htaccess.1 do not exits something may have go wrong, please check');
              return false;
          }
         if(unlink($extFolder.'/.htaccess')){
