@@ -75,6 +75,13 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
                 $returnValue['extensions'][] = (string) $extension;
             }
         }
+        $messages = $releaseNode->xpath('messages');
+        if (!empty($messages)){
+            foreach ($messages[0] as $message){
+                var_dump($message);
+                $returnValue['messages'][] = (string) $message ;
+            } 
+        }
         return $returnValue;
     }
     
