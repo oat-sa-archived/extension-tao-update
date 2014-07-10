@@ -19,8 +19,8 @@
  *
  */
 
-require_once dirname(__FILE__) . '/../../tao/test/TaoTestRunner.php';
-
+require_once dirname(__FILE__) . '/../../tao/test/TaoPhpUnitTestRunner.php';
+include_once dirname(__FILE__) . '/../includes/raw_start.php';
 /**
  * @license GPLv2
  * @package taoUpdate
@@ -28,7 +28,7 @@ require_once dirname(__FILE__) . '/../../tao/test/TaoTestRunner.php';
  * @author "Lionel Lecaque, <lionel@taotesting.com>"
  *
  */
-class BackupServiceTest extends UnitTestCase {
+class BackupServiceTest extends TaoPhpUnitTestRunner {
     /**
      * 
      * @var taoUpdate_models_classes_BackupService
