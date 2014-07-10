@@ -23,7 +23,7 @@ var availlableUpdates = JSON.parse('<?= get_data("updatesaAvailable") ;?>');
 						<li>download last version if possible</li>
 						<li>deploy last version</li>
 				</ul>
-				<strong><?= __("Please be aware that during the update, all actual running deliveries will not be able to be resumed and will be set to status abandoned") ?></strong>
+				
 				
 				<strong><?= __("We strongly recommand you to backup your root folder and database before launching the update")?></strong>
 				
@@ -44,6 +44,8 @@ var availlableUpdates = JSON.parse('<?= get_data("updatesaAvailable") ;?>');
 			<br/>
 			
 				<table id="update-grid" />
+				
+				<strong><?= __("Please be aware that during the update, all actual running deliveries will not be able to be resumed and will be set to status abandoned") ?></strong>
 			</div>
 
 	        <?else :?>
