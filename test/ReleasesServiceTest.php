@@ -20,7 +20,6 @@
  */
 
 require_once dirname(__FILE__) . '/../../tao/test/TaoTestRunner.php';
-require_once dirname(__FILE__) . '/../includes/raw_start.php';
 
 /**
  * @license GPLv2
@@ -29,7 +28,7 @@ require_once dirname(__FILE__) . '/../includes/raw_start.php';
  * @author "Lionel Lecaque, <lionel@taotesting.com>"
  *
  */
-class ReleasesServiceTestCase extends UnitTestCase {
+class ReleasesServiceTest extends TaoPhpUnitTestRunner {
     /**
      * 
      * @var taoUpdate_models_classes_ReleasesService
@@ -52,8 +51,8 @@ class ReleasesServiceTestCase extends UnitTestCase {
      */
     public function testGetVersions(){
         $version = $this->service->getVersions();
-        $this->assertEqual($version['2.4']['status'], taoUpdate_models_classes_ReleasesService::RELEASE_STATUS_STABLE);
-        $this->assertEqual($version['2.5']['status'], taoUpdate_models_classes_ReleasesService::RELEASE_STATUS_STABLE);
+        $this->assertEquals($version['2.4']['status'], taoUpdate_models_classes_ReleasesService::RELEASE_STATUS_STABLE);
+        $this->assertEquals($version['2.5']['status'], taoUpdate_models_classes_ReleasesService::RELEASE_STATUS_STABLE);
         $extensions = array ('generis','tao','filemanager','taoItems','wfEngine','taoSubjects','wfAuthoring','taoQTI','taoTests','taoDelivery','taoGroups','taoResults','ltiProvider','taoCoding','taoCampaign','ltiDeliveryProvider');
         foreach ($version['2.4']['extensions'] as $ext){
             $this->assertTrue(in_array($ext, $extensions), $ext . ' not found');
@@ -72,9 +71,9 @@ class ReleasesServiceTestCase extends UnitTestCase {
             $this->assertTrue(isset($ver['version']));
             $this->assertTrue(in_array($ver['version'], $versionDetailsArray), $ver['version'] . ' not found');
         }
-        $this->assertEqual($versionDetailed['2.4']['status'] , taoUpdate_models_classes_ReleasesService::RELEASE_STATUS_STABLE);
-        $this->assertEqual($versionDetailed['2.4.99']['status'] , taoUpdate_models_classes_ReleasesService::RELEASE_STATUS_PATCH);
-        $this->assertEqual($versionDetailed['2.5']['status'] , taoUpdate_models_classes_ReleasesService::RELEASE_STATUS_STABLE);
+        $this->assertEquals($versionDetailed['2.4']['status'] , taoUpdate_models_classes_ReleasesService::RELEASE_STATUS_STABLE);
+        $this->assertEquals($versionDetailed['2.4.99']['status'] , taoUpdate_models_classes_ReleasesService::RELEASE_STATUS_PATCH);
+        $this->assertEquals($versionDetailed['2.5']['status'] , taoUpdate_models_classes_ReleasesService::RELEASE_STATUS_STABLE);
         
          
     }
@@ -109,7 +108,7 @@ class ReleasesServiceTestCase extends UnitTestCase {
     
             $this->assertTrue(is_file($tmpFolder.'TAO_10.10.99_build/version'));
             $versionFileContent = @file_get_contents($tmpFolder.'TAO_10.10.99_build/version');
-            $this->assertEqual($versionFileContent, '10.10.99');
+            $this->assertEquals($versionFileContent, '10.10.99');
         }
         catch(taoUpdate_models_classes_UpdateException $e){
             $this->fail('Exception raised ' . $e->getMessage());
@@ -185,7 +184,7 @@ class ReleasesServiceTestCase extends UnitTestCase {
         $this->service->setReleaseManifestUrl( BASE_URL . '/test/sample/releases-patchsOnly.xml');
         $availableUpdates= $this->service->getAvailableUpdates();
         if(isset($availableUpdates['10.10.99']['version'])){
-            $this->assertEqual($availableUpdates['10.10.99']['version'] ,'10.10.99');
+            $this->assertEquals($availableUpdates['10.10.99']['version'] ,'10.10.99');
         }
         else {
             $this->fail('availableUpdates should only contain 10.10.99');

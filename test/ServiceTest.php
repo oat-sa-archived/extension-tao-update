@@ -20,7 +20,7 @@
  */
 
 require_once dirname(__FILE__) . '/../../tao/test/TaoTestRunner.php';
-require_once dirname(__FILE__) . '/../includes/raw_start.php';
+
 
 /**
  * @license GPLv2
@@ -29,7 +29,7 @@ require_once dirname(__FILE__) . '/../includes/raw_start.php';
  * @author "Lionel Lecaque, <lionel@taotesting.com>"
  *
  */
-class ServiceTestCase extends UnitTestCase {
+class ServiceTest extends TaoPhpUnitTestRunner {
 
     protected $service;
     /**
