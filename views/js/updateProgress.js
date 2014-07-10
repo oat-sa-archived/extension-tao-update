@@ -23,10 +23,11 @@ updateProgessClass.prototype.init = function(availlableUpdates){
 
 			datatype: "local", 
 			hidegrid : false,
-			colNames: [ __('Version'), __('File'),''], 
+			colNames: [ __('Version'), __('File'),__('Informations'),''], 
 			colModel: [ 
 			           {name: 'version', index: 'version',align: 'center', sortable: false},
 			           {name: 'file', index: 'file', align: 'center', sortable: false},
+			           {name: 'messages', index : 'messages', align: 'center', width: 600, sortable: false},
 			           {name:'actions',index:'actions', align:"center", width: 30, sortable: false}
 
 			           ], 
@@ -174,7 +175,22 @@ updateProgessClass.prototype.run = function(step){
 		
 }
 
+updateProgessClass.prototype.formatMessage = function(data){
+	var message = '<div id="update-version-info">';
+	var noInfo =  '<div id="update-version-noinfo">' + __('No Informations Available') ;
+	for (var msg in data.messages){
+		message += '<ul><li class="' + msg  + '">' + data.messages[msg].join('</li><li>') + '</li></ul>';
+	}
+	if(typeof data.messages != "undefined" && data.messages != null && data.messages.length == 0){
+		message = noInfo;
+	}
+	return message + '</div>';
+
+}
+
+
 updateProgessClass.prototype.addRow = function(grid, rowId, data) {
+	data.messages = this.formatMessage(data);
 	grid.jqGrid('addRowData', rowId, data);
 }
 

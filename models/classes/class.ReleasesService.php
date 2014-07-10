@@ -78,9 +78,11 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
         $messages = $releaseNode->xpath('messages');
         if (!empty($messages)){
             foreach ($messages[0] as $message){
-                var_dump($message);
-                $returnValue['messages'][] = (string) $message ;
+                $returnValue['messages'][$message->getName()][] = (string) $message ;
             } 
+        }
+        else {
+            $returnValue['messages'] = array();
         }
         return $returnValue;
     }
@@ -176,7 +178,6 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
         $currentVersion = $this->getCurrentVersion();
 
         foreach ($versions as $version){
-        
             $releaseVersion = $this->convertVersionNumber($version['version']);
             if($releaseVersion['major'] > $currentVersion['major']
             || ($releaseVersion['minor'] > $currentVersion['minor'] 
@@ -184,7 +185,7 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
                 $returnValue[$version['version']] = array(
                     'version' =>$version['version']
                     ,'file' => $this->getReleaseFileName($version['version'])
-                        
+                    ,'messages' => $version['messages']
                 );
                 continue;
             }
@@ -198,6 +199,7 @@ class taoUpdate_models_classes_ReleasesService extends tao_models_classes_Servic
                         $returnValue[$patch['version'] ] = array( 
                             'version' =>$patch['version'] 
                             ,'file' => $this->getReleaseFileName($patch['version'])
+                             ,'messages' => $version['messages']
                         );
                     }
                 }

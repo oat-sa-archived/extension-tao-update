@@ -45,7 +45,7 @@ var availlableUpdates = JSON.parse('<?= get_data("updatesaAvailable") ;?>');
 			
 				<table id="update-grid" />
 				
-				<strong><?= __("Please be aware that during the update, all actual running deliveries will not be able to be resumed and will be set to status abandoned") ?></strong>
+				
 			</div>
 
 	        <?else :?>

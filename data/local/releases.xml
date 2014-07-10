@@ -9,8 +9,8 @@
 	</updateSites>
 	<releases>
 		<release>
-			<version>2.6-beta</version>
-			<comment>TAO Release 2.6-beta</comment>
+			<version>2.6</version>
+			<comment>TAO Release 2.6</comment>
 			<extensions>
 				<extension>generis</extension>
 				<extension>tao</extension>
@@ -33,8 +33,8 @@
 				<extension>taoCe</extension>
 			</extensions>
 			<messages>
-				<warning>all actual running deliveries execution will not be able to be resumed and will be set to status abandoned</warning>
-				<info>all actual running deliveries will be store as template</info>
+				<warning>All actual running deliveries execution will not be able to be resumed and will be set to status abandoned</warning>
+				<info>All actual running deliveries will be store as templates</info>
 				<info>Items runtimes change a lot, so you may need to adapt your items, especially if you used custom CSS</info>
 			</messages>
 		</release>

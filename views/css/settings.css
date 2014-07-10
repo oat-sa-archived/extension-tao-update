@@ -29,4 +29,17 @@
 	margin-top: 10px;
 	style : bold;
 }
+#update-version-info{
+	text-align: left;
+}
+.info {
 
+}
+.warning {
+	font-weight: bold;
+
+}
+
+#update-version-noinfo{
+	text-align: center;
+}
