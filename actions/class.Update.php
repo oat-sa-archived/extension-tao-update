@@ -50,7 +50,7 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
 	    if(!class_exists('tao_helpers_SysAdmin')){
 	        throw new taoUpdate_models_classes_UpdateException(
 	            'You cannot use update extension of version 2.5 
-	            for previous version of TAO, find proper update exetnsions'
+	            for previous version of TAO, find proper update extensions'
             );
 	    }
 	        
