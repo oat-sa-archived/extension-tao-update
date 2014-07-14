@@ -27,7 +27,7 @@ updateProgessClass.prototype.init = function(availlableUpdates){
 			colModel: [ 
 			           {name: 'version', index: 'version',align: 'center', sortable: false},
 			           {name: 'file', index: 'file', align: 'center', sortable: false},
-			           {name: 'messages', index : 'messages', align: 'center', width: 600, sortable: false},
+			           {name: 'messages', index : 'messages', align: 'center', width: 700, resizable: true, sortable: false},
 			           {name:'actions',index:'actions', align:"center", width: 30, sortable: false}
 
 			           ], 
@@ -179,7 +179,7 @@ updateProgessClass.prototype.formatMessage = function(data){
 	var message = '<div id="update-version-info">';
 	var noInfo =  '<div id="update-version-noinfo">' + __('No Informations Available') ;
 	for (var msg in data.messages){
-		message += '<ul><li class="' + msg  + '">' + data.messages[msg].join('</li><li>') + '</li></ul>';
+		message += '<ul class="' + msg  + '"><li>' + data.messages[msg].join('</li><li>') + '</li></ul>';
 	}
 	if(typeof data.messages != "undefined" && data.messages != null && data.messages.length == 0){
 		message = noInfo;
