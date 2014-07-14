@@ -33,6 +33,7 @@
 				<extension>taoCe</extension>
 			</extensions>
 			<messages>
+				<warning>Local version, you need to download the corresponding package and copy it in taoUpdate/data/local/TAO_2.6_build.zip</warning>
 				<warning>All actual running deliveries execution will not be able to be resumed and will be set to status abandoned</warning>
 				<info>All actual running deliveries will be store as templates</info>
 				<info>Items runtimes change a lot, so you may need to adapt your items, especially if you used custom CSS</info>
