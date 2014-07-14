@@ -6,6 +6,6 @@ $todefine = array(
     //for testcase
     'RELEASES_LOCAL_MANIFEST'     => BASE_DATA . '/local/releases.xml',
     'INSTANCE_ROLE_SYSADMIN'			=> 'http://www.tao.lu/Ontologies/TAO.rdf#SysAdminRole',
-    "UPDATE_SITE_IS_LOCAL" => true,
+    "UPDATE_SITE_IS_LOCAL" => false,
 
 );
