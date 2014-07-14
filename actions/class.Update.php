@@ -47,6 +47,13 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
 	 * @see tao_actions_CommonModule::_isAllowed()
 	 */
 	protected function _isAllowed() {
+	    if(!class_exists('tao_helpers_SysAdmin')){
+	        throw new taoUpdate_models_classes_UpdateException(
+	            'You cannot use update extension of version 2.5 
+	            for previous version of TAO, find proper update exetnsions'
+            );
+	    }
+	        
 	    return tao_helpers_SysAdmin::isSysAdmin();
 	}
 
