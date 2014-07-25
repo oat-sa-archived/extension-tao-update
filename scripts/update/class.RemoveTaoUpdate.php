@@ -24,7 +24,10 @@
 class taoUpdate_scripts_update_RemoveTaoUpdate extends tao_scripts_Runner {
     public function run(){
         common_Logger::t('Uninstall Tao Update TODO');
-                
+         $extmanger = common_ext_ExtensionsManager::singleton();
+         $ext = $extmanger->getExtensionById('taoUpdate');
+         $extuninstaller = new common_ext_ExtensionUninstaller($ext);
+         $extuninstaller->uninstall();
 
     }
 }
