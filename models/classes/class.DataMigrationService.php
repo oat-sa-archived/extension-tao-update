@@ -36,9 +36,11 @@ class taoUpdate_models_classes_DataMigrationService extends tao_models_classes_S
     }
     
     
-    public function installNewExtension(){
+    public function installNewExtension($extlists = null){
         $extmanger = common_ext_ExtensionsManager::singleton();
-        $extlists = $extmanger->getAvailableExtensions();
+        if(is_null($extlists)){
+            $extlists = $extmanger->getAvailableExtensions();
+        }
         
         $releaseInfo = $this->getReleaseInfo();
         $releaseExts = $releaseInfo['extensions'];

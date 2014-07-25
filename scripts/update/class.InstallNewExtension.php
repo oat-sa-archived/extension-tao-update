@@ -26,7 +26,9 @@
 class taoUpdate_scripts_update_InstallNewExtension extends tao_scripts_Runner {
     
     public function run(){
-        taoUpdate_models_classes_DataMigrationService::singleton()->installNewExtension();
+    	$extmanger = common_ext_ExtensionsManager::singleton();
+        $ext = $extmanger->getExtensionById('taoCe');
+        taoUpdate_models_classes_DataMigrationService::singleton()->installNewExtension(array($ext));
 
 
     }
