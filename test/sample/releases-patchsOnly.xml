@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest>
+	<updateSites>
+	</updateSites>
+	<releases>
+		<release>
+			<version>10.10</version>
+			<comment>TAO Release 10.10</comment>
+			<patchs>
+
+				<patch>
+					<version>10.10.2</version>
+					<comment>TAO Release 10.10.2</comment>
+				</patch>
+				<patch>
+					<version>10.10.88</version>
+					<comment>TAO Release 10.10.88</comment>
+				</patch>
+				<patch>
+					<version>10.10.99</version>
+					<comment>TAO Release 10.10.99</comment>
+				</patch>
+			</patchs>
+		</release>
+
+	</releases>
+</manifest>

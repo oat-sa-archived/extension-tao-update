@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest>
+	<updateSites>
+		<updateSite>
+			<id>default</id>
+			<url>local</url>
+			<key>1f22d547c23f9c15bdd327ea3deec32e</key>
+		</updateSite>
+	</updateSites>
+	<releases>
+		<release>
+			<version>2.6</version>
+			<comment>TAO Release 2.6</comment>
+			<extensions>
+				<extension>generis</extension>
+				<extension>tao</extension>
+				<extension>funcAcl</extension>
+				<extension>filemanager</extension>
+				<extension>taoItems</extension>
+				<extension>wfEngine</extension>
+				<extension>taoSubjects</extension>
+				<extension>taoQtiItem</extension>
+				<extension>taoQtiTest</extension>
+				<extension>taoTests</extension>
+				<extension>taoDelivery</extension>
+				<extension>taoGroups</extension>
+				<extension>taoResults</extension>
+				<extension>taoWfTest</extension>
+				<extension>taoOpenWebItem</extension>
+				<extension>taoResultServer</extension>
+				<extension>taoSimpleDelivery</extension>
+				<extension>taoQtiCommon</extension>
+				<extension>taoCe</extension>
+			</extensions>
+			<messages>
+				<warning>Local version,download and copy the package in taoUpdate/data/local/</warning>
+				<warning>All actual running deliveries execution will not be able to be resumed and will be set to status abandoned</warning>
+				<info>All actual running deliveries will be store as templates</info>
+				<info>Items runtimes change a lot, so you may need to adapt your items, especially if you used custom CSS</info>
+			</messages>
+		</release>
+	</releases>
+</manifest>

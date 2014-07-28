@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest>
+	<updateSites>
+		<updateSite>
+			<id>alternate</id>
+			<url>/test/sample/</url>
+			<key>badkey</key>
+		</updateSite>
+	</updateSites>
+	<releases>
+		<release>
+			<version>2.4</version>
+			<comment>TAO Release 2.4</comment>
+			<patchs>
+				<patch>
+					<version>2.4.2</version>
+					<comment>TAO Release 2.4.2</comment>
+				</patch>
+			</patchs>
+		</release>
+	</releases>
+</manifest>

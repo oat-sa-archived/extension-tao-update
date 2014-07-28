@@ -1,0 +1,5 @@
+{"update":
+	{"keep":
+		["common\/conf\/db.conf.php","common\/conf\/generis.conf.php","common\/conf\/log.conf.php"]
+	}
+}
