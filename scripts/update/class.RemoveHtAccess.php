@@ -29,9 +29,9 @@ class taoUpdate_scripts_update_RemoveHtAccess extends tao_scripts_Runner {
         
         $exts = array_merge($releaseInfo['extensions'],$releaseInfo['old_extensions']);
         foreach ($exts as $ext){
-            if($shieldService->unShield($ext) == false){
-                $this->err('Fail to re activate ' . $ext);
-            }
+            $shieldService->unShield($ext) == false;
+                
+            
         }
     }
 }
