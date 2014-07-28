@@ -116,7 +116,16 @@ class taoUpdate_scripts_update_UpdateDeliveryAssembly extends tao_scripts_Runner
         );
     
         $templatePropsValues = $template->getPropertiesValues($resultServProps);
-        $assembly->setPropertiesValues($templatePropsValues);
+        $allEmpty = true;
+        foreach ($templatePropsValues as $key => $value) {
+            if(!empty($value)){
+                $allEmpty = false;
+                break; 
+            }
+        }
+        if($allEmpty == false){
+            $assembly->setPropertiesValues($templatePropsValues);
+        }
     
     }
 
