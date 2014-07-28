@@ -26,7 +26,7 @@
 class taoUpdate_scripts_update_InstallNewExtension extends tao_scripts_Runner {
     
     public function run(){
-    	$extmanger = common_ext_ExtensionsManager::singleton();
+    	$extmanger = tao_install_ExtensionInstaller::singleton();
         $ext = $extmanger->getExtensionById('taoCe');
         $extinstaller = new common_ext_ExtensionInstaller($ext);
         $extinstaller->install();
