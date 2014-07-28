@@ -1,0 +1,13 @@
+php_value memory_limit 128M
+Options +FollowSymLinks
+Options +Indexes
+RewriteEngine On
+
+#usual behavior for resources calls
+RewriteCond %{REQUEST_URI} !/views/  [NC]
+RewriteCond %{REQUEST_URI} !/test/  [NC]
+RewriteCond %{REQUEST_URI} !/locales/  [NC]
+RewriteCond %{REQUEST_URI} !/plugins/  [NC]
+
+#url resolving  
+RewriteRule ^(.*)$ index.php [L]

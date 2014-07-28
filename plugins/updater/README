@@ -1,0 +1,3 @@
+At this point a private link is provided and will be required to continue the update, from now on any attempt to connect to the platform will result to a redirection to a maintenance page execpt from the link provide that contain a unique key to continue the update process. 
+
+If you loose this key, a file with the admin key had been created in a folder called deployNewTao, simply connect to "http://ROOT_URL/deployNewTao/Main/index?key=$key" where $key is the key you found in the file.

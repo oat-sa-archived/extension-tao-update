@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest>
+	<updateSites>
+		<updateSite>
+			<id>default</id>
+			<url>local</url>
+			<key>1f22d547c23f9c15bdd327ea3deec32e</key>
+		</updateSite>
+	</updateSites>
+	<releases>
+		<release>
+			<version>2.5</version>
+			<comment>TAO Release 2.5</comment>
+			<extensions>
+				<extension>generis</extension>
+				<extension>tao</extension>
+				<extension>filemanager</extension>
+				<extension>taoItems</extension>
+				<extension>wfEngine</extension>
+				<extension>taoSubjects</extension>
+				<extension>wfAuthoring</extension>
+				<extension>taoQTI</extension>
+				<extension>taoQtiTest</extension>
+				<extension>taoTests</extension>
+				<extension>taoDelivery</extension>
+				<extension>taoGroups</extension>
+				<extension>taoResults</extension>
+				<extension>taoWfTest</extension>
+				<extension>taoOpenWebItem</extension>
+				<extension>taoResultServer</extension>
+				<extension>taoSimpleDelivery</extension>
+				<extension>taoQtiCommon</extension>
+			</extensions>
+		</release>
+	</releases>
+</manifest>
