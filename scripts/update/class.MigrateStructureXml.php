@@ -94,10 +94,10 @@ class taoUpdate_scripts_update_MigrateStructuresXml extends tao_scripts_Runner {
     private function treeNodeUpdate(DOMNode &$node) {
         // List of new attributes
         $newAttributes = array(
-            'selectClass' => 'Edit class',
-            'selectInstance' => 'Edit item',
-            'moveInstance' => 'Move',
-            'delete' => 'Delete'
+            'selectClass' => 'edit_class',
+            'selectInstance' => 'edit_item',
+            'moveInstance' => 'move',
+            'delete' => 'delete'
         );
 
         $len = $node->attributes->length;
@@ -170,8 +170,12 @@ class taoUpdate_scripts_update_MigrateStructuresXml extends tao_scripts_Runner {
         array_pop($splittedName);
         $action = implode(' ', $splittedName);
 
+        //Action id
+        $id = implode('_', strtolower($splittedName));
+
         // List in array
         $this->_newActions[strtolower($action)] = array(
+            'id'      => $id,
             'name'    => ucfirst($action),
             'url'     => $value,
             'context' => strtolower($context),
