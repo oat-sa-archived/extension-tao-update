@@ -10,16 +10,16 @@ $taopath = dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'tao'.DIRECTORY_SEPARA
 	
 return array(
 	'name' => 'taoUpdate',
-	'description' => 'TAO Update extensions 2.5 => 2.6 http://www.taotesting.com',
+	'description' => 'TAO Update extensions 2.6 => 2.7 http://www.taotesting.com',
 	'version' => '1.0',
     'license' => 'GPL-2.0',
 	'author' => 'Open Assessment Technologies',
 	'requires' => array(
-	    'tao' => '2.5',
-	    'taoItems' => '2.5',
-	    'taoTests' => '2.5',
-	    'taoGroups' => '2.5',
-	    'taoDelivery' => '2.5',
+	    'tao' => '2.6',
+	    'taoItems' => '2.6',
+	    'taoTests' => '2.6',
+	    'taoGroups' => '2.6',
+	    'taoDelivery' => '2.6',
 	),
 	'models' => array(),
 	'install' => array(
@@ -32,9 +32,11 @@ return array(
 		)
 	),
     'uninstall' => array(
-    ),
+    ),	
+    'managementRole' => 'http://www.tao.lu/Ontologies/TAO.rdf#SysAdminRole',
     'acl' => array(
-        array('grant', 'http://www.tao.lu/Ontologies/generis.rdf#AnonymousRole',array('ext'=>'taoUpdate','mod' => 'data'))
+    	array('grant', 'http://www.tao.lu/Ontologies/generis.rdf#AnonymousRole',array('ext'=>'taoUpdate','mod' => 'data')),
+        array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#SysAdminRole',array('ext'=>'taoUpdate'))
      ),
 	'classLoaderPackages' => array( 
 		dirname(__FILE__).'/actions/',

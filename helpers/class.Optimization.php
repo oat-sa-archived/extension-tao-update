@@ -22,20 +22,28 @@
  * @subpackage helpers
  *
  */
+use oat\generisHard\helpers\Optimization;
 
-class taoUpdate_helpers_Optimization{
+class taoUpdate_helpers_Optimization
+{
 
     /**
      * 
      * @access public
      * @author "Lionel Lecaque, <lionel@taotesting.com>"
      */
-    public static function isDesignModeEnabled(){
+    public static function isDesignModeEnabled()
+    {
         $returnValue = true;
-        $optimizableClasses = tao_helpers_Optimization::getOptimizableClasses();
+        $extensions = common_ext_ExtensionsManager::singleton()->getInstalledExtensions();
+        if(!isset($extensions['generisHard'])){
+            return false;
+        }
+
+        $optimizableClasses = Optimization::getOptimizableClasses();
         foreach ($optimizableClasses as $class){
             if(isset($class['status'])){
-                $returnValue &= $class['status'] == tao_helpers_Optimization::DECOMPILED;
+                $returnValue &= $class['status'] == Optimization::DECOMPILED;
             }
             else{
                 common_Logger::e('Problem occcurs when checking if design mode enable');
