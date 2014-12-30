@@ -9,27 +9,32 @@
 	</updateSites>
 	<releases>
 		<release>
-			<version>2.6</version>
-			<comment>TAO Release 2.6</comment>
+			<version>3.0.0-beta</version>
+			<comment>TAO Release 3.0.0-beta</comment>
 			<extensions>
 				<extension>generis</extension>
 				<extension>tao</extension>
 				<extension>funcAcl</extension>
-				<extension>filemanager</extension>
 				<extension>taoItems</extension>
 				<extension>wfEngine</extension>
-				<extension>taoSubjects</extension>
+				<extension>taoTestTaker</extension>
 				<extension>taoQtiItem</extension>
 				<extension>taoQtiTest</extension>
 				<extension>taoTests</extension>
 				<extension>taoDelivery</extension>
+				<extension>taoDacSimple</extension>
+				<extension>ltiDeliveryProvider</extension>
+				<extension>ltiTestConsumerr</extension>
+				<extension>qtiItemPic</extension>
+				<extension>qtiItemPci</extension>
 				<extension>taoGroups</extension>
-				<extension>taoResults</extension>
+				<extension>taoLtiBasicOutcome</extension>
+				<extension>taoOutcomeUi</extension>
+				<extension>taoOutcomeRds</extension>				
 				<extension>taoWfTest</extension>
 				<extension>taoOpenWebItem</extension>
 				<extension>taoResultServer</extension>
 				<extension>taoSimpleDelivery</extension>
-				<extension>taoQtiCommon</extension>
 				<extension>taoCe</extension>
 			</extensions>
 			<messages>
