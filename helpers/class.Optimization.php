@@ -37,7 +37,7 @@ class taoUpdate_helpers_Optimization
         $returnValue = true;
         $extensions = common_ext_ExtensionsManager::singleton()->getInstalledExtensions();
         if(!isset($extensions['generisHard'])){
-            return false;
+            return true;
         }
 
         $optimizableClasses = Optimization::getOptimizableClasses();
