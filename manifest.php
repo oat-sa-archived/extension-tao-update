@@ -35,7 +35,7 @@ return array(
     ),	
     'managementRole' => 'http://www.tao.lu/Ontologies/TAO.rdf#SysAdminRole',
     'acl' => array(
-    	array('grant', 'http://www.tao.lu/Ontologies/generis.rdf#AnonymousRole',array('ext'=>'taoUpdate','mod' => 'data')),
+    	array('grant', 'http://www.tao.lu/Ontologies/generis.rdf#AnonymousRole',array('ext'=>'taoUpdate','mod' => 'Data')),
         array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#SysAdminRole',array('ext'=>'taoUpdate'))
      ),
 	'classLoaderPackages' => array( 
