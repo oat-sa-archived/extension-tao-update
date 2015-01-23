@@ -23,20 +23,20 @@
  *
  */
 class taoUpdate_models_classes_Service extends tao_models_classes_Service{
-    
+
     const RELEASES_LOCAL_FOLDER = 'local/';
     const RELEASES_DOWNLOAD_FOLDER = 'download/';
-    
+
     const DEPLOY_FOLDER = 'deployNewTao/';
     const FILE_KEY = 'admin.key';
     const RELEASE_FOLDER = 'release/';
     const RELEASE_INFO =   'release.json';
-    
-    const UPDATOR_CONFIG = 'boot/config.json';  
+
+    const UPDATOR_CONFIG = 'boot/config.json';
     const UPDATOR_SRC =   'plugins/updater/';
-    
-   
-   
+
+
+
     private $releasesService;
     private $backupService;
     private $shieldService;
@@ -51,7 +51,7 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	    $this->shieldService = taoUpdate_models_classes_ShieldService::singleton();
         $this->generateKey();
     }
-    
+
     public function initReleaseService($releaseManifest){
         $this->releasesService->setReleaseManifestUrl($releaseManifest);
     }
@@ -78,7 +78,7 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
       }
 
       /**
-       * 
+       *
        * @access public
        * @author "Lionel Lecaque, <lionel@taotesting.com>"
        */
@@ -104,32 +104,32 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
         } else {
             $key = file_get_contents($path . self::FILE_KEY);
         }
-        
+
         return $key;
     }
-	
+
     public function hasAvailableUpdates(){
         return $this->releasesService->hasAvailableUpdates();
     }
-	
+
     /**
-     * 
+     *
      * @access
      * @author "Lionel Lecaque, <lionel@taotesting.com>"
      */
 	public function getAvailableUpdates(){
 	   return $this->releasesService->getAvailableUpdates();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @access
 	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
 	 * @param unknown $release
 	 * @param unknown $deployFolder
 	 */
 	public function buildReleaseManifest($release,$deployFolder){
-	    
+
 	    $data = $this->releasesService->getReleaseManifest($release);
 	    $data['old_root_path'] = ROOT_PATH;
 	    $data['release_path'] =  self::RELEASE_FOLDER . $this->releasesService->getReleaseFolder($release);
@@ -139,9 +139,9 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	    $releaseManifest = json_encode($data);
 	    file_put_contents($deployFolder . self::RELEASE_INFO, $releaseManifest);;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @access
 	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
 	 * @param unknown $array
@@ -150,9 +150,9 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	    $data = json_encode($array);
 	    file_put_contents(BASE_PATH . self::UPDATOR_SRC . self::UPDATOR_CONFIG, $data);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @access
 	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
 	 * @return mixed
@@ -161,9 +161,9 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	    $json = file_get_contents(BASE_PATH . self::UPDATOR_SRC .  self::UPDATOR_CONFIG);
 	    return  json_decode($json,true);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @access
 	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
 	 * @param unknown $folder
@@ -171,9 +171,9 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	public function deployUpdater($folder){
 	    helpers_File::copy(BASE_PATH . self::UPDATOR_SRC, $folder, true,false);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @access public
 	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
 	 * @param string $release
@@ -183,13 +183,13 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	    $releaseFileName = $this->releasesService->getReleaseFileName($release);
 	    $downloadFile = BASE_DATA . self::RELEASES_DOWNLOAD_FOLDER . $releaseFileName;
 	    if(is_file($downloadFile)){
-	        $updaterConstants = $this->getUpdaterConstant();	        
+	        $updaterConstants = $this->getUpdaterConstant();
 	        $updaterDataFolder = $updaterConstants['constants']['DIR_DATA'];
-	        
+
 	        //update constants in adapter from local installation
 	        $updaterConstants['constants']['ROOT_URL'] = ROOT_URL . self::DEPLOY_FOLDER;
 	        $this->setUpdaterConstant($updaterConstants);
-	        
+
 	        $deployFolder = ROOT_PATH . self::DEPLOY_FOLDER;
 	        $this->deployUpdater($deployFolder);
 	        $this->buildReleaseManifest($release,$deployFolder . $updaterDataFolder);
@@ -199,20 +199,20 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	        throw new taoUpdate_models_classes_UpdateException('Fail to extract Release, file missing ' . $downloadFile);
 	    }
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @author Lionel Lecaque, lionel@taotesting.com
 	 */
 	public function lock(){
 	    $this->shieldService->shieldExtensions();
 	    common_session_SessionManager::endSession();
 	}
-	
-	
+
+
 	/**
-	 * 
-	 * 
+	 *
+	 *
 	 * @access
 	 * @author "Lionel Lecaque, <lionel@taotesting.com>"
 	 */
@@ -222,10 +222,10 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	    $this->backupService->storeAllFiles($folder);
 	    $this->backupService->storeDatabase($folder);
 	}
-	
+
     /**
-     * 
-     * @access 
+     *
+     * @access
      * @author "Lionel Lecaque, <lionel@taotesting.com>"
      * @param string $release
      * @param string $fileName
@@ -244,12 +244,12 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
 	        throw new taoUpdate_models_classes_UpdateException('Could not find a release with file ' . $fileName);
 	    }
 	    return $path;
-	    
+
 	}
-	
-	
+
+
     /**
-     * 
+     *
      * @access public
      * @author "Lionel Lecaque, <lionel@taotesting.com>"
      * @param string $release
@@ -257,19 +257,19 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
      * @return string
      */
 	public function downloadRelease($release){
-	    
+
 	    $fileName = $this->releasesService->getReleaseFileName($release);
-	    $updateSites = $this->releasesService->getUpdateSites();    
+	    $updateSites = $this->releasesService->getUpdateSites();
 	    $downloadFolder = BASE_DATA . self::RELEASES_DOWNLOAD_FOLDER ;
         try {
             $path = $this->releasesService->downloadRelease($fileName, $updateSites['default'], $downloadFolder);
-    
+
         } catch (taoUpdate_models_classes_ReleaseDownloadException $e) {
             common_Logger::i('Main update Site not reachable try to connect alternate');
             try {
                 $path = $this->releasesService->downloadRelease($fileName, $updateSites['default'], $downloadFolder);
-            
-        	
+
+
             } catch (taoUpdate_models_classes_ReleaseDownloadException $e2) {
                 $path = $this->copyLocalVersion($release, $fileName, $downloadFolder);
 
@@ -279,8 +279,8 @@ class taoUpdate_models_classes_Service extends tao_models_classes_Service{
         }
 	    return $path;
 
-	   
-	    
+
+
 	}
 
 }

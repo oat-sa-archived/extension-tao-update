@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE extension SYSTEM "../../tao/doc/structures.dtd">
+<!DOCTYPE structures SYSTEM "../../tao/doc/structures.dtd">
 <structures>
-	<structure id='settings' name="Update" url="/taoUpdate/Update/settings" level="11" visible="false">
-		<description>An example extension.</description>
+	<structure id="settings" name="Settings" level="8" group="settings">
+		<description />
 		<sections>
-			<section id="update" name="TAO Update" url="/taoUpdate/Update/settings">
-			</section>
+			<section id="update" name="TAO Update" url="/taoUpdate/Update/index" />
 		</sections>
 	</structure>
 </structures>
