@@ -10,16 +10,16 @@ $taopath = dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'tao'.DIRECTORY_SEPARA
 	
 return array(
 	'name' => 'taoUpdate',
-	'description' => 'TAO Update extensions 2.6 => 2.7 http://www.taotesting.com',
+	'description' => 'TAO Update extensions 3.0 => 3.1 http://www.taotesting.com',
 	'version' => '1.0',
     'license' => 'GPL-2.0',
 	'author' => 'Open Assessment Technologies',
 	'requires' => array(
-	    'tao' => '2.6',
-	    'taoItems' => '2.6',
-	    'taoTests' => '2.6',
-	    'taoGroups' => '2.6',
-	    'taoDelivery' => '2.6',
+	    'tao' => '>=2.7',
+	    'taoItems' => '>=2.6',
+	    'taoTests' => '>=2.6',
+	    'taoGroups' => '>=2.6',
+	    'taoDelivery' => '>=2.6',
 	),
 	'models' => array(),
 	'install' => array(
