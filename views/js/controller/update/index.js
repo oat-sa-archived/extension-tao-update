@@ -26,8 +26,8 @@ define([
     'i18n',
     'helpers',
     'async',
-    'tpl!taoUpdate/controller/update/version',
-    'ui/progressbar'
+    'tpl!taoUpdate/controller/update/version'//,
+    //'ui/progressbar'
 ],
 function($, _, __, helpers, async, versionTpl){
 

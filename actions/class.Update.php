@@ -31,6 +31,13 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
     private $userService;
     protected $service;
 
+    
+    protected function returnJson($data, $httpStatus = 200) {
+        header(HTTPToolkit::statusCodeHeader($httpStatus));
+        Context::getInstance()->getResponse()->setContentHeader('application/json');
+        echo json_encode($data);
+    }
+    
     /**
      * initialize the services
      */
@@ -77,8 +84,9 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
 	    set_time_limit(300);
 
         //verfiy action against a white list
-        $actions = array('downloadRelease', 'deploy', 'lock');
-
+        //$actions = array('downloadRelease', 'deploy', 'lock');
+        $actions = array('downloadRelease');
+        
         //required parameters
         $action  = $this->getRequestParameter('action');
         $version = $this->getRequestParameter('version');

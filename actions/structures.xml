@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE structures SYSTEM "../../tao/doc/structures.dtd">
 <structures>
-	<structure id="settings" name="Settings" level="8" group="settings">
-		<description />
+<structure id='settings' name="Update" url="/taoUpdate/Update/index" level="11" visible="false">
+    <description />
 		<sections>
 			<section id="update" name="TAO Update" url="/taoUpdate/Update/index" />
 		</sections>
