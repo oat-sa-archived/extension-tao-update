@@ -31,7 +31,9 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
     private $userService;
     protected $service;
 
-    
+    /**
+     *  Backport method from 3.0
+     */
     protected function returnJson($data, $httpStatus = 200) {
         header(HTTPToolkit::statusCodeHeader($httpStatus));
         Context::getInstance()->getResponse()->setContentHeader('application/json');
