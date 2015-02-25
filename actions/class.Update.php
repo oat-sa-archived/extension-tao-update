@@ -84,8 +84,7 @@ class taoUpdate_actions_Update extends tao_actions_CommonModule {
 	    set_time_limit(300);
 
         //verfiy action against a white list
-        //$actions = array('downloadRelease', 'deploy', 'lock');
-        $actions = array('downloadRelease');
+        $actions = array('downloadRelease', 'deploy', 'lock');
         
         //required parameters
         $action  = $this->getRequestParameter('action');

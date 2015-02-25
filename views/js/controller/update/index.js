@@ -26,8 +26,7 @@ define([
     'i18n',
     'helpers',
     'async',
-    'tpl!taoUpdate/controller/update/version'//,
-    //'ui/progressbar'
+    'tpl!taoUpdate/controller/update/version'
 ],
 function($, _, __, helpers, async, versionTpl){
 
@@ -85,7 +84,7 @@ function($, _, __, helpers, async, versionTpl){
             $.getJSON(url, data).done(function(response){
                 if(response && response.success){
                     cb(null);
-                    $progressBar.progressbar('update', percent);
+                    $progressBar.progressbar({'value' :  percent});
                 } else {
                     cb(new Error('Fail to run step ' + action + ' : ' + response.error));
                 }
@@ -98,7 +97,7 @@ function($, _, __, helpers, async, versionTpl){
 
         //init the progressbar
         $progressBar.progressbar();
-        $progressBar.progressbar('update', 5);
+        $progressBar.progressbar({'value' : 5});
 
         //run each steps one by one
         async.series([

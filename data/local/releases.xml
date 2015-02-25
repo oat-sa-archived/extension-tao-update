@@ -9,8 +9,8 @@
 	</updateSites>
 	<releases>
 		<release>
-			<version>3.1.0-beta</version>
-			<comment>TAO Release 3.1.0-beta</comment>
+			<version>3.0.0-beta</version>
+			<comment>TAO Release 3.0.0-beta</comment>
 			<extensions>
 				<extension>generis</extension>
 				<extension>tao</extension>
